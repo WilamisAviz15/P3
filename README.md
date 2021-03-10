@@ -22,12 +22,7 @@ O objetivo do projeto é construir um sistema de folha de pagamento. O sistema c
 
 | Func. |  Título da funcionalidade                  |   Breve Descrição  |
 | ----- | ---------------------------                |  ----------------- |
-|   1   |     Adição de um empregado                 | Um novo empregado é adicionado ao sistema. Os <br>
-                                                      seguintes atributos são fornecidos: nome, endereço, tipo <br>
-                                                      (hourly, salaried, commissioned) e os atributos <br>
-                                                      associados (salário horário, salário mensal, comissão). <br>
-                                                      Um número de empregado (único) deve ser escolhido <br>
-                                                      automaticamente pelo sistema. |
+|   1   |     Adição de um empregado                 | Um novo empregado é adicionado ao sistema. Os <br> seguintes atributos são fornecidos: nome, endereço, tipo <br>(hourly, salaried, commissioned) e os atributos <br>associados (salário horário, salário mensal, comissão). <br> Um número de empregado (único) deve ser escolhido <br>automaticamente pelo sistema. |
 |   2   |     Remoção de um empregado                | Célula de conteúdo |
 |   3   |     Lançar um Cartão de Ponto              | Célula de conteúdo |
 |   4   |     Lançar um Resultado Venda              | Célula de conteúdo |
