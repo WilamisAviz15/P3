@@ -5,7 +5,4 @@ de ponto. O sistema deve pagar cada empregado. Empregados devem receber o salár
 momento correto, usando o método que eles preferem. Além do mais, várias taxas e impostos são
 deduzidos do seu salário.
 
-⋅⋅* Alguns empregados são horistas. Eles recebem um salário por hora trabalhada. Eles
-submetem "cartões de ponto" todo dia para informar o número de horas trabalhadas naquele
-dia. Se um empregado trabalhar mais do que 8 horas, deve receber 1.5 a taxa normal
-durante as horas extras. Eles são pagos toda sexta-feira.
+⋅⋅* Alguns empregados são horistas. Eles recebem um salário por hora trabalhada. Eles submetem "cartões de ponto" todo dia para informar o número de horas trabalhadas naquele dia. Se um empregado trabalhar mais do que 8 horas, deve receber 1.5 a taxa normal durante as horas extras. Eles são pagos toda sexta-feira.
