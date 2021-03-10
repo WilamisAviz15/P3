@@ -31,6 +31,5 @@ O objetivo do projeto é construir um sistema de folha de pagamento. O sistema c
 |   7   |     Rodar a folha de pagamento para hoje   | Célula de conteúdo |
 |   8   |               Undo/redo                    | Célula de conteúdo |
 |   9   |            Agenda de Pagamento             | Célula de conteúdo |
-|  10   |   Criação de Novas 
-            Agendas de Pagamento   | Célula de conteúdo |
+|  10   |   Criação de Novas <br>Agendas de Pagamento   | Célula de conteúdo |
 
