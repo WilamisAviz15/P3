@@ -20,7 +20,16 @@ O objetivo do projeto é construir um sistema de folha de pagamento. O sistema c
 
 * A folha de pagamento é rodada todo dia e deve pagar os empregados cujos salários vencem naquele dia. O sistema receberá a data até a qual o pagamento deve ser feito e calculará o pagamento para cada empregado desde a última vez em que este foi pago.
 
-| Func. |  Título da funcionalidade  |   Breve Descrição  |
-| ------------------- | ------------------- |  ------------------- |
-|  Célula de conteúdo |  Célula de conteúdo | Célula de conteúdo |
-|  Célula de conteúdo |  Célula de conteúdo | Célula de conteúdo |
+| Func. |  Título da funcionalidade    |   Breve Descrição  |
+| ----- | ---------------------------  |  ----------------- |
+|   1   |    Adição de um empregado    | Célula de conteúdo |
+|   2   |    Remoção de um empregado   | Célula de conteúdo |
+|   3   |  Lançar um Cartão de Ponto   | Célula de conteúdo |
+|   4   | Lançar um Resultado Venda    | Célula de conteúdo |
+|   5   |    Adição de um empregado    | Célula de conteúdo |
+|   6   |    Adição de um empregado    | Célula de conteúdo |
+|   7   |    Adição de um empregado   | Célula de conteúdo |
+|   8   |    Adição de um empregado   | Célula de conteúdo |
+|   9   |    Adição de um empregado   | Célula de conteúdo |
+|  10   |    Adição de um empregado   | Célula de conteúdo |
+
