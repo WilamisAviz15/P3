@@ -2,8 +2,10 @@ import java.util.Scanner;
 
 public class Main {
     public static int id = 20210000;
+    public static int id_syndicate = 0000;
     public static int size = 0; // current size employee array
-    public static int attr_employee = 9;
+    public static int size_timecard = 0; // current size timecard array
+    public static int attr_employee = 12;
     public static String[][] employee = new String[500][attr_employee];
 
     // [i][0] = Name
@@ -16,6 +18,21 @@ public class Main {
     // [i][7] = active
     // [i][8] = Payment Method (0 - Check by the post office, 1 - Check in Person, 2
     // - Bank Account)
+    // [i][9] = sindicalist (1 - yes, 2 - no)
+    // [i][10] = id_syndicate
+    // [i][11] = Syndicate fee
+
+    public static String[][] Timecard = new String[500][4];
+    // [i][0] = id employee
+    // [i][1] = Timecard login
+    // [i][2] = Timecard logout
+    // [i][3] = Date
+
+    public static String[][] salesMade = new String[500][3];
+    // [i][0] = id employee
+    // [i][1] = Value
+    // [i][2] = Sold date
+
     public static void Employees() {
         int option;
         Scanner op = new Scanner(System.in);
@@ -71,6 +88,14 @@ public class Main {
             System.out.println(
                     "Type Payment Method (0 - Check by the post office, 1 - Check in Person, 2 - Bank Account)");
             employee[i][8] = sc.nextLine();
+            System.out.printf("Does %s belong to sindicate? (1 - yes, 2 - no)\n", employee[i][0]);
+            employee[i][9] = sc.nextLine();
+            if (employee[i][9].equals("1")) {
+
+            } else if (employee[i][9].equals("2")) {
+                employee[i][10] = "";
+                employee[i][11] = "";
+            }
             System.out.println("Successful registration.");
         }
         ++size;
@@ -89,11 +114,24 @@ public class Main {
         return -1;
     }
 
+    public static boolean isRegistered(String id) {
+        for (int i = 0; i < size; i++) {
+            if (id.equals(employee[i][6])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void removeEmployee() {
         int index = findEmployee();
         if (index != -1) {
-            employee[index][7] = "n";
-            System.out.println("Employee removed.");
+            if (employee[index][7].equals("y")) {
+                employee[index][7] = "n";
+                System.out.println("Employee removed.");
+            } else {
+                System.out.println("Employee not found.");
+            }
         } else {
             System.out.println("Employee not found.");
         }
@@ -141,52 +179,86 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int index = findEmployee();
         if (index != -1) {
-            System.out.printf("Employed selected: %s. What do you want to edit?\n", employee[index][0]);
-            System.out.println("0 - Name");
-            System.out.println("1 - Address");
-            System.out.println("2 - Type of employee");
-            System.out.println("3 - Paymento Method");
-            op = sc.nextLine();
-            if (op.equals("0")) {
-                System.out.println("Type the new name");
-                attr = sc.nextLine();
-                employee[index][0] = attr;
-                System.out.println("Name changed successfully.");
-            } else if (op.equals("1")) {
-                System.out.println("Type the new address");
-                attr = sc.nextLine();
-                employee[index][1] = attr;
-                System.out.println("Address changed successfully.");
-            } else if (op.equals("2")) {
-                String oldAttr = employee[index][2];
-                System.out.println("Type the new type of employee: (0 - hourly, 1 - salaried, 2 - commissioned)");
-                attr = sc.nextLine();
-                employee[index][2] = attr;
-                if (attr.equals("0")) {
-                    System.out.println("Type the hourly wage:");
-                    employee[index][3] = sc.nextLine();
-                    if (oldAttr.equals("2")) {
-                        employee[index][5] = "2";
+            if (employee[index][7].equals("y")) {
+                System.out.printf("Employed selected: %s. What do you want to edit?\n", employee[index][0]);
+                System.out.println("0 - Name");
+                System.out.println("1 - Address");
+                System.out.println("2 - Type of employee");
+                System.out.println("3 - Paymento Method");
+                op = sc.nextLine();
+                if (op.equals("0")) {
+                    System.out.println("Type the new name");
+                    attr = sc.nextLine();
+                    employee[index][0] = attr;
+                    System.out.println("Name changed successfully.");
+                } else if (op.equals("1")) {
+                    System.out.println("Type the new address");
+                    attr = sc.nextLine();
+                    employee[index][1] = attr;
+                    System.out.println("Address changed successfully.");
+                } else if (op.equals("2")) {
+                    String oldAttr = employee[index][2];
+                    System.out.println("Type the new type of employee: (0 - hourly, 1 - salaried, 2 - commissioned)");
+                    attr = sc.nextLine();
+                    employee[index][2] = attr;
+                    if (attr.equals("0")) {
+                        System.out.println("Type the hourly wage:");
+                        employee[index][3] = sc.nextLine();
+                        if (oldAttr.equals("2")) {
+                            employee[index][5] = "2";
+                        }
+                    } else if (attr.equals("1")) {
+                        System.out.println("Type the salary:");
+                        employee[index][4] = sc.nextLine();
+                        if (oldAttr.equals("2")) {
+                            employee[index][5] = "2";
+                        }
+                    } else if (attr.equals("2")) {
+                        System.out.println("Type the salary:");
+                        employee[index][4] = sc.nextLine();
+                        employee[index][5] = "1";
                     }
-                } else if (attr.equals("1")) {
-                    System.out.println("Type the salary:");
-                    employee[index][4] = sc.nextLine();
-                    if (oldAttr.equals("2")) {
-                        employee[index][5] = "2";
-                    }
-                } else if (attr.equals("2")) {
-                    System.out.println("Type the salary:");
-                    employee[index][4] = sc.nextLine();
-                    employee[index][5] = "1";
+                } else if (op.equals("3")) {
+                    System.out.println(
+                            "Select the new Payment Method (0 - Check by the post office, 1 - Check in Person, 2 - Bank Account)");
+                    employee[index][8] = sc.nextLine();
                 }
-            } else if (op.equals("3")) {
-                System.out.println(
-                        "Select the new Payment Method (0 - Check by the post office, 1 - Check in Person, 2 - Bank Account)");
-                employee[index][8] = sc.nextLine();
+                System.out.println("Type changed successfully.");
+            } else {
+                System.out.println("Employee not found.");
             }
-            System.out.println("Type changed successfully.");
         } else {
             System.out.println("Employee not found.");
+        }
+    }
+
+    public static void Login() {
+        Scanner sc = new Scanner(System.in);
+        for (int i = size_timecard; i < size_timecard + 1; i++) {
+            System.out.println("Enter ID employee:");
+            String validate_id = sc.nextLine();
+            if (isRegistered(validate_id)) {
+                Timecard[i][0] = validate_id;
+                System.out.println("Enter today's date (dd/mm/aa)");
+                Timecard[i][3] = sc.nextLine();
+                System.out.println("Enter the current time (hh:mm)");
+                Timecard[i][1] = sc.nextLine();
+                Timecard[i][2] = "";
+            } else {
+                System.out.println("Employee not found.");
+            }
+        }
+        ++size_timecard;
+    }
+
+    public static void ListTimecard() {
+        for (int i = 0; i < size_timecard; i++) {
+            System.out.println("==========");
+            System.out.printf("Employee ID: %s\n", Timecard[i][0]);
+            System.out.printf("Results from date: %s\n", Timecard[i][3]);
+            System.out.printf("Login: %s\n", Timecard[i][1]);
+            System.out.printf("Logout: %s\n", Timecard[i][2]);
+            System.out.println("==========");
         }
     }
 
@@ -201,10 +273,12 @@ public class Main {
         option = op.nextInt();
         switch (option) {
         case 1:
+            Login();
             break;
         case 2:
             break;
         case 3:
+            ListTimecard();
             break;
         case 4:
             break;
