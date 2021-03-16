@@ -47,8 +47,9 @@ public class Main {
             System.out.println("1 - Add Employees");
             System.out.println("2 - Remove Employees");
             System.out.println("3 - Edit Employees");
-            System.out.println("4 - List Employees");
-            System.out.println("5 - Back");
+            System.out.println("4 - List All Employees");
+            System.out.println("5 - Search Employees");
+            System.out.println("6 - Back");
             option = op.nextInt();
             switch (option) {
             case 1:
@@ -61,12 +62,13 @@ public class Main {
                 editEmployee();
                 break;
             case 4:
-                listEmployee();
+                ListEmployee();
                 break;
             case 5:
                 break;
             }
-        } while (option != 5);
+
+        } while (option != 6);
     }
 
     public static void addEmployee() {
@@ -172,20 +174,23 @@ public class Main {
     }
 
     public static void ListSales() {
-            System.out.println("==========");
-            System.out.println("|Employee ID|                  | Results from date |                  | Sale Value |");
-            for (int i = 0; i < size_sales; i++) {
-                System.out.printf("  %s                           %s                             %s\n", salesMade[i][0], salesMade[i][2], salesMade[i][1]);
-            }
-            System.out.println("==========");
+        System.out.println("==========");
+        System.out.println("|Employee ID|                  | Results from date |                  | Sale Value |");
+        for (int i = 0; i < size_sales; i++) {
+            System.out.printf("  %s                           %s                             %s\n", salesMade[i][0],
+                    salesMade[i][2], salesMade[i][1]);
+        }
+        System.out.println("==========");
     }
 
-    public static void listEmployee() {
+    public static void ListEmployee() {
         String type_employee = "";
         String payment_method = "";
+        System.out.println("==========");
+        System.out.printf("|Employee ID|          |Name|                  |Address|               |Type of employee|          |Salary|            |Payment Method|            |Syndicalist|\n");
+        System.out.println("==========");
         for (int i = 0; i < size; i++) {
             if (employee[i][7].equals("y")) {
-                System.out.println("==========");
                 System.out.printf("Employee ID: %s\n", employee[i][6]);
                 System.out.printf("Name: %s\n", employee[i][0]);
                 System.out.printf("Address: %s\n", employee[i][1]);
@@ -212,7 +217,7 @@ public class Main {
                     payment_method = "Bank Account";
                 }
                 System.out.printf("Payment Method: %s\n", payment_method);
-                System.out.println("==========");
+                //System.out.printf("%s       %s              %s             %s\n", employee[i][6], employee[i][0], employee[i][1], type_employee);
             }
         }
     }
@@ -277,10 +282,10 @@ public class Main {
 
     public static void Login() {
         Scanner sc = new Scanner(System.in);
-        for (int i = size_timecard; i < size_timecard + 1; i++) {
-            System.out.println("Enter ID employee:");
-            String validate_id = sc.nextLine();
-            if (isRegistered(validate_id)) {
+        System.out.println("Enter ID employee:");
+        String validate_id = sc.nextLine();
+        if (isRegistered(validate_id)) {
+            for (int i = size_timecard; i < size_timecard + 1; i++) {
                 Timecard[i][0] = validate_id;
                 System.out.println("Enter today's date (dd/mm/aa)");
                 Timecard[i][3] = sc.nextLine();
@@ -288,11 +293,11 @@ public class Main {
                 Timecard[i][1] = sc.nextLine();
                 Timecard[i][2] = "";
                 System.out.println("=== Successful registration login. ===");
-            } else {
-                System.out.println("Employee not found.");
             }
+            ++size_timecard;
+        } else {
+            System.out.println("Employee not found.");
         }
-        ++size_timecard;
     }
 
     public static void Logout() {
@@ -317,13 +322,12 @@ public class Main {
     }
 
     public static void ListTimecard() {
+        System.out.println("==========");
+        System.out.println(
+                "|Employee ID|               | Results from date |               | Login |               | Logout |");
         for (int i = 0; i < size_timecard; i++) {
-            System.out.println("==========");
-            System.out.printf("Employee ID: %s\n", Timecard[i][0]);
-            System.out.printf("Results from date: %s\n", Timecard[i][3]);
-            System.out.printf("Login: %s\n", Timecard[i][1]);
-            System.out.printf("Logout: %s\n", Timecard[i][2]);
-            System.out.println("==========");
+            System.out.printf("  %s                        %s                        %s                    %s\n",
+                    Timecard[i][0], Timecard[i][3], Timecard[i][1], Timecard[i][2]);
         }
     }
 
@@ -356,25 +360,28 @@ public class Main {
     public static void Timecard() {
         int option;
         Scanner op = new Scanner(System.in);
-        System.out.println("Timecard");
-        System.out.println("1 - Timecard login");
-        System.out.println("2 - Timecard logout");
-        System.out.println("3 - List Timecards");
-        System.out.println("4 - Back");
-        option = op.nextInt();
-        switch (option) {
-        case 1:
-            Login();
-            break;
-        case 2:
-            Logout();
-            break;
-        case 3:
-            ListTimecard();
-            break;
-        case 4:
-            break;
-        }
+        do {
+            System.out.println("Timecard");
+            System.out.println("1 - Timecard login");
+            System.out.println("2 - Timecard logout");
+            System.out.println("3 - List All Timecards");
+            System.out.println("4 - Search Timecards by ID");
+            System.out.println("5 - Back");
+            option = op.nextInt();
+            switch (option) {
+            case 1:
+                Login();
+                break;
+            case 2:
+                Logout();
+                break;
+            case 3:
+                ListTimecard();
+                break;
+            case 4:
+                break;
+            }
+        } while (option != 5);
     }
 
     public static void Sales() {
@@ -383,8 +390,9 @@ public class Main {
         do {
             System.out.println("Sales");
             System.out.println("1 - Launch Sale");
-            System.out.println("2 - List Sales");
-            System.out.println("3 - Back");
+            System.out.println("2 - List All Sales");
+            System.out.println("3 - Search Sales by ID");
+            System.out.println("4 - Back");
             option = op.nextInt();
             switch (option) {
             case 1:
@@ -396,27 +404,30 @@ public class Main {
             case 3:
                 break;
             }
-        } while (option != 3);
+        } while (option != 4);
     }
 
     public static void serviceFee() {
         int option;
         Scanner op = new Scanner(System.in);
-        System.out.println("Service Fee");
-        System.out.println("1 - Launch Service Fee");
-        System.out.println("2 - List Service Fees");
-        System.out.println("3 - Back");
-        option = op.nextInt();
-        switch (option) {
-        case 1:
-            LaunchFee();
-            break;
-        case 2:
-            ListFee();
-            break;
-        case 3:
-            break;
-        }
+        do {
+            System.out.println("Service Fee");
+            System.out.println("1 - Launch Service Fee");
+            System.out.println("2 - List All Service Fees");
+            System.out.println("3 - List Service Fees by ID");
+            System.out.println("4 - Back");
+            option = op.nextInt();
+            switch (option) {
+            case 1:
+                LaunchFee();
+                break;
+            case 2:
+                ListFee();
+                break;
+            case 3:
+                break;
+            }
+        } while (option != 4);
     }
 
     public static void rotatePayroll() {
@@ -427,8 +438,9 @@ public class Main {
         int option;
         Scanner op = new Scanner(System.in);
         System.out.println("Payout Schedule");
-        System.out.println("1 - List Payment Schedules");
-        System.out.println("2 - Back");
+        System.out.println("1 - List All Payment Schedules");
+        System.out.println("2 - List Payment Schedules by ID");
+        System.out.println("3 - Back");
         option = op.nextInt();
         switch (option) {
         case 1:
