@@ -13,7 +13,6 @@ public class Main {
     // [i][0] = Name
     // [i][1] = Address
     // [i][2] = Type (0 - hourly, 1 - salaried, 2 - commissioned)
-    // [i][3] = Hourly Value
     // [i][4] = Salary
     // [i][5] = Comission (1 - yes, 2 - no)
     // [i][6] = id
@@ -82,7 +81,7 @@ public class Main {
             employee[i][2] = sc.nextLine();
             if (employee[i][2].equals("0")) {
                 System.out.println("Type the hourly wage:");
-                employee[i][3] = sc.nextLine();
+                employee[i][4] = sc.nextLine();
             } else if (employee[i][2].equals("1")) {
                 System.out.println("Type the salary:");
                 employee[i][4] = sc.nextLine();
@@ -186,28 +185,18 @@ public class Main {
     public static void ListEmployee() {
         String type_employee = "";
         String payment_method = "";
-        System.out.println("==========");
-        System.out.printf("|Employee ID|          |Name|                  |Address|               |Type of employee|          |Salary|            |Payment Method|            |Syndicalist|\n");
-        System.out.println("==========");
+        //System.out.printf("%s%10s%25s%20s%23s%18s%15s\n", " _______________ ", " ___________________", " ____________",
+                //" ________________", " ______________", " ______________", " ____________");
+        System.out.printf("%5s%10s%20s%40s%20s%25s%15s\n", "| Employee ID ", "| Name ", "| Address ",
+                "| Type of employee ", "| Salary ", "| Payment Method ", "| Syndicalist |");
         for (int i = 0; i < size; i++) {
             if (employee[i][7].equals("y")) {
-                System.out.printf("Employee ID: %s\n", employee[i][6]);
-                System.out.printf("Name: %s\n", employee[i][0]);
-                System.out.printf("Address: %s\n", employee[i][1]);
                 if (employee[i][2].equals("0")) {
                     type_employee = "hourly";
                 } else if (employee[i][2].equals("1")) {
                     type_employee = "Assalaried";
                 } else if (employee[i][2].equals("2")) {
                     type_employee = "Comissioned";
-                }
-                System.out.printf("Type of employee: %s\n", type_employee);
-                if (employee[i][2].equals("0")) {
-                    System.out.printf("Salary per hour: %s\n", employee[i][3]);
-                } else if (employee[i][2].equals("1")) {
-                    System.out.printf("Salary: %s\n", employee[i][4]);
-                } else if (employee[i][2].equals("2")) {
-                    System.out.printf("Salary: %s\n", employee[i][4]);
                 }
                 if (employee[i][8].equals("0")) {
                     payment_method = "Check by the post office";
@@ -216,8 +205,9 @@ public class Main {
                 } else if (employee[i][8].equals("2")) {
                     payment_method = "Bank Account";
                 }
-                System.out.printf("Payment Method: %s\n", payment_method);
-                //System.out.printf("%s       %s              %s             %s\n", employee[i][6], employee[i][0], employee[i][1], type_employee);
+                System.out.printf("%10s%15s%25s%25s%20s%25s\n", employee[i][6], employee[i][0], employee[i][1], type_employee, employee[i][4], payment_method);
+                System.out.println(
+                        "----------------------------------------------------------------------------------------------------------------------------------------------------------------");
             }
         }
     }
@@ -251,7 +241,7 @@ public class Main {
                     employee[index][2] = attr;
                     if (attr.equals("0")) {
                         System.out.println("Type the hourly wage:");
-                        employee[index][3] = sc.nextLine();
+                        employee[index][4] = sc.nextLine();
                         if (oldAttr.equals("2")) {
                             employee[index][5] = "2";
                         }
