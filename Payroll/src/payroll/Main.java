@@ -5,6 +5,8 @@ public class Main {
     public static int id_syndicate = 0000;
     public static int size = 0; // current size employee array
     public static int size_timecard = 0; // current size timecard array
+    public static int size_sales = 0; // current size timecard array
+    public static int size_fee = 0; // current size timecard array
     public static int attr_employee = 12;
     public static String[][] employee = new String[500][attr_employee];
 
@@ -15,7 +17,7 @@ public class Main {
     // [i][4] = Salary
     // [i][5] = Comission (1 - yes, 2 - no)
     // [i][6] = id
-    // [i][7] = active
+    // [i][7] = active (y - yes | n - no)
     // [i][8] = Payment Method (0 - Check by the post office, 1 - Check in Person, 2
     // - Bank Account)
     // [i][9] = sindicalist (1 - yes, 2 - no)
@@ -32,6 +34,10 @@ public class Main {
     // [i][0] = id employee
     // [i][1] = Value
     // [i][2] = Sold date
+
+    public static String[][] serviceFee = new String[500][2];
+    // [i][0] = id employee
+    // [i][1] = Value
 
     public static void Employees() {
         int option;
@@ -116,11 +122,20 @@ public class Main {
 
     public static boolean isRegistered(String id) {
         for (int i = 0; i < size; i++) {
-            if (id.equals(employee[i][6])) {
+            if ((id.equals(employee[i][6])) && (employee[i][7].equals("y"))) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static int findEmployeeTimecardId(String id, String logout_date) {
+        for (int i = 0; i < size_timecard; i++) {
+            if (id.equals(Timecard[i][0]) && logout_date.equals(Timecard[i][3])) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public static void removeEmployee() {
@@ -135,6 +150,34 @@ public class Main {
         } else {
             System.out.println("Employee not found.");
         }
+    }
+
+    public static void LaunchSales() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter ID employee:");
+        String validate_id = sc.nextLine();
+        if (isRegistered(validate_id)) {
+            for (int i = size_sales; i < size_sales + 1; i++) {
+                salesMade[i][0] = validate_id;
+                System.out.println("Enter sale value:");
+                salesMade[i][1] = sc.nextLine();
+                System.out.println("Enter sale date:");
+                salesMade[i][2] = sc.nextLine();
+                System.out.println("=== Successful registration Sales. ===");
+            }
+            ++size_sales;
+        } else {
+            System.out.println("Employee not found.");
+        }
+    }
+
+    public static void ListSales() {
+            System.out.println("==========");
+            System.out.println("|Employee ID|                  | Results from date |                  | Sale Value |");
+            for (int i = 0; i < size_sales; i++) {
+                System.out.printf("  %s                           %s                             %s\n", salesMade[i][0], salesMade[i][2], salesMade[i][1]);
+            }
+            System.out.println("==========");
     }
 
     public static void listEmployee() {
@@ -244,11 +287,33 @@ public class Main {
                 System.out.println("Enter the current time (hh:mm)");
                 Timecard[i][1] = sc.nextLine();
                 Timecard[i][2] = "";
+                System.out.println("=== Successful registration login. ===");
             } else {
                 System.out.println("Employee not found.");
             }
         }
         ++size_timecard;
+    }
+
+    public static void Logout() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter ID employee:");
+        String validate_id = sc.nextLine();
+        if (isRegistered(validate_id)) {
+            System.out.println("Enter logout's date (dd/mm/aa)");
+            String logout_date = sc.nextLine();
+            int index_employee_timecard = findEmployeeTimecardId(validate_id, logout_date);
+            if (index_employee_timecard != -1) {
+                System.out.println("Enter the current time (hh:mm)");
+                String logout_time = sc.nextLine();
+                Timecard[index_employee_timecard][2] = logout_time;
+                System.out.println("=== Successful registration logout. ===");
+            } else {
+                System.out.println("Data não encontrada");
+            }
+        } else {
+            System.out.println("Employee not found.");
+        }
     }
 
     public static void ListTimecard() {
@@ -260,6 +325,32 @@ public class Main {
             System.out.printf("Logout: %s\n", Timecard[i][2]);
             System.out.println("==========");
         }
+    }
+
+    public static void LaunchFee() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter ID employee:");
+        String validate_id = sc.nextLine();
+        if (isRegistered(validate_id)) {
+            for (int i = size_fee; i < size_fee + 1; i++) {
+                serviceFee[i][0] = validate_id;
+                System.out.println("Enter TAX value:");
+                serviceFee[i][1] = sc.nextLine();
+                System.out.println("=== Successful registration fee. ===");
+            }
+            ++size_fee;
+        } else {
+            System.out.println("Employee not found.");
+        }
+    }
+
+    public static void ListFee() {
+        System.out.println("==========");
+        System.out.printf("|Employee ID|                  | Value |\n");
+        for (int i = 0; i < size_fee; i++) {
+            System.out.printf("  %s                      %s\n", serviceFee[i][0], serviceFee[i][1]);
+        }
+        System.out.println("==========");
     }
 
     public static void Timecard() {
@@ -276,6 +367,7 @@ public class Main {
             Login();
             break;
         case 2:
+            Logout();
             break;
         case 3:
             ListTimecard();
@@ -288,19 +380,23 @@ public class Main {
     public static void Sales() {
         int option;
         Scanner op = new Scanner(System.in);
-        System.out.println("Sales");
-        System.out.println("1 - Launch Sale");
-        System.out.println("2 - List Sales");
-        System.out.println("3 - Back");
-        option = op.nextInt();
-        switch (option) {
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        }
+        do {
+            System.out.println("Sales");
+            System.out.println("1 - Launch Sale");
+            System.out.println("2 - List Sales");
+            System.out.println("3 - Back");
+            option = op.nextInt();
+            switch (option) {
+            case 1:
+                LaunchSales();
+                break;
+            case 2:
+                ListSales();
+                break;
+            case 3:
+                break;
+            }
+        } while (option != 3);
     }
 
     public static void serviceFee() {
@@ -313,8 +409,10 @@ public class Main {
         option = op.nextInt();
         switch (option) {
         case 1:
+            LaunchFee();
             break;
         case 2:
+            ListFee();
             break;
         case 3:
             break;
