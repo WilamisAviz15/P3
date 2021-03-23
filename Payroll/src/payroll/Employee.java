@@ -4,11 +4,23 @@ public class Employee {
     private int id;
     private String name;
     private String address;
-    private int type_employee; //(0 - hourly, 1 - salaried, 2 - commissioned)
+    private int type_employee; // (0 - hourly, 1 - salaried, 2 - commissioned)
     private Double salary;
-    private int comissioned; //(1 - yes, 2 - no)
-    private int payment_method; //(0 - Check by the post office, 1 - Check in Person, 2- Bank Account)
-    private int sindicalist; //(1 - yes, 2 - no)
+    private int comissioned; // (1 - yes, 2 - no)
+    private int payment_method; // (0 - Check by the post office, 1 - Check in Person, 2- Bank Account)
+    private int sindicalist; // (1 - yes, 2 - no)
+
+    public Employee(int id, String name, String address, int type_employee, Double salary,
+            int payment_method, int sindicalist) {
+        setId(id);
+        setName(name);
+        setAddress(address);
+        setType_employee(type_employee);
+        setSalary(salary);
+        setComissioned(comissioned);
+        setPayment_method(payment_method);
+        setSindicalist(sindicalist);
+    }
 
     public int getId() {
         return id;
@@ -74,7 +86,38 @@ public class Employee {
         this.sindicalist = sindicalist;
     }
 
-    public void listAllEmployee(String id){
-        
+    @Override
+    public String toString() {
+        String type_emp = "";
+        String paymentString = "";
+        String SindicalistString = "";
+
+        if (this.getType_employee() == 0) {
+            type_emp = "Hourly";
+        } else if (this.getType_employee() == 1) {
+            type_emp = "Assalaried";
+        } else if (this.getType_employee() == 2) {
+            type_emp = "Comissioned";
+        }
+
+        // 0 - Check by the post office, 1 - Check in Person, 2 - Bank Account
+        if (this.getPayment_method() == 0) {
+            paymentString = "Check by the post office";
+        } else if (this.getPayment_method() == 1) {
+            paymentString = "Check in Person";
+        } else if (this.getPayment_method() == 2) {
+            paymentString = "Bank Account";
+        }
+
+        if (this.getSindicalist() == 1) {
+            SindicalistString = "Yes";
+        } else if (this.getSindicalist() == 2) {
+            SindicalistString = "No";
+        }
+
+        return String.format(
+                "\nID: %d\nName: %s\nAddress: %s\nType Employee: %s\nSalary: %.2f\nPayment Method: %s\nSindicalist: %s\n",
+                this.getId(), this.getName(), this.getAddress(), type_emp, this.getSalary(), paymentString,
+                SindicalistString);
     }
 }
