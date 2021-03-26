@@ -1,6 +1,9 @@
 package payroll;
 
 import java.util.Scanner;
+
+import payroll.employee.Employee;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +106,7 @@ public class Panel {
         System.out.printf("Does %s belong to syndicate? (1 - yes, 2 - no)\n", name);
         int sindicalist = sc.nextInt();
         System.out.println("Successful registration.");
-        list_employee.add(new Employee(++id, name, address, type_employee, salary, payment_method, sindicalist));
+        list_employee.add(new Employee(++id, name, address));
     }
 
     public int findEmployee() {
@@ -219,35 +222,31 @@ public class Panel {
                 attr = sc.nextLine();
                 list_employee.get(index).setAddress(attr);
             } else if (op.equals("2")) {
-                int oldAttr = list_employee.get(index).getType_employee();
+                //int oldAttr = list_employee.get(index).getType_employee();
                 System.out.println("Type the new type of employee: (0 - hourly, 1 - salaried, 2 - commissioned)");
                 attr = sc.nextLine();
-                list_employee.get(index).setType_employee(Integer.parseInt(attr));
+                //list_employee.get(index).setType_employee(Integer.parseInt(attr));
                 if (attr.equals("0")) {
                     System.out.println("Type the hourly wage:");
                     attr = sc.nextLine();
-                    list_employee.get(index).setSalary(Double.parseDouble(attr));
-                    if (oldAttr == 2) {
-                        list_employee.get(index).setComissioned(2);
-                    }
+                    //list_employee.get(index).setSalary(Double.parseDouble(attr));
+                   
                 } else if (attr.equals("1")) {
                     System.out.println("Type the salary:");
                     attr = sc.nextLine();
-                    list_employee.get(index).setSalary(Double.parseDouble(attr));
-                    if (oldAttr == 2) {
-                        list_employee.get(index).setComissioned(2);
-                    }
+                    //list_employee.get(index).setSalary(Double.parseDouble(attr));
+                    
                 } else if (attr.equals("2")) {
                     System.out.println("Type the salary:");
                     attr = sc.nextLine();
-                    list_employee.get(index).setSalary(Double.parseDouble(attr));
-                    list_employee.get(index).setComissioned(1);
+                    //list_employee.get(index).setSalary(Double.parseDouble(attr));
+                    //list_employee.get(index).setComissioned(1);
                 }
             } else if (op.equals("3")) {
                 System.out.println(
                         "Select the new Payment Method (0 - Check by the post office, 1 - Check in Person, 2 - Bank Account)");
                 attr = sc.nextLine();
-                list_employee.get(index).setPayment_method(Integer.parseInt(attr));
+                //list_employee.get(index).setPayment_method(Integer.parseInt(attr));
             }
             System.out.println("Successful changes.");
         } else {
