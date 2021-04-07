@@ -1,20 +1,23 @@
 package payroll.employee;
 
-import payroll.Timecard;
+import payroll.payment.PaymentMethod;
+import payroll.syndicate.Syndicate;
 
 public class Employee {
     private int id;
     private String name;
     private String address;
-    private Timecard timeCard;
+    private PaymentMethod paymentMethod;
+    private Syndicate sindicalist;
 
-    public Employee() {
-    }
+    public Employee() {}
 
-    public Employee(int id, String name, String address) {
+    public Employee(int id, String name, String address, PaymentMethod paymentMethod, Syndicate sindicalist) {
         setId(id);
         setName(name);
         setAddress(address);
+        setPaymentMethod(paymentMethod);
+        setSyndicate(sindicalist);
     }
 
     public int getId() {
@@ -41,15 +44,30 @@ public class Employee {
         this.address = address;
     }
 
+    public PaymentMethod getPaymentMethod() {
+        return this.paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Syndicate getSyndicate() {
+        return this.sindicalist;
+    }
+
+    public void setSyndicate(Syndicate sindicalist) {
+        this.sindicalist = sindicalist;
+    }
+
     @Override
     public String toString() {
-        String type_emp = "";
-        String paymentString = "";
-        String SindicalistString = "";
-
-        return String.format(
-                "\nID: %d\nName: %s\nAddress: %s\nType Employee: %s\nPayment Method: %s\nSindicalist: %s\n",
-                this.getId(), this.getName(), this.getAddress(), type_emp, paymentString,
-                SindicalistString);
+        String message = "Employee ID: " + getId() + "\nName: " + getName() + "\nAddress: " + getAddress() + "\nPayment method: " ;
+        if (getSyndicate() != null) {
+            message += getSyndicate().toString();
+        } else {
+            message += "\nDoes not belong to syndicate.";
+        }
+        return message;
     }
 }

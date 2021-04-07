@@ -3,6 +3,9 @@ package payroll.payment;
 import payroll.employee.Employee;
 
 public class PaymentMethod {
-    private Employee typeEmployee;
-    private int paymentDay;
+    private String bankId;
+    private String agency;
+    private String accountNumber;
+    private double value;
+    private int numberCheck;
 }
