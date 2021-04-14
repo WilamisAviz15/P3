@@ -1,9 +1,9 @@
 package payroll.payment;
 
-public class CheckByBankAccount extends PaymentMethod{
+public class DepositByBankAccount extends PaymentMethod{
     private String accountType;
 
-    public CheckByBankAccount(String bankId, String agency, String accountNumber, Double value, String accountType) {
+    public DepositByBankAccount(String bankId, String agency, String accountNumber, Double value, String accountType) {
         super(bankId, agency, accountNumber, value);
         this.accountType = accountType;
     }
@@ -18,6 +18,6 @@ public class CheckByBankAccount extends PaymentMethod{
 
     @Override
     public String toString() {
-        return super.toString() +"\nType of Payment: " + "Check By Bank Account\n" + "Account Type: " + getAccountType();
+        return super.toString() +"\nType of Payment: " + "Deposit By Bank Account\n" + "Account Type: " + getAccountType();
     }
 }

@@ -25,6 +25,6 @@ public class Salaried extends Employee {
 
     @Override
     public String toString() {
-        return super.toString() + "\n==== Salaried: ====\n" + "salary: " + getSalary().toString();
+        return "\nType of Employee: Salaried\n" + "salary: " + getSalary().toString()+ super.toString() ;
     }
 }

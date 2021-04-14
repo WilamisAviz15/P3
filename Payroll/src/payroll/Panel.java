@@ -6,7 +6,7 @@ import payroll.employee.Commissioned;
 import payroll.employee.Employee;
 import payroll.employee.Hourly;
 import payroll.employee.Salaried;
-import payroll.payment.CheckByBankAccount;
+import payroll.payment.DepositByBankAccount;
 import payroll.payment.CheckByPostOffice;
 import payroll.payment.HandsCheck;
 import payroll.payment.PaymentMethod;
@@ -21,6 +21,7 @@ public class Panel {
     public int size = 0; // current size employee array
     public int size_timecard = 0; // current size timecard array
     public List<Employee> list_employee = new ArrayList<Employee>();
+    private String[] accountType = {"Corrente", "Poupança", "Fácil", "Conjunta"};
 
     public void Employees() {
         int option;
@@ -110,7 +111,14 @@ public class Panel {
             numberCheck = sc.nextInt();
             paymentMethod = new HandsCheck(bankId, agency, accountNumber, salary, numberCheck);
         } else if (optionPaymentMethod == 2) {
-            
+            int index;
+            System.out.println("Select type of account:");
+            System.out.println("0 - Conta Corrente");
+            System.out.println("1 - Conta Poupança");
+            System.out.println("2 - Conta Fácil");
+            System.out.println("3 - Conta Conjunta");
+            index = sc.nextInt();
+            paymentMethod = new DepositByBankAccount(bankId, agency, accountNumber, salary, accountType[index]);
         }
         newEmployees.setPaymentMethod(paymentMethod);
 

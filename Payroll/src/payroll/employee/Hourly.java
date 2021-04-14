@@ -40,7 +40,7 @@ public class Hourly extends Employee {
 
     @Override
     public String toString() {
-        return super.toString() + "\n==== Hourly: ====\n" + "Value by hour: " + gethourlyValue().toString()
-                + "\nTimecard: " + getTimecard().toString();
+        return "\nType of Employee: Hourly\n" + "Value by hour: " + gethourlyValue().toString()
+                + "\nTimecard: " + getTimecard().toString()+ super.toString();
     }
 }

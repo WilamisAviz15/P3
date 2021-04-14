@@ -40,7 +40,7 @@ public class Syndicate {
 
     @Override
     public String toString() {
-        return "\n==== Syndicate info: ====\nSyndicate ID: " + getIdSyndicate() + "\nSyndicate Tax: "
+        return "\n--Syndicate info: --\nSyndicate ID: " + getIdSyndicate() + "\nSyndicate Tax: "
                 + getTax();
     }
 }

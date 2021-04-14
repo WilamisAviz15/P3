@@ -62,11 +62,11 @@ public class Employee {
 
     @Override
     public String toString() {
-        String message = "Employee ID: " + getId() + "\nName: " + getName() + "\nAddress: " + getAddress() + "\n--Info Payment-- \n" +getPaymentMethod();
+        String message = "\nEmployee ID: " + getId() + "\nName: " + getName() + "\nAddress: " + getAddress() + "\n--Info Payment-- \n" +getPaymentMethod();
         if (getSyndicate() != null) {
             message += getSyndicate().toString();
         } else {
-            message += "\nDoes not belong to syndicate.";
+            message += "\n--Syndicate info--\n Does not belong to syndicate.";
         }
         return message;
     }
