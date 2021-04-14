@@ -6,6 +6,52 @@ public class PaymentMethod {
     private String bankId;
     private String agency;
     private String accountNumber;
-    private double value;
-    private int numberCheck;
+    private Double value;
+
+    public PaymentMethod() {
+    }
+
+    public PaymentMethod(String bankId, String agency, String accountNumber, Double value) {
+        this.bankId = bankId;
+        this.agency = agency;
+        this.accountNumber = accountNumber;
+        this.value = value;
+    }
+
+    public String getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(String bankId) {
+        this.bankId = bankId;
+    }
+
+    public String getAgency() {
+        return agency;
+    }
+
+    public void setAgency(String agency) {
+        this.agency = agency;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public Double getValue() {
+        return value;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "BankId: " + getBankId() + "\nAgency: " + getAgency() + "\nAccount Number: " + getAccountNumber() + "\nValue to payment: " + getValue();
+    }
 }

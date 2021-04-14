@@ -62,7 +62,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        String message = "Employee ID: " + getId() + "\nName: " + getName() + "\nAddress: " + getAddress() + "\nPayment method: " ;
+        String message = "Employee ID: " + getId() + "\nName: " + getName() + "\nAddress: " + getAddress() + "\n--Info Payment-- \n" +getPaymentMethod();
         if (getSyndicate() != null) {
             message += getSyndicate().toString();
         } else {

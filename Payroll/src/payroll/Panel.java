@@ -7,6 +7,8 @@ import payroll.employee.Employee;
 import payroll.employee.Hourly;
 import payroll.employee.Salaried;
 import payroll.payment.CheckByBankAccount;
+import payroll.payment.CheckByPostOffice;
+import payroll.payment.HandsCheck;
 import payroll.payment.PaymentMethod;
 import payroll.syndicate.Syndicate;
 
@@ -57,6 +59,10 @@ public class Panel {
         PaymentMethod paymentMethod = null;
         Syndicate sindicalist = null;
         Employee newEmployees;
+        String bankId;
+        String agency;
+        String accountNumber;
+        Double value;
         Scanner sc = new Scanner(System.in);
         int optionPaymentMethod, optionSindicalist;
         Double salary = 0.00;
@@ -86,12 +92,25 @@ public class Panel {
         }
         System.out.println("Type Payment Method (0 - Check by the post office, 1 - Check in Person, 2 - Bank Account)");
         optionPaymentMethod = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Type the bank ID:");
+        bankId = sc.nextLine();
+        System.out.println("Type agency number:");
+        agency = sc.nextLine();
+        System.out.println("Type account number:");
+        accountNumber = sc.nextLine();
         if (optionPaymentMethod == 0) {
-            paymentMethod = new CheckByBankAccount();
+            int numberCheck;
+            System.out.println("Type number Check:");
+            numberCheck = sc.nextInt();
+            paymentMethod = new CheckByPostOffice(bankId, agency, accountNumber, salary, numberCheck, address);
         } else if (optionPaymentMethod == 1) {
-
+            int numberCheck;
+            System.out.println("Type number Check:");
+            numberCheck = sc.nextInt();
+            paymentMethod = new HandsCheck(bankId, agency, accountNumber, salary, numberCheck);
         } else if (optionPaymentMethod == 2) {
-
+            
         }
         newEmployees.setPaymentMethod(paymentMethod);
 
@@ -129,6 +148,7 @@ public class Panel {
         int index = findEmployee();
         if (index != -1) {
             list_employee.remove(index);
+            System.out.println("Employee removed.");
         } else {
             System.out.println("Employee not found.");
         }
