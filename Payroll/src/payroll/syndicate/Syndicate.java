@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Syndicate {
-    private int idSyndicate;
+    private String idSyndicate;
     private Double tax;
     private List<AdditionalFee> additionalFee;
     private boolean active;
 
-    public Syndicate(int idSyndicate, Double tax, boolean active) {
+    public Syndicate(String idSyndicate, Double tax, boolean active) {
         this.idSyndicate = idSyndicate;
         this.tax = tax;
         this.active = active;
         this.additionalFee = new ArrayList<AdditionalFee>();
     }
 
-    public int getIdSyndicate() {
+    public String getIdSyndicate() {
         return idSyndicate;
     }
 
-    public void setIdSyndicate(int idSyndicate) {
+    public void setIdSyndicate(String idSyndicate) {
         this.idSyndicate = idSyndicate;
     }
 

@@ -4,6 +4,10 @@ public class Sales {
     private String date;
     private Double value;
 
+    public Sales(String date, Double value){
+        this.date = date;
+        this.value = value;
+    }
     public String getDate() {
         return date;
     }
@@ -18,5 +22,10 @@ public class Sales {
 
     public void setData(Double value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "Date: " + getDate() +" | "+ "Value: " + getValue();
     }
 }

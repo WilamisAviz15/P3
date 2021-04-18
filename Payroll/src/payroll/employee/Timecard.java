@@ -5,8 +5,16 @@ import java.util.Date;
 public class Timecard{
     private String login;
     private String logout;
-    private Date date;
+    private String date;
 
+    public Timecard(String date, String login){
+        this.login = login;
+        this.date = date;
+    }
+
+    public Timecard(String logout){
+        this.logout = logout;
+    }
     public String getLogin() {
         return login;
     }
@@ -23,11 +31,16 @@ public class Timecard{
         this.logout = logout;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Date: " + getDate() +" | "+ "Login: " + getLogin() +" | "+ "Logout: " + getLogout();
     }
 }

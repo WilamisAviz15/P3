@@ -22,11 +22,11 @@ public class Hourly extends Employee {
         this.timeCard = new ArrayList<Timecard>();
     }
 
-    public Double gethourlyValue() {
+    public Double getHourlyValue() {
         return hourlyValue;
     }
 
-    public void sethourlyValue(Double hourlyValue) {
+    public void setHourlyValue(Double hourlyValue) {
         this.hourlyValue = hourlyValue;
     }
 
@@ -40,7 +40,7 @@ public class Hourly extends Employee {
 
     @Override
     public String toString() {
-        return "\nType of Employee: Hourly\n" + "Value by hour: " + gethourlyValue().toString()
+        return "\nType of Employee: Hourly\n" + "Value by hour: " + getHourlyValue().toString()
                 + "\nTimecard: " + getTimecard().toString()+ super.toString();
     }
 }

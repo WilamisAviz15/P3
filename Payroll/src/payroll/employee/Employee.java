@@ -13,11 +13,11 @@ public class Employee {
     public Employee() {}
 
     public Employee(int id, String name, String address, PaymentMethod paymentMethod, Syndicate sindicalist) {
-        setId(id);
-        setName(name);
-        setAddress(address);
-        setPaymentMethod(paymentMethod);
-        setSyndicate(sindicalist);
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.paymentMethod = paymentMethod;
+        this.sindicalist = sindicalist;
     }
 
     public int getId() {
