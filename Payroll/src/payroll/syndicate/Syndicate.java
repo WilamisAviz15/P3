@@ -51,6 +51,6 @@ public class Syndicate {
     @Override
     public String toString() {
         return "\n--Syndicate info: --\nSyndicate ID: " + getIdSyndicate() + "\nSyndicate Tax: "
-                + getTax();
+                + getTax() + "\nAdditional Taxes: " +getAdditionalFee().toString();
     }
 }

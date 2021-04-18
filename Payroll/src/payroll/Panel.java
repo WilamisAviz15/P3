@@ -12,6 +12,7 @@ import payroll.payment.DepositByBankAccount;
 import payroll.payment.CheckByPostOffice;
 import payroll.payment.HandsCheck;
 import payroll.payment.PaymentMethod;
+import payroll.syndicate.AdditionalFee;
 import payroll.syndicate.Syndicate;
 
 import java.util.ArrayList;
@@ -437,10 +438,26 @@ public class Panel {
     }
 
     public void LaunchFee() {
+        int index = findEmployee();
+        String date;
+        Double value;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter ID employee:");
-        String validate_id = sc.nextLine();
-
+        if (index != -1) {
+            Employee selectedEmployee = list_employee.get(index);
+            if(selectedEmployee.getSyndicate().getActive() == true){
+                System.out.println("Enter date (DD/MM/YYYY)");
+                date = sc.nextLine();
+                System.out.println("Enter value");
+                value = sc.nextDouble();
+                AdditionalFee aF = new AdditionalFee(date, value);
+                selectedEmployee.getSyndicate().getAdditionalFee().add(aF);
+            }else{
+                System.out.println(selectedEmployee.getName()
+                + " does not belongs to syndicate or is inactive to add service fee.");
+            }
+        } else {
+            System.out.println("Employee not found.");
+        }
     }
 
     public void Timecard() {
