@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Panel {
-    public int id = 20210000; //será incrementado a cada novo funcionario;
+    public int id = 20210000; // será incrementado a cada novo funcionario;
     public String idSyndicate = "";
     public int idSyndicateInt = 0;
     public List<Employee> list_employee = new ArrayList<Employee>();
@@ -385,7 +385,7 @@ public class Panel {
                 Hourly empl = (Hourly) selectedEmployee;
                 System.out.println("Enter date (DD/MM/YYYY)");
                 date = sc.nextLine();
-                System.out.println("Enter time (hh:mm)");
+                System.out.println("Enter time login (hh:mm)");
                 time = sc.nextLine();
                 Timecard tc = new Timecard(date, time);
                 empl.getTimecard().add(tc);
@@ -397,12 +397,43 @@ public class Panel {
         }
     }
 
+    public int findTimecard(List<Timecard> list, String date) {
+        int i = 0;
+        for (Timecard listE : list) {
+            if (listE.getDate().equals(date)) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
     public void Logout() {
+        int index = findEmployee();
+        String date, time;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter ID employee:");
-        String validate_id = sc.nextLine();
-        
-        //list_employee.set(index, selectedEmployee);
+        if (index != -1) {
+            Employee selectedEmployee = list_employee.get(index);
+            if (selectedEmployee instanceof Hourly) {
+                Hourly empl = (Hourly) selectedEmployee;
+                System.out.println("Enter date (DD/MM/YYYY)");
+                date = sc.nextLine();
+                System.out.println("Enter time logout (hh:mm)");
+                time = sc.nextLine();
+                int aux = findTimecard(empl.getTimecard(), date);
+                if (aux != -1) {
+                    Timecard tc = new Timecard(empl.getTimecard().get(aux).getDate(),
+                            empl.getTimecard().get(aux).getLogin(), time);
+                    empl.getTimecard().set(aux, tc);
+                } else {
+                    System.out.println("You need to login first.");
+                }
+            } else {
+                System.out.println("Employee is not hourist.");
+            }
+        } else {
+            System.out.println("Employee not found.");
+        }
     }
 
     public void LaunchFee() {

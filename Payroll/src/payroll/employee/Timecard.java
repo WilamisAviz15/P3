@@ -12,7 +12,9 @@ public class Timecard{
         this.date = date;
     }
 
-    public Timecard(String logout){
+    public Timecard(String date, String login, String logout){
+        this.login = login;
+        this.date = date;
         this.logout = logout;
     }
     public String getLogin() {
@@ -41,6 +43,6 @@ public class Timecard{
 
     @Override
     public String toString() {
-        return "Date: " + getDate() +" | "+ "Login: " + getLogin() +" | "+ "Logout: " + getLogout();
+        return "Date: " + getDate() +" | "+ "Login: " + getLogin() +" | "+ "Logout: " + getLogout() + "\n";
     }
 }
