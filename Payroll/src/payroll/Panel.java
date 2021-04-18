@@ -21,7 +21,7 @@ public class Panel {
     public int size = 0; // current size employee array
     public int size_timecard = 0; // current size timecard array
     public List<Employee> list_employee = new ArrayList<Employee>();
-    private String[] accountType = {"Corrente", "Poupança", "Fácil", "Conjunta"};
+    private String[] accountType = { "Corrente", "Poupança", "Fácil", "Conjunta" };
 
     public void Employees() {
         int option;
@@ -113,10 +113,10 @@ public class Panel {
         } else if (optionPaymentMethod == 2) {
             int index;
             System.out.println("Select type of account:");
-            System.out.println("0 - Conta Corrente");
-            System.out.println("1 - Conta Poupança");
-            System.out.println("2 - Conta Fácil");
-            System.out.println("3 - Conta Conjunta");
+            System.out.println("0 - " + accountType[0]);
+            System.out.println("1 - " + accountType[1]);
+            System.out.println("2 - " + accountType[2]);
+            System.out.println("3 - " + accountType[3]);
             index = sc.nextInt();
             paymentMethod = new DepositByBankAccount(bankId, agency, accountNumber, salary, accountType[index]);
         }
@@ -129,12 +129,15 @@ public class Panel {
             Double tax;
             System.out.println("Type the monthly TAX:");
             tax = sc.nextDouble();
-            sindicalist = new Syndicate(++idSyndicate, tax);
+            sindicalist = new Syndicate(++idSyndicate, tax, true);
+            newEmployees.setSyndicate(sindicalist);
+        } else {
+            sindicalist = new Syndicate(0, 0.00, false);
             newEmployees.setSyndicate(sindicalist);
         }
         list_employee.add(newEmployees);
         System.out.println("Successful registration.");
-        
+        System.out.println("ID employee is: \n" + id);
     }
 
     public int findEmployee() {
@@ -180,7 +183,7 @@ public class Panel {
             System.out.println(listE);
             System.out.println("___________________________________________");
         }
-        
+
     }
 
     public void listEmployeeById() {
@@ -199,51 +202,127 @@ public class Panel {
 
     public void editEmployee() {
         String id, op, attr;
+        Double salary = 0.00;
+        String bankId;
+        String agency;
+        String accountNumber;
+        Double value;
         Scanner sc = new Scanner(System.in);
         int index = findEmployee();
         if (index != -1) {
-            System.out.printf("Employed selected: %s. What do you want to edit?\n", list_employee.get(index).getName());
+            Employee selectedEmployee = list_employee.get(index);
+            System.out.printf("Employed selected: %s. What do you want to edit?\n", selectedEmployee.getName());
             System.out.println("0 - Name");
             System.out.println("1 - Address");
             System.out.println("2 - Type of employee");
             System.out.println("3 - Paymento Method");
+            System.out.println("4 - Join/leave syndicate");
+            System.out.println("5 - Monthly syndicate fee");
             op = sc.nextLine();
             if (op.equals("0")) {
                 System.out.println("Type the new name");
                 attr = sc.nextLine();
-                list_employee.get(index).setName(attr);
+                selectedEmployee.setName(attr);
+                System.out.println("Successful changes.");
             } else if (op.equals("1")) {
                 System.out.println("Type the new address");
                 attr = sc.nextLine();
-                list_employee.get(index).setAddress(attr);
+                selectedEmployee.setAddress(attr);
+                System.out.println("Successful changes.");
             } else if (op.equals("2")) {
                 // int oldAttr = list_employee.get(index).getType_employee();
                 System.out.println("Type the new type of employee: (0 - hourly, 1 - salaried, 2 - commissioned)");
                 attr = sc.nextLine();
-                // list_employee.get(index).setType_employee(Integer.parseInt(attr));
                 if (attr.equals("0")) {
                     System.out.println("Type the hourly wage:");
-                    attr = sc.nextLine();
-                    // list_employee.get(index).setSalary(Double.parseDouble(attr));
-
+                    salary = sc.nextDouble();
+                    selectedEmployee = new Hourly(selectedEmployee.getId(), selectedEmployee.getName(),
+                            selectedEmployee.getAddress(), selectedEmployee.getPaymentMethod(), salary,
+                            selectedEmployee.getSyndicate());
                 } else if (attr.equals("1")) {
                     System.out.println("Type the salary:");
-                    attr = sc.nextLine();
-                    // list_employee.get(index).setSalary(Double.parseDouble(attr));
-
+                    salary = sc.nextDouble();
+                    selectedEmployee = new Salaried(selectedEmployee.getId(), selectedEmployee.getName(),
+                            selectedEmployee.getAddress(), selectedEmployee.getPaymentMethod(), salary,
+                            selectedEmployee.getSyndicate());
                 } else if (attr.equals("2")) {
                     System.out.println("Type the salary:");
                     attr = sc.nextLine();
-                    // list_employee.get(index).setSalary(Double.parseDouble(attr));
-                    // list_employee.get(index).setComissioned(1);
                 }
+                System.out.println("Successful changes.");
             } else if (op.equals("3")) {
                 System.out.println(
                         "Select the new Payment Method (0 - Check by the post office, 1 - Check in Person, 2 - Bank Account)");
+                //if(selectedEmployee.getPaymentMethod() instanceof CheckByPostOffice){} //V DEPOIS
                 attr = sc.nextLine();
-                // list_employee.get(index).setPayment_method(Integer.parseInt(attr));
+                System.out.println("Type the bank ID:");
+                bankId = sc.nextLine();
+                System.out.println("Type agency number:");
+                agency = sc.nextLine();
+                System.out.println("Type account number:");
+                accountNumber = sc.nextLine();
+                if (attr.equals("0")) {
+                    int numberCheck;
+                    System.out.println("Type number Check:");
+                    numberCheck = sc.nextInt();
+                    selectedEmployee.setPaymentMethod(new CheckByPostOffice(bankId, agency, accountNumber, salary,
+                            numberCheck, selectedEmployee.getAddress()));
+                } else if (attr.equals("1")) {
+                    int numberCheck;
+                    System.out.println("Type number Check:");
+                    numberCheck = sc.nextInt();
+                    selectedEmployee
+                            .setPaymentMethod(new HandsCheck(bankId, agency, accountNumber, salary, numberCheck));
+                } else if (attr.equals("2")) {
+                    int idx;
+                    System.out.println("Select type of account:");
+                    System.out.println("0 - " + accountType[0]);
+                    System.out.println("1 - " + accountType[1]);
+                    System.out.println("2 - " + accountType[2]);
+                    System.out.println("3 - " + accountType[3]);
+                    idx = sc.nextInt();
+                    selectedEmployee
+                            .setPaymentMethod(new DepositByBankAccount(bankId, agency, accountNumber, salary, accountType[idx]));
+                }
+                System.out.println("Successful changes.");
+            } else if (op.equals("4")) {
+                int answer;
+                if (selectedEmployee.getSyndicate().getActive() == true) {
+                    System.out.println(
+                            selectedEmployee.getName() + " already belongs to syndicate. Do you want to leave?");
+                    System.out.println("0 - No");
+                    System.out.println("1 - Yes");
+                    answer = sc.nextInt();
+                    if (answer == 1) {
+                        selectedEmployee.getSyndicate().setActive(false);
+                    }
+                } else {
+                    System.out.println(selectedEmployee.getName()
+                            + " does not belongs to syndicate or is inactive. Do you want to join?");
+                    System.out.println("0 - No");
+                    System.out.println("1 - Yes");
+                    answer = sc.nextInt();
+                    if (answer == 1) {
+                        Double tax;
+                        System.out.println("Type the monthly TAX:");
+                        tax = sc.nextDouble();
+                        selectedEmployee.getSyndicate().setIdSyndicate(++idSyndicate);
+                        selectedEmployee.getSyndicate().setTax(tax);
+                        selectedEmployee.getSyndicate().setActive(true);
+                    }
+                }
+                System.out.println("Successful changes.");
+            } else if (op.equals("5")) {
+                if (selectedEmployee.getSyndicate().getActive() == true) {
+                    Double tax;
+                    System.out.println("Type the new monthly TAX:");
+                    tax = sc.nextDouble();
+                    selectedEmployee.getSyndicate().setTax(tax);
+                } else {
+                    System.out.println(selectedEmployee.getName() + " does not belongs to syndicate to edit fee");
+                    ;
+                }
             }
-            System.out.println("Successful changes.");
         } else {
             System.out.println("Employee not found.");
         }

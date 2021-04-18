@@ -7,10 +7,12 @@ public class Syndicate {
     private int idSyndicate;
     private Double tax;
     private List<AdditionalFee> additionalFee;
+    private boolean active;
 
-    public Syndicate(int idSyndicate, Double tax) {
+    public Syndicate(int idSyndicate, Double tax, boolean active) {
         this.idSyndicate = idSyndicate;
         this.tax = tax;
+        this.active = active;
         this.additionalFee = new ArrayList<AdditionalFee>();
     }
 
@@ -28,6 +30,14 @@ public class Syndicate {
 
     public void setTax(Double tax) {
         this.tax = tax;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public List<AdditionalFee> getAdditionalFee() {

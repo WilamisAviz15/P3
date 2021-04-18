@@ -15,7 +15,6 @@ public class PaymentMethod {
         this.bankId = bankId;
         this.agency = agency;
         this.accountNumber = accountNumber;
-        this.value = value;
     }
 
     public String getBankId() {
@@ -42,16 +41,8 @@ public class PaymentMethod {
         this.accountNumber = accountNumber;
     }
 
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
-    }
-
     @Override
     public String toString() {
-        return "BankId: " + getBankId() + "\nAgency: " + getAgency() + "\nAccount Number: " + getAccountNumber() + "\nValue to payment: " + getValue();
+        return "BankId: " + getBankId() + "\nAgency: " + getAgency() + "\nAccount Number: " + getAccountNumber();
     }
 }
