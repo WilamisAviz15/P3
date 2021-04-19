@@ -64,36 +64,115 @@ public class Panel {
         String agency;
         String accountNumber;
         Double value;
+        String type_employeeS;
+        Double salary = 0.00;
         Scanner sc = new Scanner(System.in);
         int optionPaymentMethod, optionSindicalist;
-        Double salary = 0.00;
+        String tmp;
         System.out.println("Type the name:");
         String name = sc.nextLine();
         System.out.println("Type the adrress:");
         String address = sc.nextLine();
         System.out.println("Type of employee (0 - hourly, 1 - salaried, 2 - commissioned)");
-        int type_employee = sc.nextInt();
+        while (true) {
+            type_employeeS = sc.nextLine();
+            try {
+                int type_employee_int = Integer.parseInt(type_employeeS);
+                if (type_employee_int >= 0 && type_employee_int < 3) {
+                    break;
+                } else {
+                    System.out.print("INVALID OPTION! Try again.\n");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Only numbers!");
+            }
+        }
+        int type_employee = Integer.parseInt(type_employeeS);
         if (type_employee == 0) {
             System.out.println("Type the hourly wage:");
-            salary = sc.nextDouble();
+            while (true) {
+                tmp = sc.nextLine();
+                try {
+                    Double salary_double = Double.parseDouble(tmp);
+                    if (salary_double > 0.00) {
+                        break;
+                    } else {
+                        System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
+            salary = Double.parseDouble(tmp);
             newEmployees = new Hourly(++id, name, address, paymentMethod, salary, sindicalist);
         } else if (type_employee == 1) {
             System.out.println("Type the salary:");
-            salary = sc.nextDouble();
+            while (true) {
+                tmp = sc.nextLine();
+                try {
+                    Double salary_double = Double.parseDouble(tmp);
+                    if (salary_double > 0.00) {
+                        break;
+                    } else {
+                        System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
+            salary = Double.parseDouble(tmp);
             newEmployees = new Salaried(++id, name, address, paymentMethod, salary, sindicalist);
         } else if (type_employee == 2) {
             double percentage;
             System.out.println("Type the salary:");
-            salary = sc.nextDouble();
+            while (true) {
+                tmp = sc.nextLine();
+                try {
+                    Double salary_double = Double.parseDouble(tmp);
+                    if (salary_double > 0.00) {
+                        break;
+                    } else {
+                        System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
+            salary = Double.parseDouble(tmp);
             System.out.println("Type the % to comisson:");
-            percentage = sc.nextDouble();
+            while (true) {
+                tmp = sc.nextLine();
+                try {
+                    Double percentage_Double = Double.parseDouble(tmp);
+                    if (percentage_Double > 0) {
+                        break;
+                    } else {
+                        System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
+            percentage = Double.parseDouble(tmp);
             newEmployees = new Commissioned(++id, name, address, paymentMethod, salary, percentage, sindicalist);
         } else {
             newEmployees = new Employee(++id, name, address, paymentMethod, sindicalist);
         }
         System.out.println("Type Payment Method (0 - Check by the post office, 1 - Check in Person, 2 - Bank Account)");
-        optionPaymentMethod = sc.nextInt();
-        sc.nextLine();
+        while (true) {
+            try {
+                tmp = sc.nextLine();
+                int type_payment_int = Integer.parseInt(tmp);
+                if (type_payment_int >= 0 && type_payment_int < 3) {
+                    break;
+                } else {
+                    System.out.print("INVALID OPTION! Try again.\n");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Only numbers!");
+            }
+        }
+        optionPaymentMethod = Integer.parseInt(tmp);
         System.out.println("Type the bank ID:");
         bankId = sc.nextLine();
         System.out.println("Type agency number:");
@@ -103,13 +182,39 @@ public class Panel {
         if (optionPaymentMethod == 0) {
             int numberCheck;
             System.out.println("Type number Check:");
-            numberCheck = sc.nextInt();
-            paymentMethod = new CheckByPostOffice(bankId, agency, accountNumber, salary, numberCheck, address);
+            while (true) {
+                try {
+                    tmp = sc.nextLine();
+                    int type_payment_int = Integer.parseInt(tmp);
+                    if (type_payment_int > 0) {
+                        break;
+                    } else {
+                        System.out.print("INVALID OPTION! Try again.\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
+            numberCheck = Integer.parseInt(tmp);
+            paymentMethod = new CheckByPostOffice(bankId, agency, accountNumber, numberCheck, address);
         } else if (optionPaymentMethod == 1) {
             int numberCheck;
             System.out.println("Type number Check:");
-            numberCheck = sc.nextInt();
-            paymentMethod = new HandsCheck(bankId, agency, accountNumber, salary, numberCheck);
+            while (true) {
+                try {
+                    tmp = sc.nextLine();
+                    int type_payment_int = Integer.parseInt(tmp);
+                    if (type_payment_int > 0) {
+                        break;
+                    } else {
+                        System.out.print("INVALID OPTION! Try again.\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
+            numberCheck = Integer.parseInt(tmp);
+            paymentMethod = new HandsCheck(bankId, agency, accountNumber, numberCheck);
         } else if (optionPaymentMethod == 2) {
             int index;
             System.out.println("Select type of account:");
@@ -117,18 +222,56 @@ public class Panel {
             System.out.println("1 - " + accountType[1]);
             System.out.println("2 - " + accountType[2]);
             System.out.println("3 - " + accountType[3]);
-            index = sc.nextInt();
-            paymentMethod = new DepositByBankAccount(bankId, agency, accountNumber, salary, accountType[index]);
+            while (true) {
+                try {
+                    tmp = sc.nextLine();
+                    int optionPaymentMethod_int = Integer.parseInt(tmp);
+                    if (optionPaymentMethod_int >= 0 && optionPaymentMethod_int < 4) {
+                        break;
+                    } else {
+                        System.out.print("INVALID OPTION! Try again.\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
+            index = Integer.parseInt(tmp);
+            paymentMethod = new DepositByBankAccount(bankId, agency, accountNumber, accountType[index]);
         }
         newEmployees.setPaymentMethod(paymentMethod);
 
         System.out.printf("%s will be part of the Syndicate? 1- yes | 2- no\n", newEmployees.getName());
-        optionSindicalist = sc.nextInt();
-
+        while (true) {
+            try {
+                tmp = sc.nextLine();
+                int optionSindicalist_int = Integer.parseInt(tmp);
+                if (optionSindicalist_int == 1 || optionSindicalist_int == 2) {
+                    break;
+                } else {
+                    System.out.print("INVALID OPTION! Try again.\n");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Only numbers!");
+            }
+        }
+        optionSindicalist = Integer.parseInt(tmp);
         if (optionSindicalist == 1) {
             Double tax;
             System.out.println("Type the monthly TAX:");
-            tax = sc.nextDouble();
+            while (true) {
+                tmp = sc.nextLine();
+                try {
+                    Double tax_Double = Double.parseDouble(tmp);
+                    if (tax_Double > 0.00) {
+                        break;
+                    } else {
+                        System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
+            tax = Double.parseDouble(tmp);
             String aux = Character.toString(name.charAt(0));
             sindicalist = new Syndicate(aux + 2021 + "S000" + (++idSyndicateInt), tax, true);
             newEmployees.setSyndicate(sindicalist);
@@ -144,9 +287,23 @@ public class Panel {
     public int findEmployee() {
         int id;
         int aux = 0;
+        String tmp;
         Scanner sc = new Scanner(System.in);
         System.out.println("Please type the ID:");
-        id = sc.nextInt();
+        while (true) {
+            tmp = sc.nextLine();
+            try {
+                int id_int = Integer.parseInt(tmp);
+                if (id_int > 0) {
+                    break;
+                } else {
+                    System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Only numbers!");
+            }
+        }
+        id = Integer.parseInt(tmp);
         for (Employee listE : list_employee) {
             if (listE.getId() == id) {
                 return aux;
@@ -209,9 +366,23 @@ public class Panel {
 
     public void listEmployeeById() {
         int id;
+        String tmp;
         Scanner sc = new Scanner(System.in);
         System.out.println("Please type the ID:");
-        id = sc.nextInt();
+        while (true) {
+            tmp = sc.nextLine();
+            try {
+                int id_int = Integer.parseInt(tmp);
+                if (id_int > 0) {
+                    break;
+                } else {
+                    System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Only numbers!");
+            }
+        }
+        id = Integer.parseInt(tmp);
         System.out.println("___________________________");
         for (Employee listE : list_employee) {
             if (listE.getId() == id) {
@@ -221,7 +392,7 @@ public class Panel {
         System.out.println("___________________________");
     }
 
-    public void editEmployee() {
+    public void editEmployee() { //TODO: Try catch;
         String id, op, attr;
         Double salary = 0.00;
         String bankId;
@@ -295,14 +466,14 @@ public class Panel {
                     int numberCheck;
                     System.out.println("Type number Check:");
                     numberCheck = sc.nextInt();
-                    selectedEmployee.setPaymentMethod(new CheckByPostOffice(bankId, agency, accountNumber, salary,
+                    selectedEmployee.setPaymentMethod(new CheckByPostOffice(bankId, agency, accountNumber,
                             numberCheck, selectedEmployee.getAddress()));
                 } else if (attr.equals("1")) {
                     int numberCheck;
                     System.out.println("Type number Check:");
                     numberCheck = sc.nextInt();
                     selectedEmployee
-                            .setPaymentMethod(new HandsCheck(bankId, agency, accountNumber, salary, numberCheck));
+                            .setPaymentMethod(new HandsCheck(bankId, agency, accountNumber, numberCheck));
                 } else if (attr.equals("2")) {
                     int idx;
                     System.out.println("Select type of account:");
@@ -312,7 +483,7 @@ public class Panel {
                     System.out.println("3 - " + accountType[3]);
                     idx = sc.nextInt();
                     selectedEmployee.setPaymentMethod(
-                            new DepositByBankAccount(bankId, agency, accountNumber, salary, accountType[idx]));
+                            new DepositByBankAccount(bankId, agency, accountNumber, accountType[idx]));
                 }
                 System.out.println("Successful changes.");
             } else if (op.equals("4")) {
@@ -443,16 +614,16 @@ public class Panel {
         Scanner sc = new Scanner(System.in);
         if (index != -1) {
             Employee selectedEmployee = list_employee.get(index);
-            if(selectedEmployee.getSyndicate().getActive() == true){
+            if (selectedEmployee.getSyndicate().getActive() == true) {
                 System.out.println("Enter date (DD/MM/YYYY)");
                 date = sc.nextLine();
                 System.out.println("Enter value");
                 value = sc.nextDouble();
                 AdditionalFee aF = new AdditionalFee(date, value);
                 selectedEmployee.getSyndicate().getAdditionalFee().add(aF);
-            }else{
+            } else {
                 System.out.println(selectedEmployee.getName()
-                + " does not belongs to syndicate or is inactive to add service fee.");
+                        + " does not belongs to syndicate or is inactive to add service fee.");
             }
         } else {
             System.out.println("Employee not found.");
@@ -515,11 +686,11 @@ public class Panel {
             System.out.println("8  - Redo");
             System.out.println("0 - Exit");
             System.out.println("================================================");
-            while(true){
+            while (true) {
                 option = op.nextLine();
                 try {
                     int option_int = Integer.parseInt(option);
-                    if(option_int >= 0 && option_int < 9) {
+                    if (option_int >= 0 && option_int < 9) {
                         break;
                     } else {
                         System.out.print("INVALID OPTION! Try again.\n");

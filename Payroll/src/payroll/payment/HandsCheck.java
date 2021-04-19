@@ -3,8 +3,8 @@ package payroll.payment;
 public class HandsCheck extends PaymentMethod{
     private int numberCheck;
 
-    public HandsCheck(String bankId, String agency, String accountNumber, Double value, int numberCheck) {
-        super(bankId, agency, accountNumber, value);
+    public HandsCheck(String bankId, String agency, String accountNumber, int numberCheck) {
+        super(bankId, agency, accountNumber);
         this.numberCheck = numberCheck;
     }
 

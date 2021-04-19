@@ -6,12 +6,11 @@ public class PaymentMethod {
     private String bankId;
     private String agency;
     private String accountNumber;
-    private Double value;
 
     public PaymentMethod() {
     }
 
-    public PaymentMethod(String bankId, String agency, String accountNumber, Double value) {
+    public PaymentMethod(String bankId, String agency, String accountNumber) {
         this.bankId = bankId;
         this.agency = agency;
         this.accountNumber = accountNumber;
