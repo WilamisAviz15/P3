@@ -1,7 +1,6 @@
 package payroll;
 
 import java.util.Scanner;
-
 import payroll.employee.Commissioned;
 import payroll.employee.Employee;
 import payroll.employee.Hourly;
@@ -501,10 +500,11 @@ public class Panel {
     }
 
     public void run() {
-        int option;
+        String option;
+        int opc;
         Scanner op = new Scanner(System.in);
         do {
-            System.out.println("===============FOLHA DE PAGAMENTO===============");
+            System.out.println("===============PAYROLL===============");
             System.out.println("1  - Employees");
             System.out.println("2  - Timecard");
             System.out.println("3  - Launch Sales");
@@ -515,8 +515,21 @@ public class Panel {
             System.out.println("8  - Redo");
             System.out.println("0 - Exit");
             System.out.println("================================================");
-            option = op.nextInt();
-            switch (option) {
+            while(true){
+                option = op.nextLine();
+                try {
+                    int option_int = Integer.parseInt(option);
+                    if(option_int >= 0 && option_int < 9) {
+                        break;
+                    } else {
+                        System.out.print("INVALID OPTION! Try again.\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
+            opc = Integer.parseInt(option);
+            switch (opc) {
             case 1:
                 Employees();
                 break;
@@ -545,6 +558,6 @@ public class Panel {
                 System.exit(0);
                 break;
             }
-        } while (option != 0);
+        } while (opc != 0);
     }
 }
