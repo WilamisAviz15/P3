@@ -26,6 +26,7 @@ public class Panel {
 
     public void Employees() {
         int option;
+        String tmp;
         Scanner op = new Scanner(System.in);
         do {
             System.out.println("--- Employees ---");
@@ -35,7 +36,20 @@ public class Panel {
             System.out.println("4 - List All Employees");
             System.out.println("5 - Search Employees");
             System.out.println("6 - Back");
-            option = op.nextInt();
+            while (true) {
+                tmp = op.nextLine();
+                try {
+                    int tmp_op = Integer.parseInt(tmp);
+                    if (tmp_op >= 0 && tmp_op < 7) {
+                        break;
+                    } else {
+                        System.out.print("INVALID OPTION! Try again..\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
+            option = Integer.parseInt(tmp);
             switch (option) {
             case 1:
                 addEmployee();
@@ -392,13 +406,14 @@ public class Panel {
         System.out.println("___________________________");
     }
 
-    public void editEmployee() { //TODO: Try catch;
+    public void editEmployee() {
         String id, op, attr;
         Double salary = 0.00;
         String bankId;
         String agency;
         String accountNumber;
         Double value;
+        String tmp;
         Scanner sc = new Scanner(System.in);
         int index = findEmployee();
         if (index != -1) {
@@ -411,7 +426,19 @@ public class Panel {
             System.out.println("4 - Join/leave syndicate");
             System.out.println("5 - Monthly syndicate fee");
             System.out.println("6 - Syndical Identification");
-            op = sc.nextLine();
+            while (true) {
+                op = sc.nextLine();
+                try {
+                    int id_int = Integer.parseInt(op);
+                    if (id_int >= 0 && id_int < 7) {
+                        break;
+                    } else {
+                        System.out.print("Value cannot be less than 0! Try again.\n");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Only numbers!");
+                }
+            }
             if (op.equals("0")) {
                 System.out.println("Type the new name");
                 attr = sc.nextLine();
@@ -423,27 +450,91 @@ public class Panel {
                 selectedEmployee.setAddress(attr);
                 System.out.println("Successful changes.");
             } else if (op.equals("2")) {
-                // int oldAttr = list_employee.get(index).getType_employee();
+                // int oldAttr = list_employee.get(index).getType_employee(); TODO
                 System.out.println("Type the new type of employee: (0 - hourly, 1 - salaried, 2 - commissioned)");
-                attr = sc.nextLine();
+                while (true) {
+                    attr = sc.nextLine();
+                    try {
+                        int id_int = Integer.parseInt(attr);
+                        if (id_int >= 0 && id_int < 3) {
+                            break;
+                        } else {
+                            System.out.print("Value cannot be less than 0 or bigger than 2! Try again.\n");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Only numbers!");
+                    }
+                }
                 if (attr.equals("0")) {
                     System.out.println("Type the hourly wage:");
-                    salary = sc.nextDouble();
+                    while (true) {
+                        tmp = sc.nextLine();
+                        try {
+                            Double tax_Double = Double.parseDouble(tmp);
+                            if (tax_Double > 0.00) {
+                                break;
+                            } else {
+                                System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Only numbers!");
+                        }
+                    }
+                    salary = Double.parseDouble(tmp);
                     selectedEmployee = new Hourly(selectedEmployee.getId(), selectedEmployee.getName(),
                             selectedEmployee.getAddress(), selectedEmployee.getPaymentMethod(), salary,
                             selectedEmployee.getSyndicate());
                 } else if (attr.equals("1")) {
                     System.out.println("Type the salary:");
-                    salary = sc.nextDouble();
+                    while (true) {
+                        tmp = sc.nextLine();
+                        try {
+                            Double tax_Double = Double.parseDouble(tmp);
+                            if (tax_Double > 0.00) {
+                                break;
+                            } else {
+                                System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Only numbers!");
+                        }
+                    }
+                    salary = Double.parseDouble(tmp);
                     selectedEmployee = new Salaried(selectedEmployee.getId(), selectedEmployee.getName(),
                             selectedEmployee.getAddress(), selectedEmployee.getPaymentMethod(), salary,
                             selectedEmployee.getSyndicate());
                 } else if (attr.equals("2")) {
                     Double percentage;
                     System.out.println("Type the salary:");
-                    salary = sc.nextDouble();
+                    while (true) {
+                        tmp = sc.nextLine();
+                        try {
+                            Double tax_Double = Double.parseDouble(tmp);
+                            if (tax_Double > 0.00) {
+                                break;
+                            } else {
+                                System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Only numbers!");
+                        }
+                    }
+                    salary = Double.parseDouble(tmp);
                     System.out.println("Type the % to comisson:");
-                    percentage = sc.nextDouble();
+                    while (true) {
+                        tmp = sc.nextLine();
+                        try {
+                            Double tax_Double = Double.parseDouble(tmp);
+                            if (tax_Double > 0.00) {
+                                break;
+                            } else {
+                                System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Only numbers!");
+                        }
+                    }
+                    percentage = Double.parseDouble(tmp);
                     selectedEmployee = new Commissioned(selectedEmployee.getId(), selectedEmployee.getName(),
                             selectedEmployee.getAddress(), selectedEmployee.getPaymentMethod(), salary, percentage,
                             selectedEmployee.getSyndicate());
@@ -455,7 +546,19 @@ public class Panel {
                         "Select the new Payment Method (0 - Check by the post office, 1 - Check in Person, 2 - Bank Account)");
                 // if(selectedEmployee.getPaymentMethod() instanceof CheckByPostOffice){} //V
                 // DEPOIS
-                attr = sc.nextLine();
+                while (true) {
+                    attr = sc.nextLine();
+                    try {
+                        int id_int = Integer.parseInt(attr);
+                        if (id_int >= 0 && id_int < 3) {
+                            break;
+                        } else {
+                            System.out.print("Value cannot be less than 0 or bigger than 3! Try again.\n");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Only numbers!");
+                    }
+                }
                 System.out.println("Type the bank ID:");
                 bankId = sc.nextLine();
                 System.out.println("Type agency number:");
@@ -465,13 +568,39 @@ public class Panel {
                 if (attr.equals("0")) {
                     int numberCheck;
                     System.out.println("Type number Check:");
-                    numberCheck = sc.nextInt();
+                    while (true) {
+                        attr = sc.nextLine();
+                        try {
+                            int id_int = Integer.parseInt(attr);
+                            if (id_int > 0) {
+                                break;
+                            } else {
+                                System.out.print("Value cannot be less or equal than 0! Try again.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Only numbers!");
+                        }
+                    }
+                    numberCheck = Integer.parseInt(attr);
                     selectedEmployee.setPaymentMethod(new CheckByPostOffice(bankId, agency, accountNumber,
                             numberCheck, selectedEmployee.getAddress()));
                 } else if (attr.equals("1")) {
                     int numberCheck;
                     System.out.println("Type number Check:");
-                    numberCheck = sc.nextInt();
+                    while (true) {
+                        attr = sc.nextLine();
+                        try {
+                            int id_int = Integer.parseInt(attr);
+                            if (id_int > 0) {
+                                break;
+                            } else {
+                                System.out.print("Value cannot be less or equal than 0! Try again.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Only numbers!");
+                        }
+                    }
+                    numberCheck = Integer.parseInt(attr);
                     selectedEmployee
                             .setPaymentMethod(new HandsCheck(bankId, agency, accountNumber, numberCheck));
                 } else if (attr.equals("2")) {
@@ -481,7 +610,20 @@ public class Panel {
                     System.out.println("1 - " + accountType[1]);
                     System.out.println("2 - " + accountType[2]);
                     System.out.println("3 - " + accountType[3]);
-                    idx = sc.nextInt();
+                    while (true) {
+                        attr = sc.nextLine();
+                        try {
+                            int id_int = Integer.parseInt(attr);
+                            if (id_int >= 0 && id_int < 4) {
+                                break;
+                            } else {
+                                System.out.print("Value cannot be less than 0 or bigger than 3! Try again.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Only numbers!");
+                        }
+                    }
+                    idx = Integer.parseInt(attr);
                     selectedEmployee.setPaymentMethod(
                             new DepositByBankAccount(bankId, agency, accountNumber, accountType[idx]));
                 }
@@ -493,32 +635,85 @@ public class Panel {
                             selectedEmployee.getName() + " already belongs to syndicate. Do you want to leave?");
                     System.out.println("0 - No");
                     System.out.println("1 - Yes");
-                    answer = sc.nextInt();
+                    while (true) {
+                        attr = sc.nextLine();
+                        try {
+                            int id_int = Integer.parseInt(attr);
+                            if (id_int >= 0 && id_int < 2) {
+                                break;
+                            } else {
+                                System.out.print("Value cannot be less than 0 or bigger than 1! Try again.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Only numbers!");
+                        }
+                    }
+                    answer = Integer.parseInt(attr);
                     if (answer == 1) {
                         selectedEmployee.getSyndicate().setActive(false);
+                        System.out.println("Successful changes.");
                     }
                 } else {
                     System.out.println(selectedEmployee.getName()
                             + " does not belongs to syndicate or is inactive. Do you want to join?");
                     System.out.println("0 - No");
                     System.out.println("1 - Yes");
-                    answer = sc.nextInt();
+                    while (true) {
+                        attr = sc.nextLine();
+                        try {
+                            int id_int = Integer.parseInt(attr);
+                            if (id_int >= 0 && id_int < 2) {
+                                break;
+                            } else {
+                                System.out.print("Value cannot be less than 0 or bigger than 1! Try again.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Only numbers!");
+                        }
+                    }
+                    answer = Integer.parseInt(attr);
                     if (answer == 1) {
                         Double tax;
                         System.out.println("Type the monthly TAX:");
-                        tax = sc.nextDouble();
+                        while (true) {
+                            tmp = sc.nextLine();
+                            try {
+                                Double tax_Double = Double.parseDouble(tmp);
+                                if (tax_Double > 0.00) {
+                                    break;
+                                } else {
+                                    System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println("Only numbers!");
+                            }
+                        }
+                        tax = Double.parseDouble(tmp);
                         String aux = Character.toString(selectedEmployee.getName().charAt(0));
                         selectedEmployee.getSyndicate().setIdSyndicate(aux + 2021 + "S000" + (++idSyndicateInt));
                         selectedEmployee.getSyndicate().setTax(tax);
                         selectedEmployee.getSyndicate().setActive(true);
+                        System.out.println("Successful changes.");
                     }
                 }
-                System.out.println("Successful changes.");
             } else if (op.equals("5")) {
                 if (selectedEmployee.getSyndicate().getActive() == true) {
                     Double tax;
                     System.out.println("Type the new monthly TAX:");
-                    tax = sc.nextDouble();
+                    while (true) {
+                        tmp = sc.nextLine();
+                        try {
+                            Double tax_Double = Double.parseDouble(tmp);
+                            if (tax_Double > 0.00) {
+                                break;
+                            } else {
+                                System.out.print("Value cannot be less than or equal to 0! Try again.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Only numbers!");
+                        }
+                    }
+                    tax = Double.parseDouble(tmp);
                     selectedEmployee.getSyndicate().setTax(tax);
                     System.out.println("Successful changes.");
                 } else {
@@ -634,7 +829,7 @@ public class Panel {
         int option;
         Scanner op = new Scanner(System.in);
         do {
-            System.out.println("Timecard");
+            System.out.println("--- Timecard ---");
             System.out.println("1 - Timecard login");
             System.out.println("2 - Timecard logout");
             System.out.println("3 - Back");
