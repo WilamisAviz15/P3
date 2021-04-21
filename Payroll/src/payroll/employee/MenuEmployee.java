@@ -7,12 +7,10 @@ import payroll.employee.model.Commissioned;
 import payroll.employee.model.Employee;
 import payroll.employee.model.Hourly;
 import payroll.employee.model.Salaried;
-import payroll.employee.model.Sales;
 import payroll.payment.CheckByPostOffice;
 import payroll.payment.DepositByBankAccount;
 import payroll.payment.HandsCheck;
 import payroll.payment.PaymentMethod;
-import payroll.syndicate.AdditionalFee;
 import payroll.syndicate.Syndicate;
 import payroll.utils.Utils;
 
@@ -331,53 +329,6 @@ public class MenuEmployee {
                     System.out.println(selectedEmployee.getName() + " does not belongs to syndicate to edit ID");
                     ;
                 }
-            }
-        } else {
-            System.out.println("Employee not found.");
-        }
-    }
-
-    public static void LaunchSales(List<Employee> list_employee) {
-        int index = findEmployee(list_employee);
-        Double value;
-        String date;
-        Scanner sc = new Scanner(System.in);
-        if (index != -1) {
-            Employee selectedEmployee = list_employee.get(index);
-            if (selectedEmployee instanceof Commissioned) {
-                Commissioned empl = (Commissioned) selectedEmployee;
-                System.out.println("Enter sale value");
-                value = sc.nextDouble();
-                sc.nextLine();
-                System.out.println("Enter sale date (DD/MM/YYYY)");
-                date = sc.nextLine();
-                Sales sl = new Sales(date, value);
-                empl.getSales().add(sl);
-            } else {
-                System.out.println("Employee is not comissioned.");
-            }
-        } else {
-            System.out.println("Employee not found.");
-        }
-    }
-
-    public static void LaunchFee(List<Employee> list_employee) {
-        int index = findEmployee(list_employee);
-        String date;
-        Double value;
-        Scanner sc = new Scanner(System.in);
-        if (index != -1) {
-            Employee selectedEmployee = list_employee.get(index);
-            if (selectedEmployee.getSyndicate().getActive() == true) {
-                System.out.println("Enter date (DD/MM/YYYY)");
-                date = sc.nextLine();
-                System.out.println("Enter value");
-                value = sc.nextDouble();
-                AdditionalFee aF = new AdditionalFee(date, value);
-                selectedEmployee.getSyndicate().getAdditionalFee().add(aF);
-            } else {
-                System.out.println(selectedEmployee.getName()
-                        + " does not belongs to syndicate or is inactive to add service fee.");
             }
         } else {
             System.out.println("Employee not found.");
