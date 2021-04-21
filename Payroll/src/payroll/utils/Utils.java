@@ -1,4 +1,4 @@
-package payroll.employee.utils;
+package payroll.utils;
 
 import java.util.Scanner;
 
@@ -39,6 +39,23 @@ public class Utils {
                     }
                 }
 
+            } catch (NumberFormatException e) {
+                System.out.println("Only numbers!");
+            }
+        }
+        return tmp;
+    }
+
+    public static String consoleReadInputInteger(String tmp, Scanner op, int min, int max){
+        while (true) {
+            tmp = op.nextLine();
+            try {
+                int tmp_op = Integer.parseInt(tmp);
+                if (tmp_op >= min && tmp_op < max) {
+                    break;
+                } else {
+                    System.out.print("INVALID OPTION! Try again..\n");
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Only numbers!");
             }

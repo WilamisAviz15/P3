@@ -8,7 +8,7 @@ import java.util.Scanner;
 import payroll.employee.model.Employee;
 import payroll.employee.model.Hourly;
 import payroll.employee.model.Timecard;
-import payroll.employee.utils.Utils;
+import payroll.utils.Utils;
 
 public class MenuTimecard {
     public static void Timecard(List<Employee> list_employee) {

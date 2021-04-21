@@ -5,7 +5,7 @@ import java.util.Scanner;
 import payroll.employee.MenuEmployee;
 import payroll.employee.MenuTimecard;
 import payroll.employee.model.Employee;
-
+import payroll.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class Panel {
 
     public void Employees() {
         int option;
-        String tmp;
+        String tmp ="";
         Scanner op = new Scanner(System.in);
         do {
             System.out.println("--- Employees ---");
@@ -25,19 +25,7 @@ public class Panel {
             System.out.println("4 - List All Employees");
             System.out.println("5 - Search Employees");
             System.out.println("6 - Back");
-            while (true) {
-                tmp = op.nextLine();
-                try {
-                    int tmp_op = Integer.parseInt(tmp);
-                    if (tmp_op >= 0 && tmp_op < 7) {
-                        break;
-                    } else {
-                        System.out.print("INVALID OPTION! Try again..\n");
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Only numbers!");
-                }
-            }
+            tmp = Utils.consoleReadInputInteger(tmp, op, 1, 7);
             option = Integer.parseInt(tmp);
             switch (option) {
             case 1:
@@ -80,7 +68,7 @@ public class Panel {
     }
 
     public void run() {
-        String option;
+        String option="";
         int opc;
         Scanner op = new Scanner(System.in);
         do {
@@ -95,19 +83,7 @@ public class Panel {
             System.out.println("8  - Redo");
             System.out.println("0 - Exit");
             System.out.println("================================================");
-            while (true) {
-                option = op.nextLine();
-                try {
-                    int option_int = Integer.parseInt(option);
-                    if (option_int >= 0 && option_int < 9) {
-                        break;
-                    } else {
-                        System.out.print("INVALID OPTION! Try again.\n");
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Only numbers!");
-                }
-            }
+            option = Utils.consoleReadInputInteger(option, op, 0, 9);
             opc = Integer.parseInt(option);
             switch (opc) {
             case 1:
