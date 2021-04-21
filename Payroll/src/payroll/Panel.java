@@ -25,7 +25,7 @@ public class Panel {
             System.out.println("4 - List All Employees");
             System.out.println("5 - Search Employees");
             System.out.println("6 - Back");
-            tmp = Utils.consoleReadInputInteger(tmp, op, 1, 7);
+            tmp = Utils.consoleReadInputIntegerOptions(tmp, op, 1, 7);
             option = Integer.parseInt(tmp);
             switch (option) {
             case 1:
@@ -83,7 +83,7 @@ public class Panel {
             System.out.println("8  - Redo");
             System.out.println("0 - Exit");
             System.out.println("================================================");
-            option = Utils.consoleReadInputInteger(option, op, 0, 9);
+            option = Utils.consoleReadInputIntegerOptions(option, op, 0, 9);
             opc = Integer.parseInt(option);
             switch (opc) {
             case 1:
