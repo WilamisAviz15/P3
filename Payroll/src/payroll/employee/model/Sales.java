@@ -1,18 +1,20 @@
 package payroll.employee.model;
 
+import java.time.LocalDate;
+
 public class Sales {
-    private String date;
+    private LocalDate date;
     private Double value;
 
-    public Sales(String date, Double value){
+    public Sales(LocalDate date, Double value){
         this.date = date;
         this.value = value;
     }
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setData(String date) {
+    public void setData(LocalDate date) {
         this.date = date;
     }
 

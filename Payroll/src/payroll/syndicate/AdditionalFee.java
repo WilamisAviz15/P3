@@ -1,18 +1,20 @@
 package payroll.syndicate;
 
+import java.time.LocalDate;
+
 public class AdditionalFee {
-    private String date;
+    private LocalDate date;
     private Double value;
 
-    public AdditionalFee(String date, Double value){
+    public AdditionalFee(LocalDate date, Double value){
         this.date = date;
         this.value = value;
     }
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setData(String date) {
+    public void setData(LocalDate date) {
         this.date = date;
     }
 

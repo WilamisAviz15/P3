@@ -20,7 +20,7 @@ public class Utils {
         return tmp;
     }
 
-    public static String consoleTimecard(String tmp, Scanner sc, boolean isTime) {
+    public static String consoleDateTime(String tmp, Scanner sc, boolean isTime) {
         while (true) {
             tmp = sc.nextLine();
             try {
