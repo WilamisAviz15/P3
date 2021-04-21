@@ -1,6 +1,6 @@
 package payroll.employee.model;
 
-import payroll.payment.PaymentMethod;
+import payroll.payment.model.PaymentMethod;
 import payroll.syndicate.Syndicate;
 
 public class Employee {

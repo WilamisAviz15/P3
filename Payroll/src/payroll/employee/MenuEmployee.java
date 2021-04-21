@@ -7,10 +7,11 @@ import payroll.employee.model.Commissioned;
 import payroll.employee.model.Employee;
 import payroll.employee.model.Hourly;
 import payroll.employee.model.Salaried;
-import payroll.payment.CheckByPostOffice;
-import payroll.payment.DepositByBankAccount;
-import payroll.payment.HandsCheck;
-import payroll.payment.PaymentMethod;
+import payroll.payment.model.CheckByPostOffice;
+import payroll.payment.model.DepositByBankAccount;
+import payroll.payment.model.HandsCheck;
+import payroll.payment.model.PaymentMethod;
+import payroll.payment.model.PayoutSchedule;
 import payroll.syndicate.Syndicate;
 import payroll.utils.Utils;
 
@@ -19,11 +20,45 @@ public class MenuEmployee {
     public static int idSyndicateInt = 0;
     private static String[] accountType = { "Corrente", "Poupança", "Fácil", "Conjunta" };
 
-    public static Employee addEmployee() {
+    public static void Menu(List<Employee> list_employee, PayoutSchedule paySchedule){
+        int option;
+        String tmp ="";
+        Scanner op = new Scanner(System.in);
+        do {
+            System.out.println("--- Employees ---");
+            System.out.println("1 - Add Employees");
+            System.out.println("2 - Remove Employees");
+            System.out.println("3 - Edit Employees");
+            System.out.println("4 - List All Employees");
+            System.out.println("5 - Search Employees");
+            System.out.println("6 - Back");
+            tmp = Utils.consoleReadInputIntegerOptions(tmp, op, 1, 7);
+            option = Integer.parseInt(tmp);
+            switch (option) {
+            case 1:
+                list_employee.add(MenuEmployee.addEmployee(paySchedule));
+                break;
+            case 2:
+                MenuEmployee.removeEmployee(list_employee);
+                break;
+            case 3:
+                MenuEmployee.editEmployee(list_employee);
+                break;
+            case 4:
+                MenuEmployee.ListAllEmployee(list_employee);
+                break;
+            case 5:
+                MenuEmployee.listEmployeeById(list_employee);
+                break;
+            }
+        } while (option != 6);
+    }
+
+    public static Employee addEmployee(PayoutSchedule paySchedule) {
         PaymentMethod paymentMethod = null;
         Syndicate sindicalist = null;
         Employee newEmployees;
-        String bankId,agency, accountNumber,tmp = "";
+        String bankId,agency, accountNumber,tmp = "", payScheduleString = "";
         Double salary = 0.00;
         Scanner sc = new Scanner(System.in);
         int optionPaymentMethod, optionSindicalist;
@@ -34,6 +69,8 @@ public class MenuEmployee {
         System.out.println("Type of employee (0 - hourly, 1 - salaried, 2 - commissioned)");
         tmp = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 3);
         int type_employee = Integer.parseInt(tmp);
+        payScheduleString = paySchedule.getTypesSchedule().get(type_employee);
+        System.out.println(payScheduleString);
         if (type_employee == 0) {
             System.out.println("Type the hourly wage:");
             tmp = Utils.consoleReadInputDouble(tmp, sc);

@@ -1,4 +1,4 @@
-package payroll.payment;
+package payroll.payment.model;
 
 public class DepositByBankAccount extends PaymentMethod{
     private String accountType;

@@ -1,4 +1,4 @@
-package payroll.payment;
+package payroll.payment.model;
 
 import payroll.employee.model.Employee;
 
@@ -6,6 +6,7 @@ public class PaymentMethod {
     private String bankId;
     private String agency;
     private String accountNumber;
+    private String paySchedule;
 
     public PaymentMethod() {
     }
