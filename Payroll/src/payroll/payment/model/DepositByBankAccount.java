@@ -3,8 +3,8 @@ package payroll.payment.model;
 public class DepositByBankAccount extends PaymentMethod{
     private String accountType;
 
-    public DepositByBankAccount(String bankId, String agency, String accountNumber, String accountType) {
-        super(bankId, agency, accountNumber);
+    public DepositByBankAccount(String bankId, String agency, String accountNumber, String paySchedule, String accountType) {
+        super(bankId, agency, accountNumber, paySchedule);
         this.accountType = accountType;
     }
 

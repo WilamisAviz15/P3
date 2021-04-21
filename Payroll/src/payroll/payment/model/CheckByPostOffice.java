@@ -4,8 +4,8 @@ public class CheckByPostOffice extends PaymentMethod{
     private int numberCheck;
     private String address;
 
-    public CheckByPostOffice(String bankId, String agency, String accountNumber, int numberCheck, String address) {
-        super(bankId, agency, accountNumber);
+    public CheckByPostOffice(String bankId, String agency, String accountNumber, String paySchedule, int numberCheck, String address) {
+        super(bankId, agency, accountNumber,paySchedule);
         this.numberCheck = numberCheck;
         this.address = address;
     }

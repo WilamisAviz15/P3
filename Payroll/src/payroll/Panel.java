@@ -125,7 +125,7 @@ public class Panel {
                 rotatePayroll();
                 break;
             case 6:
-                MenuPayoutSchedule.Menu();
+                MenuPayoutSchedule.Menu(paySchedules);
                 break;
             case 7:
 

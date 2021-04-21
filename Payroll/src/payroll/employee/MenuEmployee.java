@@ -20,9 +20,9 @@ public class MenuEmployee {
     public static int idSyndicateInt = 0;
     private static String[] accountType = { "Corrente", "Poupança", "Fácil", "Conjunta" };
 
-    public static void Menu(List<Employee> list_employee, PayoutSchedule paySchedule){
+    public static void Menu(List<Employee> list_employee, PayoutSchedule paySchedule) {
         int option;
-        String tmp ="";
+        String tmp = "";
         Scanner op = new Scanner(System.in);
         do {
             System.out.println("--- Employees ---");
@@ -42,7 +42,7 @@ public class MenuEmployee {
                 MenuEmployee.removeEmployee(list_employee);
                 break;
             case 3:
-                MenuEmployee.editEmployee(list_employee);
+                MenuEmployee.editEmployee(list_employee, paySchedule);
                 break;
             case 4:
                 MenuEmployee.ListAllEmployee(list_employee);
@@ -58,7 +58,7 @@ public class MenuEmployee {
         PaymentMethod paymentMethod = null;
         Syndicate sindicalist = null;
         Employee newEmployees;
-        String bankId,agency, accountNumber,tmp = "", payScheduleString = "";
+        String bankId, agency, accountNumber, tmp = "", payScheduleString = "";
         Double salary = 0.00;
         Scanner sc = new Scanner(System.in);
         int optionPaymentMethod, optionSindicalist;
@@ -70,7 +70,6 @@ public class MenuEmployee {
         tmp = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 3);
         int type_employee = Integer.parseInt(tmp);
         payScheduleString = paySchedule.getTypesSchedule().get(type_employee);
-        System.out.println(payScheduleString);
         if (type_employee == 0) {
             System.out.println("Type the hourly wage:");
             tmp = Utils.consoleReadInputDouble(tmp, sc);
@@ -107,13 +106,14 @@ public class MenuEmployee {
             System.out.println("Type number Check:");
             tmp = Utils.consoleReadInputIntegerNumber(tmp, sc);
             numberCheck = Integer.parseInt(tmp);
-            paymentMethod = new CheckByPostOffice(bankId, agency, accountNumber, numberCheck, address);
+            paymentMethod = new CheckByPostOffice(bankId, agency, accountNumber, payScheduleString, numberCheck,
+                    address);
         } else if (optionPaymentMethod == 1) {
             int numberCheck;
             System.out.println("Type number Check:");
             tmp = Utils.consoleReadInputIntegerNumber(tmp, sc);
             numberCheck = Integer.parseInt(tmp);
-            paymentMethod = new HandsCheck(bankId, agency, accountNumber, numberCheck);
+            paymentMethod = new HandsCheck(bankId, agency, accountNumber, payScheduleString, numberCheck);
         } else if (optionPaymentMethod == 2) {
             int index;
             System.out.println("Select type of account:");
@@ -123,12 +123,13 @@ public class MenuEmployee {
             System.out.println("3 - " + accountType[3]);
             tmp = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 4);
             index = Integer.parseInt(tmp);
-            paymentMethod = new DepositByBankAccount(bankId, agency, accountNumber, accountType[index]);
+            paymentMethod = new DepositByBankAccount(bankId, agency, accountNumber, payScheduleString,
+                    accountType[index]);
         }
         newEmployees.setPaymentMethod(paymentMethod);
 
         System.out.printf("%s will be part of the Syndicate? 1- yes | 2- no\n", newEmployees.getName());
-        tmp = Utils.consoleReadInputIntegerSyndicate(tmp, sc);
+        tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc);
         optionSindicalist = Integer.parseInt(tmp);
         if (optionSindicalist == 1) {
             Double tax;
@@ -160,7 +161,7 @@ public class MenuEmployee {
     public static int findEmployee(List<Employee> list_employee) {
         int id;
         int aux = 0;
-        String tmp="";
+        String tmp = "";
         Scanner sc = new Scanner(System.in);
         System.out.println("Please type the ID:");
         tmp = Utils.consoleReadInputIntegerNumber(tmp, sc);
@@ -184,7 +185,7 @@ public class MenuEmployee {
 
     public static void listEmployeeById(List<Employee> list_employee) {
         int id;
-        String tmp="";
+        String tmp = "";
         Scanner sc = new Scanner(System.in);
         System.out.println("Please type the ID:");
         tmp = Utils.consoleReadInputIntegerNumber(tmp, sc);
@@ -207,13 +208,13 @@ public class MenuEmployee {
         return false;
     }
 
-    public static void editEmployee(List<Employee> list_employee) {
+    public static void editEmployee(List<Employee> list_employee, PayoutSchedule paySchedule) {
         String op, attr;
         Double salary = 0.00;
         String bankId;
         String agency;
         String accountNumber;
-        String tmp="";
+        String tmp = "", payScheduleString = "";
         Scanner sc = new Scanner(System.in);
         int index = findEmployee(list_employee);
         if (index != -1) {
@@ -241,6 +242,8 @@ public class MenuEmployee {
                 // int oldAttr = list_employee.get(index).getType_employee(); TODO
                 System.out.println("Type the new type of employee: (0 - hourly, 1 - salaried, 2 - commissioned)");
                 attr = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 3);
+                payScheduleString = paySchedule.getTypesSchedule().get(Integer.parseInt(attr));
+                selectedEmployee.getPaymentMethod().setPaySchedule(payScheduleString);
                 if (attr.equals("0")) {
                     System.out.println("Type the hourly wage:");
                     tmp = Utils.consoleReadInputDouble(tmp, sc);
@@ -281,19 +284,36 @@ public class MenuEmployee {
                 agency = sc.nextLine();
                 System.out.println("Type account number:");
                 accountNumber = sc.nextLine();
+                System.out.println("Do you want to alter payment schedule?");
+                System.out.println("1 - Yes");
+                System.out.println("2 - No");
+                attr = Utils.consoleReadInputIntegerWithOR(tmp, sc);
+                int answer = Integer.parseInt(attr);
+                if (answer == 1) {
+                    int i = 0;
+                    System.out.println("Select one:");
+                    for (String pS : paySchedule.getTypesSchedule()) {
+                        System.out.println(i++ + " - " + pS);
+                    }
+                    attr = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, i);
+                    payScheduleString = paySchedule.getTypesSchedule().get(Integer.parseInt(attr));
+                }else{
+                    payScheduleString = selectedEmployee.getPaymentMethod().getPaySchedule();
+                }
                 if (attr.equals("0")) {
                     int numberCheck;
                     System.out.println("Type number Check:");
                     attr = Utils.consoleReadInputIntegerNumber(tmp, sc);
                     numberCheck = Integer.parseInt(attr);
-                    selectedEmployee.setPaymentMethod(new CheckByPostOffice(bankId, agency, accountNumber, numberCheck,
-                            selectedEmployee.getAddress()));
+                    selectedEmployee.setPaymentMethod(new CheckByPostOffice(bankId, agency, accountNumber,
+                            payScheduleString, numberCheck, selectedEmployee.getAddress()));
                 } else if (attr.equals("1")) {
                     int numberCheck;
                     System.out.println("Type number Check:");
                     attr = Utils.consoleReadInputIntegerNumber(tmp, sc);
                     numberCheck = Integer.parseInt(attr);
-                    selectedEmployee.setPaymentMethod(new HandsCheck(bankId, agency, accountNumber, numberCheck));
+                    selectedEmployee.setPaymentMethod(
+                            new HandsCheck(bankId, agency, accountNumber, payScheduleString, numberCheck));
                 } else if (attr.equals("2")) {
                     int idx;
                     System.out.println("Select type of account:");
@@ -303,8 +323,8 @@ public class MenuEmployee {
                     System.out.println("3 - " + accountType[3]);
                     attr = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 4);
                     idx = Integer.parseInt(attr);
-                    selectedEmployee.setPaymentMethod(
-                            new DepositByBankAccount(bankId, agency, accountNumber, accountType[idx]));
+                    selectedEmployee.setPaymentMethod(new DepositByBankAccount(bankId, agency, accountNumber,
+                            payScheduleString, accountType[idx]));
                 }
                 System.out.println("Successful changes.");
             } else if (op.equals("4")) {
@@ -314,7 +334,7 @@ public class MenuEmployee {
                             selectedEmployee.getName() + " already belongs to syndicate. Do you want to leave?");
                     System.out.println("1 - Yes");
                     System.out.println("2 - No");
-                    attr = Utils.consoleReadInputIntegerSyndicate(tmp, sc);
+                    attr = Utils.consoleReadInputIntegerWithOR(tmp, sc);
                     answer = Integer.parseInt(attr);
                     if (answer == 1) {
                         selectedEmployee.getSyndicate().setActive(false);
@@ -325,7 +345,7 @@ public class MenuEmployee {
                             + " does not belongs to syndicate or is inactive. Do you want to join?");
                     System.out.println("1 - Yes");
                     System.out.println("2 - No");
-                    attr = Utils.consoleReadInputIntegerSyndicate(tmp, sc);
+                    attr = Utils.consoleReadInputIntegerWithOR(tmp, sc);
                     answer = Integer.parseInt(attr);
                     if (answer == 1) {
                         Double tax;

@@ -1,7 +1,5 @@
 package payroll.payment.model;
 
-import payroll.employee.model.Employee;
-
 public class PaymentMethod {
     private String bankId;
     private String agency;
@@ -11,10 +9,11 @@ public class PaymentMethod {
     public PaymentMethod() {
     }
 
-    public PaymentMethod(String bankId, String agency, String accountNumber) {
+    public PaymentMethod(String bankId, String agency, String accountNumber, String paySchedule) {
         this.bankId = bankId;
         this.agency = agency;
         this.accountNumber = accountNumber;
+        this.paySchedule = paySchedule;
     }
 
     public String getBankId() {
@@ -23,6 +22,14 @@ public class PaymentMethod {
 
     public void setBankId(String bankId) {
         this.bankId = bankId;
+    }
+
+    public String getPaySchedule() {
+        return paySchedule;
+    }
+
+    public void setPaySchedule(String paySchedule) {
+        this.paySchedule = paySchedule;
     }
 
     public String getAgency() {
@@ -43,6 +50,6 @@ public class PaymentMethod {
 
     @Override
     public String toString() {
-        return "BankId: " + getBankId() + "\nAgency: " + getAgency() + "\nAccount Number: " + getAccountNumber();
+        return "BankId: " + getBankId() + "\nAgency: " + getAgency() + "\nAccount Number: " + getAccountNumber() + "\nPayment Schedule: " + getPaySchedule();
     }
 }

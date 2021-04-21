@@ -80,7 +80,7 @@ public class Utils {
         return tmp;
     }
 
-    public static String consoleReadInputIntegerSyndicate(String tmp, Scanner sc){
+    public static String consoleReadInputIntegerWithOR(String tmp, Scanner sc){
         while (true) {
             try {
                 tmp = sc.nextLine();
