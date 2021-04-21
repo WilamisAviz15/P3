@@ -1,4 +1,4 @@
-package payroll.employee;
+package payroll.employee.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,11 @@
 package payroll;
 
 import java.util.Scanner;
-import payroll.employee.Employee;
+
 import payroll.employee.MenuEmployee;
 import payroll.employee.MenuTimecard;
+import payroll.employee.model.Employee;
+
 import java.util.ArrayList;
 import java.util.List;
 

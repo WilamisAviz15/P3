@@ -1,8 +1,8 @@
-package payroll.employee;
+package payroll.employee.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import payroll.employee.Timecard;
+
 import payroll.payment.PaymentMethod;
 import payroll.syndicate.Syndicate;
 

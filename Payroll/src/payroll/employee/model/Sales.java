@@ -1,4 +1,4 @@
-package payroll.employee;
+package payroll.employee.model;
 
 public class Sales {
     private String date;

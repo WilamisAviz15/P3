@@ -1,6 +1,6 @@
 package payroll.payment;
 
-import payroll.employee.Employee;
+import payroll.employee.model.Employee;
 
 public class PaymentMethod {
     private String bankId;

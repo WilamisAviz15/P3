@@ -1,4 +1,4 @@
-package payroll.employee;
+package payroll.employee.model;
 
 import payroll.payment.PaymentMethod;
 import payroll.syndicate.Syndicate;
