@@ -1,6 +1,7 @@
 package payroll;
 
 import java.util.Scanner;
+import java.util.Stack;
 
 import payroll.employee.MenuEmployee;
 import payroll.employee.MenuTimecard;
@@ -19,6 +20,9 @@ public class Panel {
     public List<Employee> list_employee = new ArrayList<Employee>();
     PaymentSchedule paySchedules = new PaymentSchedule();
     public static int idSyndicateInt = 0;
+
+    Stack<List<Employee>> undo = new Stack<>();
+    Stack<List<Employee>> redo = new Stack<>();
 
     public void rotatePayroll() {
 
@@ -110,7 +114,7 @@ public class Panel {
             opc = Integer.parseInt(option);
             switch (opc) {
             case 1:
-                MenuEmployee.Menu(list_employee, paySchedules);
+                MenuEmployee.Menu(list_employee, paySchedules, undo);
                 break;
             case 2:
                 MenuTimecard.Timecard(list_employee);
@@ -128,10 +132,25 @@ public class Panel {
                 MenuPayoutSchedule.Menu(paySchedules);
                 break;
             case 7:
-
+                if (undo.size() > 0) {
+                    List<Employee> aux = undo.pop();
+                    redo.push(Utils.cloneList(list_employee));
+                    list_employee = aux;
+                    System.out.println("Changes undone successfully.");
+                }
+                else {
+                    System.out.println("There are nothing to undo.");
+                }
                 break;
             case 8:
-
+                if (redo.size() > 0) {
+                    List<Employee> aux = redo.pop();
+                    undo.push(Utils.cloneList(list_employee));
+                    list_employee = aux;
+                    System.out.println("Changes redone successfully.");
+                } else {
+                    System.out.println("There are nothing to redo.");
+                }
                 break;
             case 0:
                 System.exit(0);

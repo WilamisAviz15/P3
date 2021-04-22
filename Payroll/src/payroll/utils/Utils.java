@@ -1,6 +1,10 @@
 package payroll.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import payroll.employee.model.Employee;
 
 public class Utils {
     public static String consoleMenuTimecard(String tmp, Scanner sc) {
@@ -95,6 +99,13 @@ public class Utils {
             }
         }
         return tmp;
+    }
+
+    public static List<Employee> cloneList(List<Employee> list) {
+        List<Employee> clone = new ArrayList<Employee>();
+        for (Employee item : list)
+            clone.add(item);
+        return clone;
     }
 
     public static String consoleReadInputIntegerSpecial(String tmp, Scanner sc, int var) {

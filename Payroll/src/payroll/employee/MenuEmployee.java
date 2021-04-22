@@ -1,8 +1,11 @@
 package payroll.employee;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
+import payroll.Panel;
 import payroll.employee.model.Commissioned;
 import payroll.employee.model.Employee;
 import payroll.employee.model.Hourly;
@@ -20,7 +23,8 @@ public class MenuEmployee {
     public static int idSyndicateInt = 0;
     private static String[] accountType = { "Corrente", "Poupança", "Fácil", "Conjunta" };
 
-    public static void Menu(List<Employee> list_employee, PaymentSchedule paySchedule) {
+    public static void Menu(List<Employee> list_employee, PaymentSchedule paySchedule,
+            Stack<List<Employee>> undoStack) {
         int option;
         String tmp = "";
         Scanner op = new Scanner(System.in);
@@ -36,7 +40,7 @@ public class MenuEmployee {
             option = Integer.parseInt(tmp);
             switch (option) {
             case 1:
-                list_employee.add(MenuEmployee.addEmployee(paySchedule));
+                list_employee.add(MenuEmployee.addEmployee(paySchedule, list_employee, undoStack));
                 break;
             case 2:
                 MenuEmployee.removeEmployee(list_employee);
@@ -54,7 +58,9 @@ public class MenuEmployee {
         } while (option != 6);
     }
 
-    public static Employee addEmployee(PaymentSchedule paySchedule) {
+    public static Employee addEmployee(PaymentSchedule paySchedule, List<Employee> lEmployees,
+            Stack<List<Employee>> undoStack) {
+        undoStack.push(Utils.cloneList(lEmployees));
         PaymentMethod paymentMethod = null;
         Syndicate sindicalist = null;
         Employee newEmployees;
@@ -297,7 +303,7 @@ public class MenuEmployee {
                     }
                     tmp = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, i);
                     payScheduleString = paySchedule.getTypesSchedule().get(Integer.parseInt(tmp));
-                }else{
+                } else {
                     payScheduleString = selectedEmployee.getPaymentMethod().getPaySchedule();
                 }
                 if (attr.equals("0")) {
@@ -334,7 +340,7 @@ public class MenuEmployee {
                             selectedEmployee.getName() + " already belongs to syndicate. Do you want to leave?");
                     System.out.println("1 - Yes");
                     System.out.println("2 - No");
-                    tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc, 1,2);
+                    tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc, 1, 2);
                     answer = Integer.parseInt(tmp);
                     if (answer == 1) {
                         selectedEmployee.getSyndicate().setActive(false);
