@@ -23,7 +23,7 @@ public class MenuPayoutSchedule {
         i = Integer.parseInt(tmp);
         if(tmp.equals("0")){
             System.out.println("Enter the number of the day: (in case the last day of month, write $)");
-            day = Utils.consoleReadInputIntegerNumber(day, sc, false);
+            day = Utils.consoleReadInputIntegerSpecial(day, sc, 0);
             stringPaymentSchedule = schedule[i] + " " + day;
         } else{
             System.out.println("Enter how many weeks");

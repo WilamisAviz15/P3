@@ -46,7 +46,7 @@ public class Utils {
         return tmp;
     }
 
-    public static String consoleReadInputIntegerOptions(String tmp, Scanner op, int min, int max){
+    public static String consoleReadInputIntegerOptions(String tmp, Scanner op, int min, int max) {
         while (true) {
             tmp = op.nextLine();
             try {
@@ -63,7 +63,7 @@ public class Utils {
         return tmp;
     }
 
-    public static String consoleReadInputIntegerNumber(String tmp, Scanner op){
+    public static String consoleReadInputIntegerNumber(String tmp, Scanner op) {
         while (true) {
             tmp = op.nextLine();
             try {
@@ -80,7 +80,7 @@ public class Utils {
         return tmp;
     }
 
-    public static String consoleReadInputIntegerWithOR(String tmp, Scanner sc, int var1, int var2){
+    public static String consoleReadInputIntegerWithOR(String tmp, Scanner sc, int var1, int var2) {
         while (true) {
             try {
                 tmp = sc.nextLine();
@@ -97,7 +97,28 @@ public class Utils {
         return tmp;
     }
 
-    public static String consoleReadInputDouble(String tmp, Scanner sc){
+    public static String consoleReadInputIntegerSpecial(String tmp, Scanner sc, int var) {
+        while (true) {
+            try {
+                tmp = sc.nextLine();
+                if (tmp.equals("$")) {
+                    break;
+                } else {
+                    int number = Integer.parseInt(tmp);
+                    if (number > var) {
+                        break;
+                    } else {
+                        System.out.print("INVALID OPTION! Try again.\n");
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Only numbers!");
+            }
+        }
+        return tmp;
+    }
+
+    public static String consoleReadInputDouble(String tmp, Scanner sc) {
         while (true) {
             tmp = sc.nextLine();
             try {
