@@ -21,8 +21,4 @@ public class PayoutSchedule {
     public void setTypesSchedule(List<String> typesSchedule) {
         this.typesSchedule = typesSchedule;
     }
-
-    public void addOption(String newOp) {
-        this.typesSchedule.add(newOp);
-    }
 }
