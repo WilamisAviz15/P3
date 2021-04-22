@@ -20,12 +20,12 @@ public class Utils {
         return tmp;
     }
 
-    public static String consoleDateTime(String tmp, Scanner sc, boolean isTime) {
+    public static String consoleReadInputIntegerNumber(String tmp, Scanner sc, boolean isIncludedZero) {
         while (true) {
             tmp = sc.nextLine();
             try {
                 int number = Integer.parseInt(tmp);
-                if (!isTime) {
+                if (!isIncludedZero) {
                     if (number > 0) {
                         break;
                     } else {
@@ -80,12 +80,12 @@ public class Utils {
         return tmp;
     }
 
-    public static String consoleReadInputIntegerWithOR(String tmp, Scanner sc){
+    public static String consoleReadInputIntegerWithOR(String tmp, Scanner sc, int var1, int var2){
         while (true) {
             try {
                 tmp = sc.nextLine();
                 int number = Integer.parseInt(tmp);
-                if (number == 1 || number == 2) {
+                if (number == var1 || number == var2) {
                     break;
                 } else {
                     System.out.print("INVALID OPTION! Try again.\n");

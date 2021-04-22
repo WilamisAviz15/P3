@@ -11,7 +11,7 @@ import payroll.payment.model.CheckByPostOffice;
 import payroll.payment.model.DepositByBankAccount;
 import payroll.payment.model.HandsCheck;
 import payroll.payment.model.PaymentMethod;
-import payroll.payment.model.PayoutSchedule;
+import payroll.payment.model.PaymentSchedule;
 import payroll.syndicate.Syndicate;
 import payroll.utils.Utils;
 
@@ -20,7 +20,7 @@ public class MenuEmployee {
     public static int idSyndicateInt = 0;
     private static String[] accountType = { "Corrente", "Poupança", "Fácil", "Conjunta" };
 
-    public static void Menu(List<Employee> list_employee, PayoutSchedule paySchedule) {
+    public static void Menu(List<Employee> list_employee, PaymentSchedule paySchedule) {
         int option;
         String tmp = "";
         Scanner op = new Scanner(System.in);
@@ -54,7 +54,7 @@ public class MenuEmployee {
         } while (option != 6);
     }
 
-    public static Employee addEmployee(PayoutSchedule paySchedule) {
+    public static Employee addEmployee(PaymentSchedule paySchedule) {
         PaymentMethod paymentMethod = null;
         Syndicate sindicalist = null;
         Employee newEmployees;
@@ -129,7 +129,7 @@ public class MenuEmployee {
         newEmployees.setPaymentMethod(paymentMethod);
 
         System.out.printf("%s will be part of the Syndicate? 1- yes | 2- no\n", newEmployees.getName());
-        tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc);
+        tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc, 1, 2);
         optionSindicalist = Integer.parseInt(tmp);
         if (optionSindicalist == 1) {
             Double tax;
@@ -208,7 +208,7 @@ public class MenuEmployee {
         return false;
     }
 
-    public static void editEmployee(List<Employee> list_employee, PayoutSchedule paySchedule) {
+    public static void editEmployee(List<Employee> list_employee, PaymentSchedule paySchedule) {
         String op, attr;
         Double salary = 0.00;
         String bankId;
@@ -287,7 +287,7 @@ public class MenuEmployee {
                 System.out.println("Do you want to alter payment schedule?");
                 System.out.println("1 - Yes");
                 System.out.println("2 - No");
-                tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc);
+                tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc, 1, 2);
                 int answer = Integer.parseInt(tmp);
                 if (answer == 1) {
                     int i = 0;
@@ -334,7 +334,7 @@ public class MenuEmployee {
                             selectedEmployee.getName() + " already belongs to syndicate. Do you want to leave?");
                     System.out.println("1 - Yes");
                     System.out.println("2 - No");
-                    tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc);
+                    tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc, 1,2);
                     answer = Integer.parseInt(tmp);
                     if (answer == 1) {
                         selectedEmployee.getSyndicate().setActive(false);
@@ -345,7 +345,7 @@ public class MenuEmployee {
                             + " does not belongs to syndicate or is inactive. Do you want to join?");
                     System.out.println("1 - Yes");
                     System.out.println("2 - No");
-                    tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc);
+                    tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc, 1, 2);
                     answer = Integer.parseInt(tmp);
                     if (answer == 1) {
                         Double tax;

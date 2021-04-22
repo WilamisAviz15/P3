@@ -8,7 +8,7 @@ import payroll.employee.model.Commissioned;
 import payroll.employee.model.Employee;
 import payroll.employee.model.Sales;
 import payroll.payment.MenuPayoutSchedule;
-import payroll.payment.model.PayoutSchedule;
+import payroll.payment.model.PaymentSchedule;
 import payroll.syndicate.AdditionalFee;
 import payroll.utils.Utils;
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Panel {
     public List<Employee> list_employee = new ArrayList<Employee>();
-    PayoutSchedule paySchedules = new PayoutSchedule();
+    PaymentSchedule paySchedules = new PaymentSchedule();
     public static int idSyndicateInt = 0;
 
     public void rotatePayroll() {
@@ -38,13 +38,13 @@ public class Panel {
                 tmp = Utils.consoleReadInputDouble(tmp, sc);
                 value = Double.parseDouble(tmp);
                 System.out.println("Enter day:");
-                tmp = Utils.consoleDateTime(tmp, sc, false);
+                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
                 int day = Integer.parseInt(tmp);
                 System.out.println("Enter month:");
-                tmp = Utils.consoleDateTime(tmp, sc, false);
+                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
                 int month = Integer.parseInt(tmp);
                 System.out.println("Enter year:");
-                tmp = Utils.consoleDateTime(tmp, sc, false);
+                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
                 int year = Integer.parseInt(tmp);
                 date = LocalDate.of(year, month, day);
                 Sales sl = new Sales(date, value);
@@ -67,13 +67,13 @@ public class Panel {
             Employee selectedEmployee = list_employee.get(index);
             if (selectedEmployee.getSyndicate().getActive() == true) {
                 System.out.println("Enter day:");
-                tmp = Utils.consoleDateTime(tmp, sc, false);
+                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
                 int day = Integer.parseInt(tmp);
                 System.out.println("Enter month:");
-                tmp = Utils.consoleDateTime(tmp, sc, false);
+                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
                 int month = Integer.parseInt(tmp);
                 System.out.println("Enter year:");
-                tmp = Utils.consoleDateTime(tmp, sc, false);
+                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
                 int year = Integer.parseInt(tmp);
                 date = LocalDate.of(year, month, day);
                 System.out.println("Enter value");

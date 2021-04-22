@@ -3,11 +3,11 @@ package payroll.payment.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PayoutSchedule {
+public class PaymentSchedule{
 
     private List<String> typesSchedule;
 
-    public PayoutSchedule() {
+    public PaymentSchedule() {
         this.typesSchedule = new ArrayList<String>();
         this.typesSchedule.add("weekly");
         this.typesSchedule.add("monthly");
@@ -18,7 +18,13 @@ public class PayoutSchedule {
         return this.typesSchedule;
     }
 
-    public void setTypesSchedule(List<String> typesSchedule) {
-        this.typesSchedule = typesSchedule;
+    public void setTypesSchedule(String typesSchedule) {
+        this.typesSchedule.add(typesSchedule);
+    }
+
+    public void print(){
+        for (String pS : typesSchedule) {
+            System.out.println(" - " + pS);
+        }
     }
 }
