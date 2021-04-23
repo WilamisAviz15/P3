@@ -36,8 +36,6 @@ public class MenuTimecard {
 
     public static void Login(List<Employee> list_employee, Stack<List<Employee>> undo) {
         int index = MenuEmployee.findEmployee(list_employee);
-        LocalTime loginTime;
-        LocalDate date;
         String tmp = "";
         Scanner sc = new Scanner(System.in);
         if (index != -1) {
@@ -47,23 +45,8 @@ public class MenuTimecard {
                 Hourly empl = (Hourly) selectedEmployee;
                 List<Timecard> t = Utils.cloneListTimecard(empl.getTimecard());
                 empl.setTimecard(t);
-                System.out.println("Enter day:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int day = Integer.parseInt(tmp);
-                System.out.println("Enter month:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int month = Integer.parseInt(tmp);
-                System.out.println("Enter year:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int year = Integer.parseInt(tmp);
-                date = LocalDate.of(year, month, day);
-                System.out.println("Enter time login (hh):");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, true);
-                int logInH = Integer.parseInt(tmp);
-                System.out.println("Enter time login (mm):");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, true);
-                int logInM = Integer.parseInt(tmp);
-                loginTime = LocalTime.of(logInH, logInM);
+                LocalDate date = Utils.validateDate(sc);
+                LocalTime loginTime = Utils.validateTime(sc);
                 Timecard tc = new Timecard(date, loginTime);
                 empl.getTimecard().add(tc);
             } else {
@@ -88,38 +71,21 @@ public class MenuTimecard {
 
     public static void Logout(List<Employee> list_employee, Stack<List<Employee>> undo) {
         int index = MenuEmployee.findEmployee(list_employee);
-        LocalTime loginTime;
-        LocalDate date;
         String tmp = "";
         Scanner sc = new Scanner(System.in);
         if (index != -1) {
             Employee selectedEmployee = list_employee.get(index);
             if (selectedEmployee instanceof Hourly) {
                 Hourly empl = (Hourly) selectedEmployee;
-                System.out.println("Enter day:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int day = Integer.parseInt(tmp);
-                System.out.println("Enter month:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int month = Integer.parseInt(tmp);
-                System.out.println("Enter year:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int year = Integer.parseInt(tmp);
-                date = LocalDate.of(year, month, day);
+                LocalDate date = Utils.validateDate(sc);
                 int aux = findTimecard(empl.getTimecard(), date);
                 if (aux != -1) {
                     undo.push(Utils.cloneList(list_employee));
                     List<Timecard> t = Utils.cloneListTimecard(empl.getTimecard());
                     empl.setTimecard(t);
-                    System.out.println("Enter time login (hh):");
-                    tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, true);
-                    int logInH = Integer.parseInt(tmp);
-                    System.out.println("Enter time login (mm):");
-                    tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, true);
-                    int logInM = Integer.parseInt(tmp);
-                    loginTime = LocalTime.of(logInH, logInM);
+                    LocalTime logoutTime = Utils.validateTime(sc);
                     Timecard tc = new Timecard(empl.getTimecard().get(aux).getDate(),
-                            empl.getTimecard().get(aux).getLogin(), loginTime);
+                            empl.getTimecard().get(aux).getLogin(), logoutTime);
                     empl.getTimecard().set(aux, tc);
                 } else {
                     System.out.println("You need to login first.");

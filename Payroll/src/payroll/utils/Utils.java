@@ -1,5 +1,7 @@
 package payroll.utils;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -31,6 +33,50 @@ public class Utils {
             }
         }
         return tmp;
+    }
+
+    public static LocalDate validateDate(Scanner sc){
+        LocalDate date = LocalDate.of(1999, 1, 11);
+        String aux="";
+        while (true) {
+            try {
+                System.out.println("Enter day");    
+                aux = consoleReadInputIntegerNumber(aux, sc);
+                int d = Integer.parseInt(aux);
+                System.out.println("Enter month");
+                aux = consoleReadInputIntegerNumber(aux, sc);
+                int m = Integer.parseInt(aux);
+                System.out.println("Enter year");
+                aux = consoleReadInputIntegerNumber(aux, sc);
+                int a = Integer.parseInt(aux);
+                date = LocalDate.of(a, m, d);
+                break;
+            } catch (Exception e) {
+                System.out.println("Data inválida");
+            }
+        }
+        return date;
+    }
+
+    public static LocalTime validateTime(Scanner sc){
+        LocalTime time = LocalTime.of(23,59);
+        String aux="";
+        while (true) {
+            try {
+                System.out.println("Enter hour (hh)");    
+                aux = consoleReadInputIntegerNumber(aux, sc, true);
+                int h = Integer.parseInt(aux);
+                System.out.println("Enter minutes (mm)");
+                aux = consoleReadInputIntegerNumber(aux, sc, true);
+                int m = Integer.parseInt(aux);
+                time = LocalTime.of(h, m);
+                System.out.println(time);
+                break;
+            } catch (Exception e) {
+                System.out.println("Hora inválida");
+            }
+        }
+        return time;
     }
 
     public static String consoleReadInputIntegerNumber(String tmp, Scanner sc, boolean isIncludedZero) {
