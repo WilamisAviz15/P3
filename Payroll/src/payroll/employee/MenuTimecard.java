@@ -39,9 +39,9 @@ public class MenuTimecard {
         String tmp = "";
         Scanner sc = new Scanner(System.in);
         if (index != -1) {
-            undo.push(Utils.cloneList(list_employee));
             Employee selectedEmployee = list_employee.get(index);
             if (selectedEmployee instanceof Hourly) {
+                undo.push(Utils.cloneList(list_employee));
                 Hourly empl = (Hourly) selectedEmployee;
                 List<Timecard> t = Utils.cloneListTimecard(empl.getTimecard());
                 empl.setTimecard(t);
@@ -49,6 +49,7 @@ public class MenuTimecard {
                 LocalTime loginTime = Utils.validateTime(sc);
                 Timecard tc = new Timecard(date, loginTime);
                 empl.getTimecard().add(tc);
+                System.out.println("Successful login.");
             } else {
                 System.out.println("Employee is not hourist.");
             }
@@ -87,6 +88,7 @@ public class MenuTimecard {
                     Timecard tc = new Timecard(empl.getTimecard().get(aux).getDate(),
                             empl.getTimecard().get(aux).getLogin(), logoutTime);
                     empl.getTimecard().set(aux, tc);
+                    System.out.println("Successful logout.");
                 } else {
                     System.out.println("You need to login first.");
                 }

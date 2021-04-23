@@ -10,11 +10,13 @@ import payroll.employee.model.Commissioned;
 import payroll.employee.model.Employee;
 import payroll.employee.model.Hourly;
 import payroll.employee.model.Salaried;
+import payroll.employee.model.Sales;
 import payroll.employee.model.Timecard;
 import payroll.payment.model.CheckByPostOffice;
 import payroll.payment.model.DepositByBankAccount;
 import payroll.payment.model.HandsCheck;
 import payroll.payment.model.PaymentMethod;
+import payroll.syndicate.AdditionalFee;
 import payroll.syndicate.Syndicate;
 
 public class Utils {
@@ -181,6 +183,28 @@ public class Utils {
         for (Timecard item : list) {
             Timecard newItem = (Timecard) item;
             aux = new Timecard(newItem);
+            clone.add(aux);
+        }
+        return clone;
+    }
+
+    public static List<Sales> cloneListSales(List<Sales> list) {
+        List<Sales> clone = new ArrayList<Sales>();
+        Sales aux = null;
+        for (Sales item : list) {
+            Sales newItem = (Sales) item;
+            aux = new Sales(newItem);
+            clone.add(aux);
+        }
+        return clone;
+    }
+
+    public static List<AdditionalFee> cloneListAddFee(List<AdditionalFee> list) {
+        List<AdditionalFee> clone = new ArrayList<AdditionalFee>();
+        AdditionalFee aux = null;
+        for (AdditionalFee item : list) {
+            AdditionalFee newItem = (AdditionalFee) item;
+            aux = new AdditionalFee(newItem);
             clone.add(aux);
         }
         return clone;

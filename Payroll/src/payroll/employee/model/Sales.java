@@ -14,6 +14,10 @@ public class Sales {
         return date;
     }
 
+    public Sales(Sales s){
+        this(s.getDate(), s.getValue());
+    }
+
     public void setData(LocalDate date) {
         this.date = date;
     }

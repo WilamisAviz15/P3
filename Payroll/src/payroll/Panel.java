@@ -11,6 +11,7 @@ import payroll.employee.model.Sales;
 import payroll.payment.MenuPayoutSchedule;
 import payroll.payment.model.PaymentSchedule;
 import payroll.syndicate.AdditionalFee;
+import payroll.syndicate.Syndicate;
 import payroll.utils.Utils;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,31 +29,25 @@ public class Panel {
 
     }
 
-    public static void LaunchSales(List<Employee> list_employee) {
+    public static void LaunchSales(List<Employee> list_employee, Stack<List<Employee>> undo) {
         int index = MenuEmployee.findEmployee(list_employee);
         Double value;
-        LocalDate date;
         String tmp = "";
         Scanner sc = new Scanner(System.in);
         if (index != -1) {
             Employee selectedEmployee = list_employee.get(index);
             if (selectedEmployee instanceof Commissioned) {
+                undo.push(Utils.cloneList(list_employee));
                 Commissioned empl = (Commissioned) selectedEmployee;
+                List<Sales> t = Utils.cloneListSales(empl.getSales());
+                empl.setSales(t);
                 System.out.println("Enter sale value");
                 tmp = Utils.consoleReadInputDouble(tmp, sc);
                 value = Double.parseDouble(tmp);
-                System.out.println("Enter day:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int day = Integer.parseInt(tmp);
-                System.out.println("Enter month:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int month = Integer.parseInt(tmp);
-                System.out.println("Enter year:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int year = Integer.parseInt(tmp);
-                date = LocalDate.of(year, month, day);
+                LocalDate date = Utils.validateDate(sc);
                 Sales sl = new Sales(date, value);
                 empl.getSales().add(sl);
+                System.out.println("sale added successfully");
             } else {
                 System.out.println("Employee is not comissioned.");
             }
@@ -61,30 +56,27 @@ public class Panel {
         }
     }
 
-    public static void LaunchFee(List<Employee> list_employee) {
+    public static void LaunchFee(List<Employee> list_employee, Stack<List<Employee>> undo, Stack<List<Employee>> redo) {
         int index = MenuEmployee.findEmployee(list_employee);
-        LocalDate date;
         String tmp = "";
         Double value;
         Scanner sc = new Scanner(System.in);
         if (index != -1) {
             Employee selectedEmployee = list_employee.get(index);
             if (selectedEmployee.getSyndicate().getActive() == true) {
-                System.out.println("Enter day:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int day = Integer.parseInt(tmp);
-                System.out.println("Enter month:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int month = Integer.parseInt(tmp);
-                System.out.println("Enter year:");
-                tmp = Utils.consoleReadInputIntegerNumber(tmp, sc, false);
-                int year = Integer.parseInt(tmp);
-                date = LocalDate.of(year, month, day);
+                undo.push(Utils.cloneList(list_employee));
+                redo.clear();
+                Syndicate s = Utils.cloneListSyndicate(selectedEmployee.getSyndicate());
+                selectedEmployee.setSyndicate(s);
+                List<AdditionalFee> aFX = Utils.cloneListAddFee(selectedEmployee.getSyndicate().getAdditionalFee());
+                selectedEmployee.getSyndicate().setAdditionalFee(aFX);
+                LocalDate date = Utils.validateDate(sc);
                 System.out.println("Enter value");
                 tmp = Utils.consoleReadInputDouble(tmp, sc);
                 value = Double.parseDouble(tmp);
                 AdditionalFee aF = new AdditionalFee(date, value);
                 selectedEmployee.getSyndicate().getAdditionalFee().add(aF);
+                System.out.println("Additional Fee added successfully");
             } else {
                 System.out.println(selectedEmployee.getName()
                         + " does not belongs to syndicate or is inactive to add service fee.");
@@ -120,10 +112,10 @@ public class Panel {
                 MenuTimecard.Timecard(list_employee, undo);
                 break;
             case 3:
-                LaunchSales(list_employee);
+                LaunchSales(list_employee, undo);
                 break;
             case 4:
-                LaunchFee(list_employee);
+                LaunchFee(list_employee, undo, redo);
                 break;
             case 5:
                 rotatePayroll();
@@ -137,8 +129,7 @@ public class Panel {
                     redo.push(Utils.cloneList(list_employee));
                     list_employee = aux;
                     System.out.println("Changes undone successfully.");
-                }
-                else {
+                } else {
                     System.out.println("There are nothing to undo.");
                 }
                 break;

@@ -10,6 +10,10 @@ public class AdditionalFee {
         this.date = date;
         this.value = value;
     }
+
+    public AdditionalFee(AdditionalFee aF){
+        this(aF.getDate(), aF.getValue());
+    }
     public LocalDate getDate() {
         return date;
     }
