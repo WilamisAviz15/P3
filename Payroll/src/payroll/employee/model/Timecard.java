@@ -19,6 +19,11 @@ public class Timecard{
         this.date = date;
         this.logout = logout;
     }
+
+    public Timecard(Timecard t){
+        this( t.getDate(),t.getLogin(), t.getLogout());
+    }
+
     public LocalTime getLogin() {
         return login;
     }

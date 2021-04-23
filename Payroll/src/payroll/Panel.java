@@ -117,7 +117,7 @@ public class Panel {
                 MenuEmployee.Menu(list_employee, paySchedules, undo);
                 break;
             case 2:
-                MenuTimecard.Timecard(list_employee);
+                MenuTimecard.Timecard(list_employee, undo);
                 break;
             case 3:
                 LaunchSales(list_employee);

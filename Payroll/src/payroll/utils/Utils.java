@@ -8,6 +8,7 @@ import payroll.employee.model.Commissioned;
 import payroll.employee.model.Employee;
 import payroll.employee.model.Hourly;
 import payroll.employee.model.Salaried;
+import payroll.employee.model.Timecard;
 import payroll.payment.model.CheckByPostOffice;
 import payroll.payment.model.DepositByBankAccount;
 import payroll.payment.model.HandsCheck;
@@ -123,6 +124,17 @@ public class Utils {
                 Hourly newItem = (Hourly) item;
                 aux = new Hourly(newItem);
             }
+            clone.add(aux);
+        }
+        return clone;
+    }
+
+    public static List<Timecard> cloneListTimecard(List<Timecard> list) {
+        List<Timecard> clone = new ArrayList<Timecard>();
+        Timecard aux = null;
+        for (Timecard item : list) {
+            Timecard newItem = (Timecard) item;
+            aux = new Timecard(newItem);
             clone.add(aux);
         }
         return clone;
