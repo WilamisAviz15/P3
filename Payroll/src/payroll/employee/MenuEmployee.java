@@ -46,7 +46,7 @@ public class MenuEmployee {
                 MenuEmployee.removeEmployee(list_employee);
                 break;
             case 3:
-                MenuEmployee.editEmployee(list_employee, paySchedule);
+                MenuEmployee.editEmployee(list_employee, paySchedule, undoStack);
                 break;
             case 4:
                 MenuEmployee.ListAllEmployee(list_employee);
@@ -214,7 +214,8 @@ public class MenuEmployee {
         return false;
     }
 
-    public static void editEmployee(List<Employee> list_employee, PaymentSchedule paySchedule) {
+    public static void editEmployee(List<Employee> list_employee, PaymentSchedule paySchedule,
+            Stack<List<Employee>> undoStack) {
         String op, attr;
         Double salary = 0.00;
         String bankId;
@@ -224,6 +225,7 @@ public class MenuEmployee {
         Scanner sc = new Scanner(System.in);
         int index = findEmployee(list_employee);
         if (index != -1) {
+            undoStack.push(Utils.cloneList(list_employee));
             Employee selectedEmployee = list_employee.get(index);
             System.out.printf("Employed selected: %s. What do you want to edit?\n", selectedEmployee.getName());
             System.out.println("0 - Name");
@@ -245,10 +247,11 @@ public class MenuEmployee {
                 selectedEmployee.setAddress(attr);
                 System.out.println("Successful changes.");
             } else if (op.equals("2")) {
-                // int oldAttr = list_employee.get(index).getType_employee(); TODO
                 System.out.println("Type the new type of employee: (0 - hourly, 1 - salaried, 2 - commissioned)");
                 attr = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 3);
+                PaymentMethod pM = Utils.cloneListPaymentMethod(selectedEmployee.getPaymentMethod());
                 payScheduleString = paySchedule.getTypesSchedule().get(Integer.parseInt(attr));
+                selectedEmployee.setPaymentMethod(pM);
                 selectedEmployee.getPaymentMethod().setPaySchedule(payScheduleString);
                 if (attr.equals("0")) {
                     System.out.println("Type the hourly wage:");
@@ -281,8 +284,6 @@ public class MenuEmployee {
             } else if (op.equals("3")) {
                 System.out.println(
                         "Select the new Payment Method (0 - Check by the post office, 1 - Check in Person, 2 - Bank Account)");
-                // if(selectedEmployee.getPaymentMethod() instanceof CheckByPostOffice){} //V
-                // DEPOIS
                 attr = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 3);
                 System.out.println("Type the bank ID:");
                 bankId = sc.nextLine();
@@ -343,6 +344,8 @@ public class MenuEmployee {
                     tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc, 1, 2);
                     answer = Integer.parseInt(tmp);
                     if (answer == 1) {
+                        Syndicate s = Utils.cloneListSyndicate(selectedEmployee.getSyndicate());
+                        selectedEmployee.setSyndicate(s);
                         selectedEmployee.getSyndicate().setActive(false);
                         System.out.println("Successful changes.");
                     }
@@ -359,6 +362,8 @@ public class MenuEmployee {
                         tmp = Utils.consoleReadInputDouble(tmp, sc);
                         tax = Double.parseDouble(tmp);
                         String aux = Character.toString(selectedEmployee.getName().charAt(0));
+                        Syndicate s = Utils.cloneListSyndicate(selectedEmployee.getSyndicate());
+                        selectedEmployee.setSyndicate(s);
                         selectedEmployee.getSyndicate().setIdSyndicate(aux + 2021 + "S000" + (++idSyndicateInt));
                         selectedEmployee.getSyndicate().setTax(tax);
                         selectedEmployee.getSyndicate().setActive(true);
@@ -371,6 +376,8 @@ public class MenuEmployee {
                     System.out.println("Type the new monthly TAX:");
                     tmp = Utils.consoleReadInputDouble(tmp, sc);
                     tax = Double.parseDouble(tmp);
+                    Syndicate s = Utils.cloneListSyndicate(selectedEmployee.getSyndicate());
+                    selectedEmployee.setSyndicate(s);
                     selectedEmployee.getSyndicate().setTax(tax);
                     System.out.println("Successful changes.");
                 } else {
@@ -383,6 +390,8 @@ public class MenuEmployee {
                     System.out.println("Enter the new Identification");
                     nameID = sc.nextLine();
                     if (!findEmployeeSyndicate(list_employee, nameID)) {
+                        Syndicate s = Utils.cloneListSyndicate(selectedEmployee.getSyndicate());
+                        selectedEmployee.setSyndicate(s);
                         selectedEmployee.getSyndicate().setIdSyndicate(nameID);
                         System.out.println("Successful changes.");
                     } else {

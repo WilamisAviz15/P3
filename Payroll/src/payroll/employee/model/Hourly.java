@@ -10,12 +10,21 @@ public class Hourly extends Employee {
     private Double hourlyValue;
     private List<Timecard> timeCard;
 
+    public Hourly() {
+    }
+
+    public Hourly(Hourly s) {
+        this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getHourlyValue(), s.getSyndicate());
+        this.setTimecard(s.getTimecard());
+    }
+
     public Hourly(int id, String name, String address, PaymentMethod paymentMethod, Double hourlyValue,
             Syndicate sindicalist) {
         super(id, name, address, paymentMethod, sindicalist);
         this.hourlyValue = hourlyValue;
         this.timeCard = new ArrayList<Timecard>();
     }
+    
 
     public Hourly(Double hourlyValue) {
         this.hourlyValue = hourlyValue;
@@ -40,7 +49,8 @@ public class Hourly extends Employee {
 
     @Override
     public String toString() {
-        return "\nType of Employee: Hourly\n" + "Value by hour: " + getHourlyValue().toString()
-                + "\nTimecard: " + getTimecard().toString()+ super.toString();
+        return "\nType of Employee: Hourly\n" + "Value by hour: " + getHourlyValue().toString() + "\nTimecard: "
+                + getTimecard().toString() + super.toString();
     }
+
 }

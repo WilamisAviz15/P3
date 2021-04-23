@@ -10,6 +10,10 @@ public class CheckByPostOffice extends PaymentMethod{
         this.address = address;
     }
 
+    public CheckByPostOffice(CheckByPostOffice hC){
+        this(hC.getBankId(), hC.getAgency(), hC.getAccountNumber(), hC.getPaySchedule(), hC.getNumberCheck(), hC.getAddress());
+    }
+
     public int getNumberCheck() {
         return numberCheck;
     }

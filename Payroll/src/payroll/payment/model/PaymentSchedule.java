@@ -14,6 +14,14 @@ public class PaymentSchedule{
         this.typesSchedule.add("biweekly 2 Friday (Default)");
     }
 
+    public PaymentSchedule(List<String> typesSchedule){
+        this.typesSchedule = typesSchedule;
+    }
+
+    public PaymentSchedule(PaymentSchedule pS){
+        this(pS.getTypesSchedule());
+    }
+
     public List<String> getTypesSchedule() {
         return this.typesSchedule;
     }

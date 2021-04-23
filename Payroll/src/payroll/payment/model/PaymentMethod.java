@@ -9,6 +9,10 @@ public class PaymentMethod {
     public PaymentMethod() {
     }
 
+    public PaymentMethod(PaymentMethod pM){
+        this(pM.getBankId(), pM.getAgency(), pM.getAccountNumber(), pM.getPaySchedule());
+    }
+    
     public PaymentMethod(String bankId, String agency, String accountNumber, String paySchedule) {
         this.bankId = bankId;
         this.agency = agency;

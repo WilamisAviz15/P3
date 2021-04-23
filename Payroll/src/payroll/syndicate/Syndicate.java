@@ -16,6 +16,11 @@ public class Syndicate {
         this.additionalFee = new ArrayList<AdditionalFee>();
     }
 
+    public Syndicate(Syndicate s) {
+        this(s.getIdSyndicate(), s.getTax(), s.getActive());
+        this.additionalFee = new ArrayList<AdditionalFee>();
+    }
+
     public Syndicate(boolean active) {
         this.active = active;
     }

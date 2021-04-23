@@ -8,6 +8,10 @@ public class HandsCheck extends PaymentMethod{
         this.numberCheck = numberCheck;
     }
 
+    public HandsCheck(HandsCheck hC){
+        this(hC.getBankId(), hC.getAgency(), hC.getAccountNumber(), hC.getPaySchedule(), hC.getNumberCheck());
+    }
+
     public int getNumberCheck() {
         return numberCheck;
     }

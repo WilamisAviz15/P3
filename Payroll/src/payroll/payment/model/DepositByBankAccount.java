@@ -8,6 +8,10 @@ public class DepositByBankAccount extends PaymentMethod{
         this.accountType = accountType;
     }
 
+    public DepositByBankAccount(DepositByBankAccount hC){
+        this(hC.getBankId(), hC.getAgency(), hC.getAccountNumber(), hC.getPaySchedule(), hC.getAccountType());
+    }
+
     public String getAccountType() {
         return accountType;
     }

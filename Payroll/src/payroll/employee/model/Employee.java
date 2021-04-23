@@ -10,7 +10,12 @@ public class Employee {
     private PaymentMethod paymentMethod;
     private Syndicate sindicalist;
 
-    public Employee() {}
+    public Employee() {
+    }
+
+    public Employee(Employee s) {
+        this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getSyndicate());
+    }
 
     public Employee(int id, String name, String address, PaymentMethod paymentMethod, Syndicate sindicalist) {
         this.id = id;
@@ -62,7 +67,8 @@ public class Employee {
 
     @Override
     public String toString() {
-        String message = "\nEmployee ID: " + getId() + "\nName: " + getName() + "\nAddress: " + getAddress() + "\n--Info Payment-- \n" +getPaymentMethod();
+        String message = "\nEmployee ID: " + getId() + "\nName: " + getName() + "\nAddress: " + getAddress()
+                + "\n--Info Payment-- \n" + getPaymentMethod();
         if (getSyndicate().getActive() == true) {
             message += getSyndicate().toString();
         } else {
