@@ -29,7 +29,7 @@ public class Panel {
 
     }
 
-    public static void LaunchSales(List<Employee> list_employee, Stack<List<Employee>> undo) {
+    public static void LaunchSales(List<Employee> list_employee, Stack<List<Employee>> undo, Stack<List<Employee>> redo) {
         int index = MenuEmployee.findEmployee(list_employee);
         Double value;
         String tmp = "";
@@ -38,6 +38,7 @@ public class Panel {
             Employee selectedEmployee = list_employee.get(index);
             if (selectedEmployee instanceof Commissioned) {
                 undo.push(Utils.cloneList(list_employee));
+                redo.clear();
                 Commissioned empl = (Commissioned) selectedEmployee;
                 List<Sales> t = Utils.cloneListSales(empl.getSales());
                 empl.setSales(t);
@@ -106,13 +107,13 @@ public class Panel {
             opc = Integer.parseInt(option);
             switch (opc) {
             case 1:
-                MenuEmployee.Menu(list_employee, paySchedules, undo);
+                MenuEmployee.Menu(list_employee, paySchedules, undo, redo);
                 break;
             case 2:
-                MenuTimecard.Timecard(list_employee, undo);
+                MenuTimecard.Timecard(list_employee, undo, redo);
                 break;
             case 3:
-                LaunchSales(list_employee, undo);
+                LaunchSales(list_employee, undo, redo);
                 break;
             case 4:
                 LaunchFee(list_employee, undo, redo);

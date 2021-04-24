@@ -24,7 +24,7 @@ public class MenuEmployee {
     private static String[] accountType = { "Corrente", "Poupança", "Fácil", "Conjunta" };
 
     public static void Menu(List<Employee> list_employee, PaymentSchedule paySchedule,
-            Stack<List<Employee>> undoStack) {
+            Stack<List<Employee>> undoStack, Stack<List<Employee>> redo) {
         int option;
         String tmp = "";
         Scanner op = new Scanner(System.in);
@@ -40,13 +40,13 @@ public class MenuEmployee {
             option = Integer.parseInt(tmp);
             switch (option) {
             case 1:
-                list_employee.add(MenuEmployee.addEmployee(paySchedule, list_employee, undoStack));
+                list_employee.add(MenuEmployee.addEmployee(paySchedule, list_employee, undoStack, redo));
                 break;
             case 2:
-                MenuEmployee.removeEmployee(list_employee);
+                MenuEmployee.removeEmployee(list_employee, undoStack, redo);
                 break;
             case 3:
-                MenuEmployee.editEmployee(list_employee, paySchedule, undoStack);
+                MenuEmployee.editEmployee(list_employee, paySchedule, undoStack, redo);
                 break;
             case 4:
                 MenuEmployee.ListAllEmployee(list_employee);
@@ -59,8 +59,9 @@ public class MenuEmployee {
     }
 
     public static Employee addEmployee(PaymentSchedule paySchedule, List<Employee> lEmployees,
-            Stack<List<Employee>> undoStack) {
+            Stack<List<Employee>> undoStack, Stack<List<Employee>> redo) {
         undoStack.push(Utils.cloneList(lEmployees));
+        redo.clear();
         PaymentMethod paymentMethod = null;
         Syndicate sindicalist = null;
         Employee newEmployees;
@@ -70,7 +71,7 @@ public class MenuEmployee {
         int optionPaymentMethod, optionSindicalist;
         System.out.println("Type the name:");
         String name = sc.nextLine();
-        System.out.println("Type the adrress:");
+        System.out.println("Type the address:");
         String address = sc.nextLine();
         System.out.println("Type of employee (0 - hourly, 1 - salaried, 2 - commissioned)");
         tmp = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 3);
@@ -154,9 +155,11 @@ public class MenuEmployee {
         return newEmployees;
     }
 
-    public static void removeEmployee(List<Employee> list_employee) {
+    public static void removeEmployee(List<Employee> list_employee,Stack<List<Employee>> undoStack, Stack<List<Employee>> redo) {
         int index = findEmployee(list_employee);
         if (index != -1) {
+            undoStack.push(Utils.cloneList(list_employee));
+            redo.clear();
             list_employee.remove(index);
             System.out.println("Employee removed.");
         } else {
@@ -215,7 +218,7 @@ public class MenuEmployee {
     }
 
     public static void editEmployee(List<Employee> list_employee, PaymentSchedule paySchedule,
-            Stack<List<Employee>> undoStack) {
+            Stack<List<Employee>> undoStack, Stack<List<Employee>> redo) {
         String op, attr;
         Double salary = 0.00;
         String bankId;
@@ -226,6 +229,7 @@ public class MenuEmployee {
         int index = findEmployee(list_employee);
         if (index != -1) {
             undoStack.push(Utils.cloneList(list_employee));
+            redo.clear();
             Employee selectedEmployee = list_employee.get(index);
             System.out.printf("Employed selected: %s. What do you want to edit?\n", selectedEmployee.getName());
             System.out.println("0 - Name");
