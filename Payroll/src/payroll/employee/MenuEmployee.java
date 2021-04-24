@@ -23,8 +23,8 @@ public class MenuEmployee {
     public static int idSyndicateInt = 0;
     private static String[] accountType = { "Corrente", "Poupança", "Fácil", "Conjunta" };
 
-    public static void Menu(List<Employee> list_employee, PaymentSchedule paySchedule,
-            Stack<List<Employee>> undoStack, Stack<List<Employee>> redo) {
+    public static void Menu(List<Employee> list_employee, PaymentSchedule paySchedule, Stack<List<Employee>> undoStack,
+            Stack<List<Employee>> redo) {
         int option;
         String tmp = "";
         Scanner op = new Scanner(System.in);
@@ -155,7 +155,8 @@ public class MenuEmployee {
         return newEmployees;
     }
 
-    public static void removeEmployee(List<Employee> list_employee,Stack<List<Employee>> undoStack, Stack<List<Employee>> redo) {
+    public static void removeEmployee(List<Employee> list_employee, Stack<List<Employee>> undoStack,
+            Stack<List<Employee>> redo) {
         int index = findEmployee(list_employee);
         if (index != -1) {
             undoStack.push(Utils.cloneList(list_employee));
@@ -239,7 +240,8 @@ public class MenuEmployee {
             System.out.println("4 - Join/leave syndicate");
             System.out.println("5 - Monthly syndicate fee");
             System.out.println("6 - Syndical Identification");
-            op = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 7);
+            System.out.println("7 - Payment Schedule");
+            op = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 8);
             if (op.equals("0")) {
                 System.out.println("Type the new name");
                 attr = sc.nextLine();
@@ -405,6 +407,18 @@ public class MenuEmployee {
                     System.out.println(selectedEmployee.getName() + " does not belongs to syndicate to edit ID");
                     ;
                 }
+            } else if (op.equals("7")) {
+                int i = 0;
+                System.out.println("Select the new payment schedule:");
+                for (String pS : paySchedule.getTypesSchedule()) {
+                    System.out.println(i++ + " - " + pS);
+                }
+                tmp = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, i);
+                PaymentMethod pM = Utils.cloneListPaymentMethod(selectedEmployee.getPaymentMethod());
+                payScheduleString = paySchedule.getTypesSchedule().get(Integer.parseInt(tmp));
+                selectedEmployee.setPaymentMethod(pM);
+                selectedEmployee.getPaymentMethod().setPaySchedule(payScheduleString);
+                System.out.println("Successful changes.");
             }
         } else {
             System.out.println("Employee not found.");
