@@ -22,6 +22,6 @@ public class HandsCheck extends PaymentMethod{
 
     @Override
     public String toString() {
-        return super.toString() +"\nType of Payment: "+ "Hands Check\n" + "Number Check: " + getNumberCheck();
+        return super.toString() +"\nType of Payment: "+ getClass().getSimpleName() + "\nNumber Check: " + getNumberCheck();
     }
 }

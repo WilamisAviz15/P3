@@ -1,6 +1,10 @@
 package payroll.employee.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import payroll.payment.model.PaymentMethod;
+import payroll.payment.model.Payslip;
 import payroll.syndicate.Syndicate;
 
 public class Employee {
@@ -9,6 +13,7 @@ public class Employee {
     private String address;
     private PaymentMethod paymentMethod;
     private Syndicate sindicalist;
+    private List<Payslip> payslipSheet;
 
     public Employee() {
     }
@@ -23,6 +28,7 @@ public class Employee {
         this.address = address;
         this.paymentMethod = paymentMethod;
         this.sindicalist = sindicalist;
+        this.payslipSheet = new ArrayList<Payslip>();
     }
 
     public int getId() {
@@ -63,6 +69,14 @@ public class Employee {
 
     public void setSyndicate(Syndicate sindicalist) {
         this.sindicalist = sindicalist;
+    }
+
+    public List<Payslip> getPayslipSheet() {
+        return payslipSheet;
+    }
+
+    public void setPayslipSheet(List<Payslip> payslipSheet) {
+        this.payslipSheet = payslipSheet;
     }
 
     @Override

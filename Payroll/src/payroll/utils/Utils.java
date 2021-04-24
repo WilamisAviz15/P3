@@ -37,12 +37,12 @@ public class Utils {
         return tmp;
     }
 
-    public static LocalDate validateDate(Scanner sc){
+    public static LocalDate validateDate(Scanner sc) {
         LocalDate date = LocalDate.of(1999, 1, 11);
-        String aux="";
+        String aux = "";
         while (true) {
             try {
-                System.out.println("Enter day");    
+                System.out.println("Enter day");
                 aux = consoleReadInputIntegerNumber(aux, sc);
                 int d = Integer.parseInt(aux);
                 System.out.println("Enter month");
@@ -60,12 +60,41 @@ public class Utils {
         return date;
     }
 
-    public static LocalTime validateTime(Scanner sc){
-        LocalTime time = LocalTime.of(23,59);
-        String aux="";
+    public static boolean isWeekend(String day) {
+        boolean aux = false;
+        if ((day.equals("SATURDAY") || day.equals("SUNDAY"))) {
+            aux = true;
+        }
+        return aux;
+    }
+
+    public static boolean isHoliday(LocalDate holidays[], LocalDate dt) {
+        boolean aux = false;
+        for (LocalDate holiday : holidays) {
+            if (dt.isEqual(holiday)) {
+                aux = true;
+            }
+        }
+        return aux;
+    }
+
+    public static int countHolidaysOrWeekend(LocalDate date, LocalDate holidays[]){
+        int i = 0;
+        String day = String.valueOf(date.getDayOfWeek());
+        while(isWeekend(day) || isHoliday(holidays, date)){
+            date = date.plusDays(1);
+            day = String.valueOf(date.getDayOfWeek());
+            i++;
+        }
+        return i;
+    }
+
+    public static LocalTime validateTime(Scanner sc) {
+        LocalTime time = LocalTime.of(23, 59);
+        String aux = "";
         while (true) {
             try {
-                System.out.println("Enter hour (hh)");    
+                System.out.println("Enter hour (hh)");
                 aux = consoleReadInputIntegerNumber(aux, sc, true);
                 int h = Integer.parseInt(aux);
                 System.out.println("Enter minutes (mm)");
@@ -208,6 +237,25 @@ public class Utils {
             clone.add(aux);
         }
         return clone;
+    }
+
+    public static Double sumAddFee(List<AdditionalFee> list, LocalDate date, LocalDate lastPayment) {
+        Double sum = 0.00;
+        for (AdditionalFee item : list) {
+            if (item.getDate().isAfter(lastPayment)
+                    && (item.getDate().isEqual(date) || item.getDate().isBefore(date))) {
+                sum += item.getValue();
+            }
+        }
+        return sum;
+    }
+
+    public static Double sumAddFee(List<AdditionalFee> list, LocalDate date) {
+        Double sum = 0.00;
+        for (AdditionalFee item : list) {
+            sum += item.getValue();
+        }
+        return sum;
     }
 
     public static PaymentMethod cloneListPaymentMethod(PaymentMethod list) {

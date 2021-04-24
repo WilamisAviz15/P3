@@ -6,7 +6,8 @@ import payroll.syndicate.Syndicate;
 public class Salaried extends Employee {
     private Double salary;
 
-    public Salaried(){}
+    public Salaried() {
+    }
 
     public Salaried(Salaried s) {
         this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getSalary(), s.getSyndicate());
@@ -32,6 +33,7 @@ public class Salaried extends Employee {
 
     @Override
     public String toString() {
-        return "\nType of Employee: Salaried\n" + "salary: " + getSalary().toString() + super.toString();
+        return "\nType of Employee:" + getClass().getSimpleName() + "\nsalary: " + getSalary().toString()
+                + super.toString();
     }
 }

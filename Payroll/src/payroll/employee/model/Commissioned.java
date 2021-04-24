@@ -11,7 +11,9 @@ public class Commissioned extends Employee {
     private Double comission;
     private List<Sales> sales;
 
-    public Commissioned(){}
+    public Commissioned() {
+    }
+
     public Commissioned(Double salary, Double comission) {
         this.salary = salary;
         this.comission = comission;
@@ -19,7 +21,8 @@ public class Commissioned extends Employee {
     }
 
     public Commissioned(Commissioned s) {
-        this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getSalary(),s.getComission(), s.getSyndicate());
+        this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getSalary(), s.getComission(),
+                s.getSyndicate());
         this.setSales(s.getSales());
     }
 
@@ -57,7 +60,8 @@ public class Commissioned extends Employee {
 
     @Override
     public String toString() {
-        return "\nType of Employee: Commissioned\n" + "Salary: " + getSalary().toString()
-                + "\nComission (%): " + getComission().toString() + "\nSales: " + getSales().toString() +super.toString();
+        return "\nType of Employee:" + getClass().getSimpleName() + "\nSalary: " + getSalary().toString()
+                + "\nComission (%): " + getComission().toString() + "\nSales: " + getSales().toString()
+                + super.toString();
     }
 }

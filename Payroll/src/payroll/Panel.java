@@ -9,6 +9,7 @@ import payroll.employee.model.Commissioned;
 import payroll.employee.model.Employee;
 import payroll.employee.model.Sales;
 import payroll.payment.MenuPayoutSchedule;
+import payroll.payment.MenuPayroll;
 import payroll.payment.model.PaymentSchedule;
 import payroll.syndicate.AdditionalFee;
 import payroll.syndicate.Syndicate;
@@ -25,11 +26,8 @@ public class Panel {
     Stack<List<Employee>> undo = new Stack<>();
     Stack<List<Employee>> redo = new Stack<>();
 
-    public void rotatePayroll() {
-        
-    }
-
-    public static void LaunchSales(List<Employee> list_employee, Stack<List<Employee>> undo, Stack<List<Employee>> redo) {
+    public static void LaunchSales(List<Employee> list_employee, Stack<List<Employee>> undo,
+            Stack<List<Employee>> redo) {
         int index = MenuEmployee.findEmployee(list_employee);
         Double value;
         String tmp = "";
@@ -119,7 +117,7 @@ public class Panel {
                 LaunchFee(list_employee, undo, redo);
                 break;
             case 5:
-                rotatePayroll();
+                MenuPayroll.Menu(list_employee);
                 break;
             case 6:
                 MenuPayoutSchedule.Menu(paySchedules);

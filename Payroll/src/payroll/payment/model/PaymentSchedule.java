@@ -9,9 +9,9 @@ public class PaymentSchedule{
 
     public PaymentSchedule() {
         this.typesSchedule = new ArrayList<String>();
-        this.typesSchedule.add("weekly 1 Friday (Default)");
-        this.typesSchedule.add("monthly $ (Default)");
-        this.typesSchedule.add("weekly 2 Friday (Default)");
+        this.typesSchedule.add("weekly 1 Friday");
+        this.typesSchedule.add("monthly $");
+        this.typesSchedule.add("weekly 2 Friday");
     }
 
     public PaymentSchedule(List<String> typesSchedule){

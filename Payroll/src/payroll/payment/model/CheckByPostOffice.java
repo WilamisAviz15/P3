@@ -32,7 +32,7 @@ public class CheckByPostOffice extends PaymentMethod{
 
     @Override
     public String toString() {
-        return super.toString() + "\nType of Payment: " + "Check by Post Office\n" + "Number Check: " + getNumberCheck()+ "\nAddress: " + getAddress();
+        return super.toString() + "\nType of Payment: " + getClass().getSimpleName() + "\nNumber Check: " + getNumberCheck()+ "\nAddress: " + getAddress();
     }
 
 }
