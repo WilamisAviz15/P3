@@ -11,7 +11,7 @@ public class PaymentSchedule{
         this.typesSchedule = new ArrayList<String>();
         this.typesSchedule.add("weekly 1 Friday (Default)");
         this.typesSchedule.add("monthly $ (Default)");
-        this.typesSchedule.add("biweekly 2 Friday (Default)");
+        this.typesSchedule.add("weekly 2 Friday (Default)");
     }
 
     public PaymentSchedule(List<String> typesSchedule){

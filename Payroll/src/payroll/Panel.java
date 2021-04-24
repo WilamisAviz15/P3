@@ -26,7 +26,7 @@ public class Panel {
     Stack<List<Employee>> redo = new Stack<>();
 
     public void rotatePayroll() {
-
+        
     }
 
     public static void LaunchSales(List<Employee> list_employee, Stack<List<Employee>> undo, Stack<List<Employee>> redo) {
