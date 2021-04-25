@@ -26,7 +26,7 @@ public class Payslip {
     }
 
     public Payslip(Double basicPay, Double netPay, LocalDate date, Double tax, Double additionaTax,
-            String referenceMonth, Double commissionsValue) {
+            String referenceMonth, Double commissionsValue, boolean lastPaidIsHoliday) {
         this.basicPay = basicPay;
         this.netPay = netPay;
         this.date = date;
@@ -34,6 +34,7 @@ public class Payslip {
         this.additionaTax = additionaTax;
         this.referenceMonth = referenceMonth;
         this.commissionsValue = commissionsValue;
+        this.lastPaidIsHoliday = lastPaidIsHoliday;
     }
 
     public Payslip(Double basicPay, Double netPay, Double hours, Double extrasHours, LocalDate date, Double tax,
