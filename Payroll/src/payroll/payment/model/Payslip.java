@@ -12,6 +12,7 @@ public class Payslip {
     private Double tax = 0.00;
     private Double additionaTax = 0.00;
     private String referenceMonth;
+    private Boolean lastPaidIsHoliday;
     private int countTimecard;
 
     public Payslip(Double basicPay, Double netPay, LocalDate date, Double tax, Double additionaTax,
@@ -24,8 +25,19 @@ public class Payslip {
         this.referenceMonth = referenceMonth;
     }
 
+    public Payslip(Double basicPay, Double netPay, LocalDate date, Double tax, Double additionaTax,
+            String referenceMonth, Double commissionsValue) {
+        this.basicPay = basicPay;
+        this.netPay = netPay;
+        this.date = date;
+        this.tax = tax;
+        this.additionaTax = additionaTax;
+        this.referenceMonth = referenceMonth;
+        this.commissionsValue = commissionsValue;
+    }
+
     public Payslip(Double basicPay, Double netPay, Double hours, Double extrasHours, LocalDate date, Double tax,
-            Double additionaTax, String referenceMonth, int countTimecard) {
+            Double additionaTax, String referenceMonth, int countTimecard, boolean lastPaidIsHoliday) {
         this.basicPay = basicPay;
         this.netPay = netPay;
         this.hours = hours;
@@ -35,6 +47,7 @@ public class Payslip {
         this.additionaTax = additionaTax;
         this.referenceMonth = referenceMonth;
         this.countTimecard = countTimecard;
+        this.lastPaidIsHoliday = lastPaidIsHoliday;
     }
 
     public Double getBasicPay() {
@@ -43,6 +56,14 @@ public class Payslip {
 
     public void setBasicPay(Double basicPay) {
         this.basicPay = basicPay;
+    }
+
+    public Boolean getLastPaidIsHoliday() {
+        return lastPaidIsHoliday;
+    }
+
+    public void setLastPaidIsHoliday(Boolean lastPaidIsHoliday) {
+        this.lastPaidIsHoliday = lastPaidIsHoliday;
     }
 
     public int getCountTimecard() {

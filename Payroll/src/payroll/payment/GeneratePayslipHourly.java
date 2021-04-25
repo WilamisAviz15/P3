@@ -19,6 +19,7 @@ public class GeneratePayslipHourly {
     public static void generatePaymentHourlyMonth(Hourly sEmployee, LocalDate date, List<Payslip> payslip,
             LocalDate holidays[], int daysHolidayOrWeekn) {
         LocalDate lastPayment, oldData;
+        boolean lastPaymentIsHoliday = false;
         Double hours = 0.00, extraHours = 0.00, ttlHours = 0.00, liquidValue = 0.00;
         ;
         List<Timecard> getTimeCard = sEmployee.getTimecard();
@@ -29,6 +30,7 @@ public class GeneratePayslipHourly {
             if (daysHolidayOrWeekn != 0) {
                 oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
+                lastPaymentIsHoliday = true;
             } else {
                 oldData = date;
             }
@@ -56,16 +58,15 @@ public class GeneratePayslipHourly {
                             extraHours = hours - 8.0;
                             liquidValue += 8.0 * basicSalary;
                             liquidValue += extraHours * basicSalary * 1.5;
-                            liquidValue -= tax - addTax;
                         } else if (hours >= 0.0 && hours <= 8.0) {
                             liquidValue += hours * basicSalary;
-                            liquidValue -= tax - addTax;
                         }
                         i++;
                     }
                 }
+                liquidValue -= tax - addTax;
                 Payslip newPayslip = new Payslip(basicSalary, liquidValue, ttlHours, extraHours, date, tax, addTax,
-                        referenceMonth, i);
+                        referenceMonth, i, lastPaymentIsHoliday);
                 sEmployee.getPayslipSheet().add(newPayslip);
             }
         } else {
@@ -75,6 +76,7 @@ public class GeneratePayslipHourly {
             if (daysHolidayOrWeekn != 0) {
                 oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
+                lastPaymentIsHoliday = true;
             } else {
                 oldData = date;
             }
@@ -95,16 +97,15 @@ public class GeneratePayslipHourly {
                         extraHours = hours - 8.0;
                         liquidValue += 8.0 * basicSalary;
                         liquidValue += extraHours * basicSalary * 1.5;
-                        liquidValue -= tax - addTax;
                     } else if (hours >= 0.0 && hours <= 8.0) {
                         liquidValue += hours * basicSalary;
-                        liquidValue -= tax - addTax;
                     }
                     i++;
                 }
             }
+            liquidValue -= tax - addTax;
             Payslip newPayslip = new Payslip(basicSalary, liquidValue, ttlHours, extraHours, date, tax, addTax,
-                    referenceMonth, i);
+                    referenceMonth, i, lastPaymentIsHoliday);
             sEmployee.getPayslipSheet().add(newPayslip);
         }
     }
@@ -112,6 +113,7 @@ public class GeneratePayslipHourly {
     public static void generatePaymentHourlyBiWeekly(Hourly sEmployee, LocalDate date, List<Payslip> payslip,
             LocalDate holidays[], int daysHolidayOrWeekn) {
         LocalDate lastPayment, oldData;
+        boolean lastPaymentIsHoliday = false;
         Double hours = 0.00, extraHours = 0.00, ttlHours = 0.00, liquidValue = 0.00;
         List<Timecard> getTimeCard = sEmployee.getTimecard();
         if (!payslip.isEmpty()) {
@@ -121,11 +123,19 @@ public class GeneratePayslipHourly {
             if (daysHolidayOrWeekn != 0) {
                 oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
+                lastPaymentIsHoliday = true;
             } else {
                 oldData = date;
             }
             String referenceMonth = String.valueOf(oldData.getMonth());
-            int lastWeekPayment = Utils.weeklyDifference(lastPayment, date);
+            int lastWeekPayment;
+            if(lastPaymentIsHoliday){
+                lastWeekPayment = Utils.weeklyDifference(lastPayment, date)+1;
+            }
+            else{
+                lastWeekPayment = Utils.weeklyDifference(lastPayment, date);
+            }
+            
             if (date.isAfter(lastPayment) && (lastWeekPayment == 2)) {
                 Double basicSalary = sEmployee.getHourlyValue();
                 double tax = 0.00;
@@ -136,27 +146,45 @@ public class GeneratePayslipHourly {
                 }
                 int i = 0;
                 for (Timecard sTimecard : getTimeCard) {
-                    if ((sTimecard.getDate().isBefore(date) || date.isEqual(sTimecard.getDate()))
-                            && sTimecard.getDate().isAfter(lastPayment)) {
-                        LocalTime login = sTimecard.getLogin();
-                        LocalTime logout = sTimecard.getLogout();
-                        Duration duration = Duration.between(login, logout);
-                        hours = (double) duration.getSeconds() / 3600;
-                        ttlHours += hours;
-                        if (hours > 8.0) {
-                            extraHours = hours - 8.0;
-                            liquidValue += 8.0 * basicSalary;
-                            liquidValue += extraHours * basicSalary * 1.5;
-                            liquidValue -= tax - addTax;
-                        } else if (hours >= 0.0 && hours <= 8.0) {
-                            liquidValue += hours * basicSalary;
-                            liquidValue -= tax - addTax;
+                    if ((sTimecard.getDate().isBefore(date) || date.isEqual(sTimecard.getDate()))) {
+                        if (lastPayslip.getLastPaidIsHoliday()) {
+                            if (sTimecard.getDate().isAfter(lastPayment) || sTimecard.getDate().isEqual(lastPayment)) {
+                                LocalTime login = sTimecard.getLogin();
+                                LocalTime logout = sTimecard.getLogout();
+                                Duration duration = Duration.between(login, logout);
+                                hours = (double) duration.getSeconds() / 3600;
+                                ttlHours += hours;
+                                if (hours > 8.0) {
+                                    extraHours = hours - 8.0;
+                                    liquidValue += 8.0 * basicSalary;
+                                    liquidValue += extraHours * basicSalary * 1.5;
+                                } else if (hours >= 0.0 && hours <= 8.0) {
+                                    liquidValue += hours * basicSalary;
+                                }
+                                i++;
+                            }
+                        } else {
+                            if (sTimecard.getDate().isAfter(lastPayment)) {
+                                LocalTime login = sTimecard.getLogin();
+                                LocalTime logout = sTimecard.getLogout();
+                                Duration duration = Duration.between(login, logout);
+                                hours = (double) duration.getSeconds() / 3600;
+                                ttlHours += hours;
+                                if (hours > 8.0) {
+                                    extraHours = hours - 8.0;
+                                    liquidValue += 8.0 * basicSalary;
+                                    liquidValue += extraHours * basicSalary * 1.5;
+                                } else if (hours >= 0.0 && hours <= 8.0) {
+                                    liquidValue += hours * basicSalary;
+                                }
+                                i++;
+                            }
                         }
-                        i++;
                     }
                 }
+                liquidValue -= tax - addTax;
                 Payslip newPayslip = new Payslip(basicSalary, liquidValue, ttlHours, extraHours, date, tax, addTax,
-                        referenceMonth, i);
+                        referenceMonth, i, lastPaymentIsHoliday);
                 sEmployee.getPayslipSheet().add(newPayslip);
             }
         } else {
@@ -166,6 +194,7 @@ public class GeneratePayslipHourly {
             if (daysHolidayOrWeekn != 0) {
                 oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
+                lastPaymentIsHoliday = true;
             } else {
                 oldData = date;
             }
@@ -186,16 +215,15 @@ public class GeneratePayslipHourly {
                         extraHours = hours - 8.0;
                         liquidValue += 8.0 * basicSalary;
                         liquidValue += extraHours * basicSalary * 1.5;
-                        liquidValue -= tax - addTax;
                     } else if (hours >= 0.0 && hours <= 8.0) {
                         liquidValue += hours * basicSalary;
-                        liquidValue -= tax - addTax;
                     }
                     i++;
                 }
             }
+            liquidValue -= tax - addTax;
             Payslip newPayslip = new Payslip(basicSalary, liquidValue, ttlHours, extraHours, date, tax, addTax,
-                    referenceMonth, i);
+                    referenceMonth, i, lastPaymentIsHoliday);
             sEmployee.getPayslipSheet().add(newPayslip);
         }
     }
@@ -204,6 +232,7 @@ public class GeneratePayslipHourly {
             LocalDate holidays[], int daysHolidayOrWeekn) {
         LocalDate lastPayment, oldData;
         Double hours = 0.00, extraHours = 0.00, ttlHours = 0.00, liquidValue = 0.00;
+        boolean lastPaymentIsHoliday = false;
         List<Timecard> getTimeCard = sEmployee.getTimecard();
         if (!payslip.isEmpty()) {
             int sizePayslip = payslip.size() - 1;
@@ -212,6 +241,7 @@ public class GeneratePayslipHourly {
             if (daysHolidayOrWeekn != 0) {
                 oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
+                lastPaymentIsHoliday = true;
             } else {
                 oldData = date;
             }
@@ -226,33 +256,52 @@ public class GeneratePayslipHourly {
                 }
                 int i = 0;
                 for (Timecard sTimecard : getTimeCard) {
-                    if ((sTimecard.getDate().isBefore(oldData) || oldData.isEqual(sTimecard.getDate()))
-                            && sTimecard.getDate().isAfter(lastPayment)) {
-                        LocalTime login = sTimecard.getLogin();
-                        LocalTime logout = sTimecard.getLogout();
-                        Duration duration = Duration.between(login, logout);
-                        hours = (double) duration.getSeconds() / 3600;
-                        ttlHours += hours;
-                        if (hours > 8.0) {
-                            extraHours = hours - 8.0;
-                            liquidValue += 8.0 * basicSalary;
-                            liquidValue += extraHours * basicSalary * 1.5;
-                            liquidValue -= tax - addTax;
-                        } else if (hours >= 0.0 && hours <= 8.0) {
-                            liquidValue += hours * basicSalary;
-                            liquidValue -= tax - addTax;
+                    if ((sTimecard.getDate().isBefore(oldData) || oldData.isEqual(sTimecard.getDate()))) {
+                        if (lastPayslip.getLastPaidIsHoliday()) {
+                            if (sTimecard.getDate().isAfter(lastPayment) || sTimecard.getDate().isEqual(lastPayment)) {
+                                LocalTime login = sTimecard.getLogin();
+                                LocalTime logout = sTimecard.getLogout();
+                                Duration duration = Duration.between(login, logout);
+                                hours = (double) duration.getSeconds() / 3600;
+                                ttlHours += hours;
+                                if (hours > 8.0) {
+                                    extraHours = hours - 8.0;
+                                    liquidValue += 8.0 * basicSalary;
+                                    liquidValue += extraHours * basicSalary * 1.5;
+                                } else if (hours >= 0.0 && hours <= 8.0) {
+                                    liquidValue += hours * basicSalary;
+                                }
+                                i++;
+                            }
+                        } else {
+                            if (sTimecard.getDate().isAfter(lastPayment)) {
+                                LocalTime login = sTimecard.getLogin();
+                                LocalTime logout = sTimecard.getLogout();
+                                Duration duration = Duration.between(login, logout);
+                                hours = (double) duration.getSeconds() / 3600;
+                                ttlHours += hours;
+                                if (hours > 8.0) {
+                                    extraHours = hours - 8.0;
+                                    liquidValue += 8.0 * basicSalary;
+                                    liquidValue += extraHours * basicSalary * 1.5;
+                                } else if (hours >= 0.0 && hours <= 8.0) {
+                                    liquidValue += hours * basicSalary;
+                                }
+                                i++;
+                            }
                         }
-                        i++;
                     }
                 }
+                liquidValue -= tax - addTax;
                 Payslip newPayslip = new Payslip(basicSalary, liquidValue, ttlHours, extraHours, date, tax, addTax,
-                        referenceMonth, i);
+                        referenceMonth, i, lastPaymentIsHoliday);
                 sEmployee.getPayslipSheet().add(newPayslip);
             }
         } else {
             if (daysHolidayOrWeekn != 0) {
                 oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
+                lastPaymentIsHoliday = true;
             } else {
                 oldData = date;
             }
@@ -276,16 +325,15 @@ public class GeneratePayslipHourly {
                         extraHours = hours - 8.0;
                         liquidValue += 8.0 * basicSalary;
                         liquidValue += extraHours * basicSalary * 1.5;
-                        liquidValue -= tax - addTax;
                     } else if (hours >= 0.0 && hours <= 8.0) {
                         liquidValue += hours * basicSalary;
-                        liquidValue -= tax - addTax;
                     }
                     i++;
                 }
             }
+            liquidValue -= tax - addTax;
             Payslip newPayslip = new Payslip(basicSalary, liquidValue, ttlHours, extraHours, date, tax, addTax,
-                    referenceMonth, i);
+                    referenceMonth, i, lastPaymentIsHoliday);
             sEmployee.getPayslipSheet().add(newPayslip);
         }
     }

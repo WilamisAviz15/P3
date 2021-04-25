@@ -72,7 +72,27 @@ public class MenuPayroll {
                 }
             } else if (sEmployee instanceof Commissioned) {
                 System.out.println(">>>>>>>>> Type: " + sEmployee.getClass().getSimpleName() + " <<<<<<<<<");
-
+                if (!sEmployee.getPayslipSheet().isEmpty()) {
+                    for (Payslip pAux : sEmployee.getPayslipSheet()) {
+                        System.out.println();
+                        System.out.println("#######PAYSLIP REF: " + pAux.getReferenceMonth() + "########");
+                        System.out.println("Date to payment: " + pAux.getDate());
+                        System.out.println("Basic Salary: " + pAux.getBasicPay());
+                        System.out.println("Comission value: " + pAux.getCommissionsValue());
+                        System.out.println("Tax: " + pAux.getTax());
+                        System.out.println("Additional Tax: " + pAux.getAdditionaTax());
+                        System.out.println("Net Salary: " + pAux.getNetPay());
+                        System.out.println("    ##Payment method## ");
+                        System.out.println(sEmployee.getPaymentMethod().toString());
+                        System.out.println("#######END PAYSLIP REF: " + pAux.getReferenceMonth() + "########");
+                        System.out.println();
+                        System.out.println();
+                    }
+                } else {
+                    System.out.println("No paycheck found.");
+                    System.out.println();
+                    System.out.println();
+                }
             } else if (sEmployee instanceof Hourly) {
                 System.out.println(">>>>>>>>> Type: " + sEmployee.getClass().getSimpleName() + " <<<<<<<<<");
                 if (!sEmployee.getPayslipSheet().isEmpty()) {
@@ -82,7 +102,7 @@ public class MenuPayroll {
                         System.out.println("Date to payment: " + pAux.getDate());
                         System.out.println("Value per hour: " + pAux.getBasicPay());
                         System.out.println("Total hours: " + pAux.getHours());
-                        System.out.println("Average hours per day: " + pAux.getHours()/ pAux.getCountTimecard());
+                        System.out.println("Average hours per day: " + pAux.getHours() / pAux.getCountTimecard());
                         System.out.println("Extra hours: " + pAux.getExtrasHours());
                         System.out.println("Tax: " + pAux.getTax());
                         System.out.println("Additional Tax: " + pAux.getAdditionaTax());
@@ -119,7 +139,8 @@ public class MenuPayroll {
                 GeneratePayslipEmployee.genEmployee(selectedEmployee, scheduleString, monthSchedule, daySchedule,
                         weekSchedule, payslip, date, daysHolidayOrWeekn, holidays);
             } else if (selectedEmployee instanceof Commissioned) {
-
+                GeneratePayslipCommissioned.genEmployee(selectedEmployee, scheduleString, monthSchedule, daySchedule,
+                        weekSchedule, payslip, date, daysHolidayOrWeekn, holidays);
             } else if (selectedEmployee instanceof Hourly) {
                 GeneratePayslipHourly.genEmployee(selectedEmployee, scheduleString, monthSchedule, daySchedule,
                         weekSchedule, payslip, date, daysHolidayOrWeekn, holidays);
