@@ -16,10 +16,194 @@ import payroll.utils.Utils;
 
 public class GeneratePayslipHourly {
 
+    public static void generatePaymentHourlyMonth(Hourly sEmployee, LocalDate date, List<Payslip> payslip,
+            LocalDate holidays[], int daysHolidayOrWeekn) {
+        LocalDate lastPayment, oldData;
+        Double hours = 0.00, extraHours = 0.00, ttlHours = 0.00, liquidValue = 0.00;
+        ;
+        List<Timecard> getTimeCard = sEmployee.getTimecard();
+        if (!payslip.isEmpty()) {
+            int sizePayslip = payslip.size() - 1;
+            Payslip lastPayslip = payslip.get(sizePayslip);
+            lastPayment = lastPayslip.getDate();
+            if (daysHolidayOrWeekn != 0) {
+                oldData = date;
+                date = date.plusDays(daysHolidayOrWeekn);
+            } else {
+                oldData = date;
+            }
+            String referenceMonth = String.valueOf(oldData.getMonth());
+            String dateMonthString = String.valueOf(date.getMonth());
+            String referenceMonthAux = lastPayslip.getReferenceMonth();
+            if (date.isAfter(lastPayment) && !(dateMonthString.equals(referenceMonthAux))) {
+                Double basicSalary = sEmployee.getHourlyValue();
+                double tax = 0.00;
+                double addTax = 0.00;
+                if (sEmployee.getSyndicate().getActive() == true) {
+                    tax = sEmployee.getSyndicate().getTax();
+                    addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), oldData, lastPayment);
+                }
+                int i = 0;
+                for (Timecard sTimecard : getTimeCard) {
+                    if ((sTimecard.getDate().isBefore(oldData) || oldData.isEqual(sTimecard.getDate()))
+                            && (sTimecard.getDate().isAfter(lastPayment) || sTimecard.getDate().isEqual(lastPayment))) {
+                        LocalTime login = sTimecard.getLogin();
+                        LocalTime logout = sTimecard.getLogout();
+                        Duration duration = Duration.between(login, logout);
+                        hours = (double) duration.getSeconds() / 3600;
+                        ttlHours += hours;
+                        if (hours > 8.0) {
+                            extraHours = hours - 8.0;
+                            liquidValue += 8.0 * basicSalary;
+                            liquidValue += extraHours * basicSalary * 1.5;
+                            liquidValue -= tax - addTax;
+                        } else if (hours >= 0.0 && hours <= 8.0) {
+                            liquidValue += hours * basicSalary;
+                            liquidValue -= tax - addTax;
+                        }
+                        i++;
+                    }
+                }
+                Payslip newPayslip = new Payslip(basicSalary, liquidValue, ttlHours, extraHours, date, tax, addTax,
+                        referenceMonth, i);
+                sEmployee.getPayslipSheet().add(newPayslip);
+            }
+        } else {
+            Double basicSalary = sEmployee.getHourlyValue();
+            double tax = 0.00;
+            double addTax = 0.00;
+            if (daysHolidayOrWeekn != 0) {
+                oldData = date;
+                date = date.plusDays(daysHolidayOrWeekn);
+            } else {
+                oldData = date;
+            }
+            String referenceMonth = String.valueOf(oldData.getMonth());
+            if (sEmployee.getSyndicate().getActive() == true) {
+                tax = sEmployee.getSyndicate().getTax();
+                addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), oldData);
+            }
+            int i = 0;
+            for (Timecard sTimecard : getTimeCard) {
+                if (sTimecard.getDate().isBefore(oldData) || oldData.isEqual(sTimecard.getDate())) {
+                    LocalTime login = sTimecard.getLogin();
+                    LocalTime logout = sTimecard.getLogout();
+                    Duration duration = Duration.between(login, logout);
+                    hours = (double) duration.getSeconds() / 3600;
+                    ttlHours += hours;
+                    if (hours > 8.0) {
+                        extraHours = hours - 8.0;
+                        liquidValue += 8.0 * basicSalary;
+                        liquidValue += extraHours * basicSalary * 1.5;
+                        liquidValue -= tax - addTax;
+                    } else if (hours >= 0.0 && hours <= 8.0) {
+                        liquidValue += hours * basicSalary;
+                        liquidValue -= tax - addTax;
+                    }
+                    i++;
+                }
+            }
+            Payslip newPayslip = new Payslip(basicSalary, liquidValue, ttlHours, extraHours, date, tax, addTax,
+                    referenceMonth, i);
+            sEmployee.getPayslipSheet().add(newPayslip);
+        }
+    }
+
+    public static void generatePaymentHourlyBiWeekly(Hourly sEmployee, LocalDate date, List<Payslip> payslip,
+            LocalDate holidays[], int daysHolidayOrWeekn) {
+        LocalDate lastPayment, oldData;
+        Double hours = 0.00, extraHours = 0.00, ttlHours = 0.00, liquidValue = 0.00;
+        List<Timecard> getTimeCard = sEmployee.getTimecard();
+        if (!payslip.isEmpty()) {
+            int sizePayslip = payslip.size() - 1;
+            Payslip lastPayslip = payslip.get(sizePayslip);
+            lastPayment = lastPayslip.getDate();
+            if (daysHolidayOrWeekn != 0) {
+                oldData = date;
+                date = date.plusDays(daysHolidayOrWeekn);
+            } else {
+                oldData = date;
+            }
+            String referenceMonth = String.valueOf(oldData.getMonth());
+            int lastWeekPayment = Utils.weeklyDifference(lastPayment, date);
+            if (date.isAfter(lastPayment) && (lastWeekPayment == 2)) {
+                Double basicSalary = sEmployee.getHourlyValue();
+                double tax = 0.00;
+                double addTax = 0.00;
+                if (sEmployee.getSyndicate().getActive() == true) {
+                    tax = sEmployee.getSyndicate().getTax();
+                    addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), oldData, lastPayment);
+                }
+                int i = 0;
+                for (Timecard sTimecard : getTimeCard) {
+                    if ((sTimecard.getDate().isBefore(date) || date.isEqual(sTimecard.getDate()))
+                            && sTimecard.getDate().isAfter(lastPayment)) {
+                        LocalTime login = sTimecard.getLogin();
+                        LocalTime logout = sTimecard.getLogout();
+                        Duration duration = Duration.between(login, logout);
+                        hours = (double) duration.getSeconds() / 3600;
+                        ttlHours += hours;
+                        if (hours > 8.0) {
+                            extraHours = hours - 8.0;
+                            liquidValue += 8.0 * basicSalary;
+                            liquidValue += extraHours * basicSalary * 1.5;
+                            liquidValue -= tax - addTax;
+                        } else if (hours >= 0.0 && hours <= 8.0) {
+                            liquidValue += hours * basicSalary;
+                            liquidValue -= tax - addTax;
+                        }
+                        i++;
+                    }
+                }
+                Payslip newPayslip = new Payslip(basicSalary, liquidValue, ttlHours, extraHours, date, tax, addTax,
+                        referenceMonth, i);
+                sEmployee.getPayslipSheet().add(newPayslip);
+            }
+        } else {
+            Double basicSalary = (sEmployee.getHourlyValue());
+            double tax = 0.00;
+            double addTax = 0.00;
+            if (daysHolidayOrWeekn != 0) {
+                oldData = date;
+                date = date.plusDays(daysHolidayOrWeekn);
+            } else {
+                oldData = date;
+            }
+            String referenceMonth = String.valueOf(oldData.getMonth());
+            if (sEmployee.getSyndicate().getActive() == true) {
+                tax = sEmployee.getSyndicate().getTax();
+                addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), oldData);
+            }
+            int i = 0;
+            for (Timecard sTimecard : getTimeCard) {
+                if (sTimecard.getDate().isBefore(date) || date.isEqual(sTimecard.getDate())) {
+                    LocalTime login = sTimecard.getLogin();
+                    LocalTime logout = sTimecard.getLogout();
+                    Duration duration = Duration.between(login, logout);
+                    hours = (double) duration.getSeconds() / 3600;
+                    ttlHours += hours;
+                    if (hours > 8.0) {
+                        extraHours = hours - 8.0;
+                        liquidValue += 8.0 * basicSalary;
+                        liquidValue += extraHours * basicSalary * 1.5;
+                        liquidValue -= tax - addTax;
+                    } else if (hours >= 0.0 && hours <= 8.0) {
+                        liquidValue += hours * basicSalary;
+                        liquidValue -= tax - addTax;
+                    }
+                    i++;
+                }
+            }
+            Payslip newPayslip = new Payslip(basicSalary, liquidValue, ttlHours, extraHours, date, tax, addTax,
+                    referenceMonth, i);
+            sEmployee.getPayslipSheet().add(newPayslip);
+        }
+    }
+
     public static void generatePaymentHourlyWeekly(Hourly sEmployee, LocalDate date, List<Payslip> payslip,
             LocalDate holidays[], int daysHolidayOrWeekn) {
         LocalDate lastPayment, oldData;
-        Double hours = 0.00, extraHours = 0.00, ttlHours = 0.00, liquidValue = 0.00;;
+        Double hours = 0.00, extraHours = 0.00, ttlHours = 0.00, liquidValue = 0.00;
         List<Timecard> getTimeCard = sEmployee.getTimecard();
         if (!payslip.isEmpty()) {
             int sizePayslip = payslip.size() - 1;
@@ -42,7 +226,7 @@ public class GeneratePayslipHourly {
                 }
                 int i = 0;
                 for (Timecard sTimecard : getTimeCard) {
-                    if ((sTimecard.getDate().isBefore(date) || date.isEqual(sTimecard.getDate()))
+                    if ((sTimecard.getDate().isBefore(oldData) || oldData.isEqual(sTimecard.getDate()))
                             && sTimecard.getDate().isAfter(lastPayment)) {
                         LocalTime login = sTimecard.getLogin();
                         LocalTime logout = sTimecard.getLogout();
@@ -121,12 +305,10 @@ public class GeneratePayslipHourly {
                 LocalDate lastDayofMonth = LocalDate.now().withMonth(date.getMonthValue())
                         .with(TemporalAdjusters.lastDayOfMonth());
                 if (date.equals(lastDayofMonth)) {
-                    // generatePaymentSalariedMonth(sEmployee, date, payslip, holidays,
-                    // daysHolidayOrWeekn);
+                    generatePaymentHourlyMonth(sEmployee, date, payslip, holidays, daysHolidayOrWeekn);
                 }
             } else if (daySchedule.equals(dayCurrent)) {
-                // generatePaymentSalariedMonth(sEmployee, date, payslip, holidays,
-                // daysHolidayOrWeekn);
+                generatePaymentHourlyMonth(sEmployee, date, payslip, holidays, daysHolidayOrWeekn);
             }
         } else {
             weekSchedule = st.nextToken(" ");
@@ -140,8 +322,7 @@ public class GeneratePayslipHourly {
             } else {
 
                 if (dayWeekCurrent.equals(dayWeek)) {
-                    // generatePaymentSalariedBiWeekly(sEmployee, date, payslip, holidays,
-                    // daysHolidayOrWeekn);
+                    generatePaymentHourlyBiWeekly(sEmployee, date, payslip, holidays, daysHolidayOrWeekn);
                 }
             }
         }

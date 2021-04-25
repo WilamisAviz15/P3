@@ -81,7 +81,7 @@ public class MenuPayroll {
                         System.out.println("#######PAYSLIP REF: " + pAux.getReferenceMonth() + "########");
                         System.out.println("Date to payment: " + pAux.getDate());
                         System.out.println("Value per hour: " + pAux.getBasicPay());
-                        System.out.println("Total hours on week: " + pAux.getHours());
+                        System.out.println("Total hours: " + pAux.getHours());
                         System.out.println("Average hours per day: " + pAux.getHours()/ pAux.getCountTimecard());
                         System.out.println("Extra hours: " + pAux.getExtrasHours());
                         System.out.println("Tax: " + pAux.getTax());
