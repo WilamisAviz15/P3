@@ -23,7 +23,7 @@ public class MenuPayroll {
         do {
             System.out.println("--- Payroll ---");
             System.out.println("1 - Rotate Payroll");
-            System.out.println("2 - List payroll");
+            System.out.println("2 - List all payroll");
             System.out.println("3 - Back");
 
             tmp = Utils.consoleReadInputIntegerOptions(tmp, op, 1, 4);
@@ -79,16 +79,14 @@ public class MenuPayroll {
         System.out.println("#################END PAYSLIP###############");
     }
 
-    public static void generatePaymentSalaried(Salaried sEmployee, LocalDate date, List<Payslip> payslip,
-            LocalDate holidays[]) {
-        LocalDate oldDate = date;
+    public static void generatePaymentSalariedMonth(Salaried sEmployee, LocalDate date, List<Payslip> payslip,
+            LocalDate holidays[], int daysHolidayOrWeekn) {
         LocalDate lastPayment;
         if (!payslip.isEmpty()) {
             int sizePayslip = payslip.size() - 1;
             Payslip lastPayslip = payslip.get(sizePayslip);
             lastPayment = lastPayslip.getDate();
             // lastPayment = lastPayment.plusDays(30);
-            int daysHolidayOrWeekn = Utils.countHolidaysOrWeekend(date, holidays);
             if (daysHolidayOrWeekn != 0) {
                 date = date.plusDays(daysHolidayOrWeekn);
             }
@@ -106,16 +104,8 @@ public class MenuPayroll {
                 }
                 Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
                 sEmployee.getPayslipSheet().add(newPayslip);
-                if (daysHolidayOrWeekn == 0) {
-                    System.out.println("Payslip successfully generated");
-                } else {
-                    System.out.println("Payslip successfully generated");
-                    System.out.println("### The date to payment is holiday or weekend" + oldDate + "###");
-                    System.out.println("### In this case the payslip will be paid to: " + date + "###");
-                }
             }
         } else {
-            int daysHolidayOrWeekn = Utils.countHolidaysOrWeekend(date, holidays);
             Double basicSalary = sEmployee.getSalary(), liquidValue = 0.00;
             double tax = 0.00;
             double addTax = 0.00;
@@ -131,13 +121,95 @@ public class MenuPayroll {
             }
             Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
             sEmployee.getPayslipSheet().add(newPayslip);
-            if (daysHolidayOrWeekn == 0) {
-                System.out.println("Payslip successfully generated");
-            } else {
-                System.out.println("Payslip successfully generated");
-                System.out.println("### The date to payment is holiday or weekend " + oldDate + "###");
-                System.out.println("### In this case the payslip will be paid to: " + date + "###");
+        }
+    }
+
+    public static void generatePaymentSalariedWeekly(Salaried sEmployee, LocalDate date, List<Payslip> payslip,
+            LocalDate holidays[], int daysHolidayOrWeekn) {
+        LocalDate lastPayment;
+        if (!payslip.isEmpty()) {
+            int sizePayslip = payslip.size() - 1;
+            Payslip lastPayslip = payslip.get(sizePayslip);
+            lastPayment = lastPayslip.getDate();
+            if (daysHolidayOrWeekn != 0) {
+                date = date.plusDays(daysHolidayOrWeekn);
             }
+            if (date.isAfter(lastPayment)) {
+                Double liquidValue = 0.00;
+                Double basicSalary = sEmployee.getSalary();
+                double tax = 0.00;
+                double addTax = 0.00;
+                if (sEmployee.getSyndicate().getActive() == true) {
+                    tax = sEmployee.getSyndicate().getTax();
+                    addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date, lastPayment);
+                    liquidValue = (basicSalary / 4) - tax - addTax;
+                } else {
+                    liquidValue = (basicSalary / 4);
+                }
+                Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
+                sEmployee.getPayslipSheet().add(newPayslip);
+            }
+        } else {
+            Double basicSalary = (sEmployee.getSalary()), liquidValue = 0.00;
+            double tax = 0.00;
+            double addTax = 0.00;
+            if (daysHolidayOrWeekn != 0) {
+                date = date.plusDays(daysHolidayOrWeekn);
+            }
+            if (sEmployee.getSyndicate().getActive() == true) {
+                tax = sEmployee.getSyndicate().getTax();
+                addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date);
+                liquidValue = (basicSalary / 4) - tax - addTax;
+            } else {
+                liquidValue = (basicSalary / 4);
+            }
+            Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
+            sEmployee.getPayslipSheet().add(newPayslip);
+        }
+    }
+
+    public static void generatePaymentSalariedBiWeekly(Salaried sEmployee, LocalDate date, List<Payslip> payslip,
+    LocalDate holidays[], int daysHolidayOrWeekn){
+        LocalDate lastPayment;
+        if (!payslip.isEmpty()) {
+            int sizePayslip = payslip.size() - 1;
+            Payslip lastPayslip = payslip.get(sizePayslip);
+            lastPayment = lastPayslip.getDate();
+            if (daysHolidayOrWeekn != 0) {
+                date = date.plusDays(daysHolidayOrWeekn);
+            }
+            int lastWeekPayment = Utils.weeklyDifference(lastPayment, date);
+            if (date.isAfter(lastPayment) && (lastWeekPayment == 2)) {
+                Double liquidValue = 0.00;
+                Double basicSalary = sEmployee.getSalary();
+                double tax = 0.00;
+                double addTax = 0.00;
+                if (sEmployee.getSyndicate().getActive() == true) {
+                    tax = sEmployee.getSyndicate().getTax();
+                    addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date, lastPayment);
+                    liquidValue = (basicSalary / 2) - tax - addTax;
+                } else {
+                    liquidValue = (basicSalary / 2);
+                }
+                Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
+                sEmployee.getPayslipSheet().add(newPayslip);
+            }
+        } else {
+            Double basicSalary = (sEmployee.getSalary()), liquidValue = 0.00;
+            double tax = 0.00;
+            double addTax = 0.00;
+            if (daysHolidayOrWeekn != 0) {
+                date = date.plusDays(daysHolidayOrWeekn);
+            }
+            if (sEmployee.getSyndicate().getActive() == true) {
+                tax = sEmployee.getSyndicate().getTax();
+                addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date);
+                liquidValue = (basicSalary / 2) - tax - addTax;
+            } else {
+                liquidValue = (basicSalary / 2);
+            }
+            Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
+            sEmployee.getPayslipSheet().add(newPayslip);
         }
     }
 
@@ -149,6 +221,8 @@ public class MenuPayroll {
         LocalDate holidays[] = { LocalDate.of(year, 1, 01), LocalDate.of(year, 4, 21), LocalDate.of(year, 6, 03),
                 LocalDate.of(year, 9, 07), LocalDate.of(year, 10, 12), LocalDate.of(year, 11, 02),
                 LocalDate.of(year, 11, 15), LocalDate.of(year, 12, 25) };
+                LocalDate oldDate = date;
+        int daysHolidayOrWeekn = Utils.countHolidaysOrWeekend(date, holidays);
         Scanner sc = new Scanner(System.in);
         for (Employee selectedEmployee : list_employee) {
             if (selectedEmployee instanceof Salaried) {
@@ -164,16 +238,40 @@ public class MenuPayroll {
                         LocalDate lastDayofMonth = LocalDate.now().withMonth(date.getMonthValue())
                                 .with(TemporalAdjusters.lastDayOfMonth());
                         if (date.equals(lastDayofMonth)) {
-                            generatePaymentSalaried(sEmployee, date, payslip, holidays);
+                            generatePaymentSalariedMonth(sEmployee, date, payslip, holidays,daysHolidayOrWeekn);
                         }
                     } else if (daySchedule.equals(dayCurrent)) {
-                        generatePaymentSalaried(sEmployee, date, payslip, holidays);
+                        generatePaymentSalariedMonth(sEmployee, date, payslip, holidays, daysHolidayOrWeekn);
                     }
                 } else {
                     weekSchedule = st.nextToken(" ");
                     daySchedule = st.nextToken(" ");
+                    String dayWeek = String.valueOf(daySchedule).toUpperCase();
+                    String dayWeekCurrent = String.valueOf(date.getDayOfWeek());
+                    if (weekSchedule.equals("1")) {
+                        if (dayWeekCurrent.equals(dayWeek)) {
+                            generatePaymentSalariedWeekly(sEmployee, date, payslip, holidays, daysHolidayOrWeekn);
+                        }
+                    } else {
+
+                        if (dayWeekCurrent.equals(dayWeek)) {
+                            generatePaymentSalariedBiWeekly(sEmployee, date, payslip, holidays, daysHolidayOrWeekn);
+                        }
+                    }
                 }
+            } else if (selectedEmployee instanceof Commissioned) {
+
+            } else if (selectedEmployee instanceof Hourly) {
+
             }
+        }
+        if (daysHolidayOrWeekn == 0) {
+            System.out.println("Payslip successfully generated");
+        } else {
+            System.out.println("Payslip successfully generated");
+            System.out.println("### The date to payment is holiday or weekend" + oldDate + "###");
+            date = date.plusDays(daysHolidayOrWeekn);
+            System.out.println("### In this case the payslip will be paid to: " + date + "###");
         }
     }
 }

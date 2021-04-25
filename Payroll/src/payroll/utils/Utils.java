@@ -2,8 +2,10 @@ package payroll.utils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 import payroll.employee.model.Commissioned;
@@ -78,15 +80,23 @@ public class Utils {
         return aux;
     }
 
-    public static int countHolidaysOrWeekend(LocalDate date, LocalDate holidays[]){
+    public static int countHolidaysOrWeekend(LocalDate date, LocalDate holidays[]) {
         int i = 0;
         String day = String.valueOf(date.getDayOfWeek());
-        while(isWeekend(day) || isHoliday(holidays, date)){
+        while (isWeekend(day) || isHoliday(holidays, date)) {
             date = date.plusDays(1);
             day = String.valueOf(date.getDayOfWeek());
             i++;
         }
         return i;
+    }
+
+    public static int weeklyDifference(LocalDate dateLastPayment, LocalDate dateCurrent) {
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int weekNumberLastPayment = dateLastPayment.get(weekFields.weekOfWeekBasedYear());
+        int weekNumberCurrent = dateCurrent.get(weekFields.weekOfWeekBasedYear());
+
+        return weekNumberCurrent - weekNumberLastPayment;
     }
 
     public static LocalTime validateTime(Scanner sc) {
