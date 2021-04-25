@@ -11,13 +11,16 @@ public class Payslip {
     private Double commissionsValue = 0.00;
     private Double tax = 0.00;
     private Double additionaTax = 0.00;
+    private String referenceMonth;
 
-    public Payslip(Double basicPay, Double netPay, LocalDate date, Double tax, Double additionaTax){
+    public Payslip(Double basicPay, Double netPay, LocalDate date, Double tax, Double additionaTax,
+            String referenceMonth) {
         this.basicPay = basicPay;
         this.netPay = netPay;
         this.date = date;
         this.tax = tax;
         this.additionaTax = additionaTax;
+        this.referenceMonth = referenceMonth;
     }
 
     public Double getBasicPay() {
@@ -26,6 +29,14 @@ public class Payslip {
 
     public void setBasicPay(Double basicPay) {
         this.basicPay = basicPay;
+    }
+
+    public String getReferenceMonth() {
+        return referenceMonth;
+    }
+
+    public void setReferenceMonth(String referenceMonth) {
+        this.referenceMonth = referenceMonth;
     }
 
     public Double getNetPay() {

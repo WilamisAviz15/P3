@@ -53,7 +53,7 @@ public class MenuPayroll {
                 if (!sEmployee.getPayslipSheet().isEmpty()) {
                     for (Payslip pAux : sEmployee.getPayslipSheet()) {
                         System.out.println();
-                        System.out.println("#######PAYSLIP REF: " + pAux.getDate().getMonth() + "########");
+                        System.out.println("#######PAYSLIP REF: " + pAux.getReferenceMonth() + "########");
                         System.out.println("Date to payment: " + pAux.getDate());
                         System.out.println("Basic Salary: " + pAux.getBasicPay());
                         System.out.println("Tax: " + pAux.getTax());
@@ -61,7 +61,7 @@ public class MenuPayroll {
                         System.out.println("Net Salary: " + pAux.getNetPay());
                         System.out.println("    ##Payment method## ");
                         System.out.println(sEmployee.getPaymentMethod().toString());
-                        System.out.println("#######END PAYSLIP REF: " + pAux.getDate().getMonth() + "########");
+                        System.out.println("#######END PAYSLIP REF: " + pAux.getReferenceMonth() + "########");
                         System.out.println();
                         System.out.println();
                     }
@@ -81,16 +81,22 @@ public class MenuPayroll {
 
     public static void generatePaymentSalariedMonth(Salaried sEmployee, LocalDate date, List<Payslip> payslip,
             LocalDate holidays[], int daysHolidayOrWeekn) {
-        LocalDate lastPayment;
+        LocalDate lastPayment, oldData;
         if (!payslip.isEmpty()) {
             int sizePayslip = payslip.size() - 1;
             Payslip lastPayslip = payslip.get(sizePayslip);
             lastPayment = lastPayslip.getDate();
             // lastPayment = lastPayment.plusDays(30);
             if (daysHolidayOrWeekn != 0) {
+                oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
+            } else {
+                oldData = date;
             }
-            if (date.isAfter(lastPayment) && !(lastPayment.getMonth().equals(date.getMonth()))) {
+            String referenceMonth = String.valueOf(oldData.getMonth());
+            String dateMonthString = String.valueOf(date.getMonth());
+            String referenceMonthAux = lastPayslip.getReferenceMonth();
+            if (date.isAfter(lastPayment) && !(dateMonthString.equals(referenceMonthAux))) {
                 Double liquidValue = 0.00;
                 Double basicSalary = sEmployee.getSalary();
                 double tax = 0.00;
@@ -102,7 +108,7 @@ public class MenuPayroll {
                 } else {
                     liquidValue = basicSalary;
                 }
-                Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
+                Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth);
                 sEmployee.getPayslipSheet().add(newPayslip);
             }
         } else {
@@ -110,8 +116,12 @@ public class MenuPayroll {
             double tax = 0.00;
             double addTax = 0.00;
             if (daysHolidayOrWeekn != 0) {
+                oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
+            } else {
+                oldData = date;
             }
+            String referenceMonth = String.valueOf(oldData.getMonth());
             if (sEmployee.getSyndicate().getActive() == true) {
                 tax = sEmployee.getSyndicate().getTax();
                 addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date);
@@ -119,21 +129,26 @@ public class MenuPayroll {
             } else {
                 liquidValue = basicSalary;
             }
-            Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
+            Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth);
             sEmployee.getPayslipSheet().add(newPayslip);
         }
     }
 
     public static void generatePaymentSalariedWeekly(Salaried sEmployee, LocalDate date, List<Payslip> payslip,
             LocalDate holidays[], int daysHolidayOrWeekn) {
-        LocalDate lastPayment;
+        LocalDate lastPayment, oldData;
         if (!payslip.isEmpty()) {
             int sizePayslip = payslip.size() - 1;
             Payslip lastPayslip = payslip.get(sizePayslip);
             lastPayment = lastPayslip.getDate();
             if (daysHolidayOrWeekn != 0) {
+                oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
             }
+            else {
+                oldData = date;
+            }
+            String referenceMonth = String.valueOf(oldData.getMonth());
             if (date.isAfter(lastPayment)) {
                 Double liquidValue = 0.00;
                 Double basicSalary = sEmployee.getSalary();
@@ -146,7 +161,7 @@ public class MenuPayroll {
                 } else {
                     liquidValue = (basicSalary / 4);
                 }
-                Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
+                Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth);
                 sEmployee.getPayslipSheet().add(newPayslip);
             }
         } else {
@@ -154,8 +169,13 @@ public class MenuPayroll {
             double tax = 0.00;
             double addTax = 0.00;
             if (daysHolidayOrWeekn != 0) {
+                oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
             }
+            else {
+                oldData = date;
+            }
+            String referenceMonth = String.valueOf(oldData.getMonth());
             if (sEmployee.getSyndicate().getActive() == true) {
                 tax = sEmployee.getSyndicate().getTax();
                 addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date);
@@ -163,21 +183,26 @@ public class MenuPayroll {
             } else {
                 liquidValue = (basicSalary / 4);
             }
-            Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
+            Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth);
             sEmployee.getPayslipSheet().add(newPayslip);
         }
     }
 
     public static void generatePaymentSalariedBiWeekly(Salaried sEmployee, LocalDate date, List<Payslip> payslip,
-    LocalDate holidays[], int daysHolidayOrWeekn){
-        LocalDate lastPayment;
+            LocalDate holidays[], int daysHolidayOrWeekn) {
+        LocalDate lastPayment, oldData;
         if (!payslip.isEmpty()) {
             int sizePayslip = payslip.size() - 1;
             Payslip lastPayslip = payslip.get(sizePayslip);
             lastPayment = lastPayslip.getDate();
             if (daysHolidayOrWeekn != 0) {
+                oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
             }
+            else {
+                oldData = date;
+            }
+            String referenceMonth = String.valueOf(oldData.getMonth());
             int lastWeekPayment = Utils.weeklyDifference(lastPayment, date);
             if (date.isAfter(lastPayment) && (lastWeekPayment == 2)) {
                 Double liquidValue = 0.00;
@@ -191,7 +216,7 @@ public class MenuPayroll {
                 } else {
                     liquidValue = (basicSalary / 2);
                 }
-                Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
+                Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth);
                 sEmployee.getPayslipSheet().add(newPayslip);
             }
         } else {
@@ -199,8 +224,13 @@ public class MenuPayroll {
             double tax = 0.00;
             double addTax = 0.00;
             if (daysHolidayOrWeekn != 0) {
+                oldData = date;
                 date = date.plusDays(daysHolidayOrWeekn);
             }
+            else {
+                oldData = date;
+            }
+            String referenceMonth = String.valueOf(oldData.getMonth());
             if (sEmployee.getSyndicate().getActive() == true) {
                 tax = sEmployee.getSyndicate().getTax();
                 addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date);
@@ -208,7 +238,7 @@ public class MenuPayroll {
             } else {
                 liquidValue = (basicSalary / 2);
             }
-            Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax);
+            Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax,referenceMonth);
             sEmployee.getPayslipSheet().add(newPayslip);
         }
     }
@@ -221,7 +251,7 @@ public class MenuPayroll {
         LocalDate holidays[] = { LocalDate.of(year, 1, 01), LocalDate.of(year, 4, 21), LocalDate.of(year, 6, 03),
                 LocalDate.of(year, 9, 07), LocalDate.of(year, 10, 12), LocalDate.of(year, 11, 02),
                 LocalDate.of(year, 11, 15), LocalDate.of(year, 12, 25) };
-                LocalDate oldDate = date;
+        LocalDate oldDate = date;
         int daysHolidayOrWeekn = Utils.countHolidaysOrWeekend(date, holidays);
         Scanner sc = new Scanner(System.in);
         for (Employee selectedEmployee : list_employee) {
@@ -238,7 +268,7 @@ public class MenuPayroll {
                         LocalDate lastDayofMonth = LocalDate.now().withMonth(date.getMonthValue())
                                 .with(TemporalAdjusters.lastDayOfMonth());
                         if (date.equals(lastDayofMonth)) {
-                            generatePaymentSalariedMonth(sEmployee, date, payslip, holidays,daysHolidayOrWeekn);
+                            generatePaymentSalariedMonth(sEmployee, date, payslip, holidays, daysHolidayOrWeekn);
                         }
                     } else if (daySchedule.equals(dayCurrent)) {
                         generatePaymentSalariedMonth(sEmployee, date, payslip, holidays, daysHolidayOrWeekn);
