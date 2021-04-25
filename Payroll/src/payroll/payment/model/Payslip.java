@@ -12,6 +12,7 @@ public class Payslip {
     private Double tax = 0.00;
     private Double additionaTax = 0.00;
     private String referenceMonth;
+    private int countTimecard;
 
     public Payslip(Double basicPay, Double netPay, LocalDate date, Double tax, Double additionaTax,
             String referenceMonth) {
@@ -23,12 +24,33 @@ public class Payslip {
         this.referenceMonth = referenceMonth;
     }
 
+    public Payslip(Double basicPay, Double netPay, Double hours, Double extrasHours, LocalDate date, Double tax,
+            Double additionaTax, String referenceMonth, int countTimecard) {
+        this.basicPay = basicPay;
+        this.netPay = netPay;
+        this.hours = hours;
+        this.extrasHours = extrasHours;
+        this.date = date;
+        this.tax = tax;
+        this.additionaTax = additionaTax;
+        this.referenceMonth = referenceMonth;
+        this.countTimecard = countTimecard;
+    }
+
     public Double getBasicPay() {
         return basicPay;
     }
 
     public void setBasicPay(Double basicPay) {
         this.basicPay = basicPay;
+    }
+
+    public int getCountTimecard() {
+        return countTimecard;
+    }
+
+    public void setCountTimecard(int countTimecard) {
+        this.countTimecard = countTimecard;
     }
 
     public String getReferenceMonth() {

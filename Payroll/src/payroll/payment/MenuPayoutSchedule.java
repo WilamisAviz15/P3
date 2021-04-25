@@ -22,7 +22,7 @@ public class MenuPayoutSchedule {
         tmp = Utils.consoleReadInputIntegerWithOR(tmp, sc, 0, 1);
         i = Integer.parseInt(tmp);
         if(tmp.equals("0")){
-            System.out.println("Enter the number of the day: (in case the last day of month, write $)");
+            System.out.println("Enter the number of the day (1-9 or 10-31): (in case the last day of month, write $)");
             day = Utils.consoleReadInputIntegerSpecial(day, sc, 0);
             stringPaymentSchedule = schedule[i] + " " + day;
         } else{
