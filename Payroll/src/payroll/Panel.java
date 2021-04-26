@@ -127,7 +127,6 @@ public class Panel {
             case 7:
                 if (undo.size() > 0) {
                     List<Employee> aux = undo.pop();
-                    System.out.println(list_employee);
                     redo.push(Utils.cloneList(list_employee));
                     list_employee = aux;
                     System.out.println("Changes undone successfully.");
@@ -138,7 +137,6 @@ public class Panel {
             case 8:
                 if (redo.size() > 0) {
                     List<Employee> aux = redo.pop();
-                    System.out.println(aux);
                     undo.push(Utils.cloneList(list_employee));
                     list_employee = aux;
                     System.out.println("Changes redone successfully.");
