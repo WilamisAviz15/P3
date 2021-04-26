@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import payroll.payment.model.PaymentMethod;
+import payroll.payment.model.Payslip;
 import payroll.syndicate.Syndicate;
 
 public class Commissioned extends Employee {
@@ -22,13 +23,13 @@ public class Commissioned extends Employee {
 
     public Commissioned(Commissioned s) {
         this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getSalary(), s.getComission(),
-                s.getSyndicate());
+                s.getSyndicate(), s.getPayslipSheet());
         this.setSales(s.getSales());
     }
 
     public Commissioned(int id, String name, String address, PaymentMethod paymentMethod, Double salary,
-            Double comission, Syndicate sindicalist) {
-        super(id, name, address, paymentMethod, sindicalist);
+            Double comission, Syndicate sindicalist, List<Payslip> payslipSheet) {
+        super(id, name, address, paymentMethod, sindicalist, payslipSheet);
         this.salary = salary;
         this.comission = comission;
         this.sales = new ArrayList<Sales>();

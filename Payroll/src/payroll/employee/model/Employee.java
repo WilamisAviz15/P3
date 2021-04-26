@@ -19,16 +19,16 @@ public class Employee {
     }
 
     public Employee(Employee s) {
-        this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getSyndicate());
+        this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getSyndicate(), s.getPayslipSheet());
     }
 
-    public Employee(int id, String name, String address, PaymentMethod paymentMethod, Syndicate sindicalist) {
+    public Employee(int id, String name, String address, PaymentMethod paymentMethod, Syndicate sindicalist, List<Payslip> payslipSheet) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.paymentMethod = paymentMethod;
         this.sindicalist = sindicalist;
-        this.payslipSheet = new ArrayList<Payslip>();
+        this.payslipSheet = payslipSheet;
     }
 
     public int getId() {

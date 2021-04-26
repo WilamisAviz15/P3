@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import payroll.payment.model.PaymentMethod;
+import payroll.payment.model.Payslip;
 import payroll.syndicate.Syndicate;
 
 public class Hourly extends Employee {
@@ -14,13 +15,13 @@ public class Hourly extends Employee {
     }
 
     public Hourly(Hourly s) {
-        this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getHourlyValue(), s.getSyndicate());
+        this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getHourlyValue(), s.getSyndicate(), s.getPayslipSheet());
         this.setTimecard(s.getTimecard());
     }
 
     public Hourly(int id, String name, String address, PaymentMethod paymentMethod, Double hourlyValue,
-            Syndicate sindicalist) {
-        super(id, name, address, paymentMethod, sindicalist);
+            Syndicate sindicalist, List<Payslip> payslipSheet) {
+        super(id, name, address, paymentMethod, sindicalist, payslipSheet);
         this.hourlyValue = hourlyValue;
         this.timeCard = new ArrayList<Timecard>();
     }

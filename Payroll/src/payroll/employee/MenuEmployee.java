@@ -15,6 +15,7 @@ import payroll.payment.model.DepositByBankAccount;
 import payroll.payment.model.HandsCheck;
 import payroll.payment.model.PaymentMethod;
 import payroll.payment.model.PaymentSchedule;
+import payroll.payment.model.Payslip;
 import payroll.syndicate.Syndicate;
 import payroll.utils.Utils;
 
@@ -24,7 +25,7 @@ public class MenuEmployee {
     private static String[] accountType = { "Corrente", "Poupança", "Fácil", "Conjunta" };
 
     public static void Menu(List<Employee> list_employee, PaymentSchedule paySchedule, Stack<List<Employee>> undoStack,
-            Stack<List<Employee>> redo) {
+            Stack<List<Employee>> redo, List<Payslip> payslipSheet) {
         int option;
         String tmp = "";
         Scanner op = new Scanner(System.in);
@@ -40,13 +41,13 @@ public class MenuEmployee {
             option = Integer.parseInt(tmp);
             switch (option) {
             case 1:
-                list_employee.add(MenuEmployee.addEmployee(paySchedule, list_employee, undoStack, redo));
+                list_employee.add(MenuEmployee.addEmployee(paySchedule, list_employee, undoStack, redo, payslipSheet));
                 break;
             case 2:
                 MenuEmployee.removeEmployee(list_employee, undoStack, redo);
                 break;
             case 3:
-                MenuEmployee.editEmployee(list_employee, paySchedule, undoStack, redo);
+                MenuEmployee.editEmployee(list_employee, paySchedule, undoStack, redo, payslipSheet);
                 break;
             case 4:
                 MenuEmployee.ListAllEmployee(list_employee);
@@ -59,7 +60,7 @@ public class MenuEmployee {
     }
 
     public static Employee addEmployee(PaymentSchedule paySchedule, List<Employee> lEmployees,
-            Stack<List<Employee>> undoStack, Stack<List<Employee>> redo) {
+            Stack<List<Employee>> undoStack, Stack<List<Employee>> redo, List<Payslip> payslipSheet) {
         undoStack.push(Utils.cloneList(lEmployees));
         redo.clear();
         PaymentMethod paymentMethod = null;
@@ -81,12 +82,12 @@ public class MenuEmployee {
             System.out.println("Type the hourly wage:");
             tmp = Utils.consoleReadInputDouble(tmp, sc);
             salary = Double.parseDouble(tmp);
-            newEmployees = new Hourly(++id, name, address, paymentMethod, salary, sindicalist);
+            newEmployees = new Hourly(++id, name, address, paymentMethod, salary, sindicalist, payslipSheet);
         } else if (type_employee == 1) {
             System.out.println("Type the salary:");
             tmp = Utils.consoleReadInputDouble(tmp, sc);
             salary = Double.parseDouble(tmp);
-            newEmployees = new Salaried(++id, name, address, paymentMethod, salary, sindicalist);
+            newEmployees = new Salaried(++id, name, address, paymentMethod, salary, sindicalist, payslipSheet);
         } else if (type_employee == 2) {
             double percentage;
             System.out.println("Type the salary:");
@@ -95,9 +96,9 @@ public class MenuEmployee {
             System.out.println("Type the % to comisson:");
             tmp = Utils.consoleReadInputDouble(tmp, sc);
             percentage = Double.parseDouble(tmp);
-            newEmployees = new Commissioned(++id, name, address, paymentMethod, salary, percentage, sindicalist);
+            newEmployees = new Commissioned(++id, name, address, paymentMethod, salary, percentage, sindicalist, payslipSheet);
         } else {
-            newEmployees = new Employee(++id, name, address, paymentMethod, sindicalist);
+            newEmployees = new Employee(++id, name, address, paymentMethod, sindicalist, payslipSheet);
         }
         System.out.println("Type Payment Method (0 - Check by the post office, 1 - Check in Person, 2 - Bank Account)");
         tmp = Utils.consoleReadInputIntegerOptions(tmp, sc, 0, 3);
@@ -219,7 +220,7 @@ public class MenuEmployee {
     }
 
     public static void editEmployee(List<Employee> list_employee, PaymentSchedule paySchedule,
-            Stack<List<Employee>> undoStack, Stack<List<Employee>> redo) {
+            Stack<List<Employee>> undoStack, Stack<List<Employee>> redo, List<Payslip> payslipSheet) {
         String op, attr;
         Double salary = 0.00;
         String bankId;
@@ -265,14 +266,14 @@ public class MenuEmployee {
                     salary = Double.parseDouble(tmp);
                     selectedEmployee = new Hourly(selectedEmployee.getId(), selectedEmployee.getName(),
                             selectedEmployee.getAddress(), selectedEmployee.getPaymentMethod(), salary,
-                            selectedEmployee.getSyndicate());
+                            selectedEmployee.getSyndicate(), selectedEmployee.getPayslipSheet());
                 } else if (attr.equals("1")) {
                     System.out.println("Type the salary:");
                     tmp = Utils.consoleReadInputDouble(tmp, sc);
                     salary = Double.parseDouble(tmp);
                     selectedEmployee = new Salaried(selectedEmployee.getId(), selectedEmployee.getName(),
                             selectedEmployee.getAddress(), selectedEmployee.getPaymentMethod(), salary,
-                            selectedEmployee.getSyndicate());
+                            selectedEmployee.getSyndicate(), selectedEmployee.getPayslipSheet());
                 } else if (attr.equals("2")) {
                     Double percentage;
                     System.out.println("Type the salary:");
@@ -283,7 +284,7 @@ public class MenuEmployee {
                     percentage = Double.parseDouble(tmp);
                     selectedEmployee = new Commissioned(selectedEmployee.getId(), selectedEmployee.getName(),
                             selectedEmployee.getAddress(), selectedEmployee.getPaymentMethod(), salary, percentage,
-                            selectedEmployee.getSyndicate());
+                            selectedEmployee.getSyndicate(), selectedEmployee.getPayslipSheet());
                 }
                 list_employee.set(index, selectedEmployee);
                 System.out.println("Successful changes.");

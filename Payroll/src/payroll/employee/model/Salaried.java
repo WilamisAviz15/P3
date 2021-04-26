@@ -1,6 +1,9 @@
 package payroll.employee.model;
 
+import java.util.List;
+
 import payroll.payment.model.PaymentMethod;
+import payroll.payment.model.Payslip;
 import payroll.syndicate.Syndicate;
 
 public class Salaried extends Employee {
@@ -10,12 +13,12 @@ public class Salaried extends Employee {
     }
 
     public Salaried(Salaried s) {
-        this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getSalary(), s.getSyndicate());
+        this(s.getId(), s.getName(), s.getAddress(), s.getPaymentMethod(), s.getSalary(), s.getSyndicate(), s.getPayslipSheet());
     }
 
     public Salaried(int id, String name, String address, PaymentMethod paymentMethod, Double salary,
-            Syndicate sindicalist) {
-        super(id, name, address, paymentMethod, sindicalist);
+            Syndicate sindicalist, List<Payslip> payslipSheet) {
+        super(id, name, address, paymentMethod, sindicalist, payslipSheet);
         this.salary = salary;
     }
 

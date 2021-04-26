@@ -11,6 +11,7 @@ import payroll.employee.model.Sales;
 import payroll.payment.MenuPayoutSchedule;
 import payroll.payment.MenuPayroll;
 import payroll.payment.model.PaymentSchedule;
+import payroll.payment.model.Payslip;
 import payroll.syndicate.AdditionalFee;
 import payroll.syndicate.Syndicate;
 import payroll.utils.Utils;
@@ -21,6 +22,7 @@ import java.util.List;
 public class Panel {
     public List<Employee> list_employee = new ArrayList<Employee>();
     PaymentSchedule paySchedules = new PaymentSchedule();
+    public List<Payslip> payslipSheet= new ArrayList<Payslip>();
     public static int idSyndicateInt = 0;
 
     Stack<List<Employee>> undo = new Stack<>();
@@ -105,7 +107,7 @@ public class Panel {
             opc = Integer.parseInt(option);
             switch (opc) {
             case 1:
-                MenuEmployee.Menu(list_employee, paySchedules, undo, redo);
+                MenuEmployee.Menu(list_employee, paySchedules, undo, redo, payslipSheet);
                 break;
             case 2:
                 MenuTimecard.Timecard(list_employee, undo, redo);
@@ -117,7 +119,7 @@ public class Panel {
                 LaunchFee(list_employee, undo, redo);
                 break;
             case 5:
-                MenuPayroll.Menu(list_employee);
+                MenuPayroll.Menu(list_employee, undo, redo);
                 break;
             case 6:
                 MenuPayoutSchedule.Menu(paySchedules);
@@ -125,6 +127,7 @@ public class Panel {
             case 7:
                 if (undo.size() > 0) {
                     List<Employee> aux = undo.pop();
+                    System.out.println(list_employee);
                     redo.push(Utils.cloneList(list_employee));
                     list_employee = aux;
                     System.out.println("Changes undone successfully.");
@@ -135,6 +138,7 @@ public class Panel {
             case 8:
                 if (redo.size() > 0) {
                     List<Employee> aux = redo.pop();
+                    System.out.println(aux);
                     undo.push(Utils.cloneList(list_employee));
                     list_employee = aux;
                     System.out.println("Changes redone successfully.");

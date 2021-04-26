@@ -1,11 +1,11 @@
 package payroll.payment;
 
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.util.Stack;
 
 import payroll.employee.model.Commissioned;
 import payroll.employee.model.Employee;
@@ -16,7 +16,7 @@ import payroll.utils.Utils;
 
 public class MenuPayroll {
 
-    public static void Menu(List<Employee> list_employee) {
+    public static void Menu(List<Employee> list_employee, Stack<List<Employee>> undo, Stack<List<Employee>> redo) {
         int option;
         String tmp = "";
         Scanner op = new Scanner(System.in);
@@ -31,7 +31,7 @@ public class MenuPayroll {
             switch (option) {
             case 1:
                 LocalDate date = Utils.validateDate(op);
-                rotate(list_employee, date);
+                rotate(list_employee, date, undo, redo);
                 break;
             case 2:
                 printAll(list_employee);
@@ -123,7 +123,8 @@ public class MenuPayroll {
         System.out.println("#################END PAYSLIP###############");
     }
 
-    public static void rotate(List<Employee> list_employee, LocalDate date) {
+    public static void rotate(List<Employee> list_employee, LocalDate date, Stack<List<Employee>> undo,
+            Stack<List<Employee>> redo) {
         String scheduleString = "", monthSchedule = "", weekSchedule = "", daySchedule = "";
         List<Payslip> payslip = null;
         Calendar c = Calendar.getInstance();
@@ -134,6 +135,45 @@ public class MenuPayroll {
         LocalDate oldDate = date;
         int daysHolidayOrWeekn = Utils.countHolidaysOrWeekend(date, holidays);
         Scanner sc = new Scanner(System.in);
+        
+        undo.push(Utils.cloneList(list_employee));
+        redo.clear();
+
+        for (Employee selectedEmployee : list_employee) {
+            if (selectedEmployee instanceof Salaried) {
+                List<Payslip> clone = new ArrayList<Payslip>();
+                for (Payslip item : selectedEmployee.getPayslipSheet()) {
+                    Payslip p = (Payslip) item;
+                    p = (Payslip) new Payslip(item.getBasicPay(), item.getNetPay(), item.getDate(), item.getTax(),
+                            item.getAdditionaTax(), item.getReferenceMonth());
+                    clone.add(p);
+                }
+                selectedEmployee.setPayslipSheet(clone);
+            } else if (selectedEmployee instanceof Commissioned) {
+                List<Payslip> clone = new ArrayList<Payslip>();
+                for (Payslip item : selectedEmployee.getPayslipSheet()) {
+                    Payslip p = (Payslip) item;
+                    p =  new Payslip(item.getBasicPay(), item.getNetPay(), item.getDate(), item.getTax(),
+                            item.getAdditionaTax(), item.getReferenceMonth(), item.getCommissionsValue(),
+                            item.getLastPaidIsHoliday());
+                    clone.add(p);
+                }
+                selectedEmployee.setPayslipSheet(clone);
+            } else if (selectedEmployee instanceof Hourly) {
+                List<Payslip> clone = new ArrayList<Payslip>();
+                for (Payslip item : selectedEmployee.getPayslipSheet()) {
+                    Payslip p = (Payslip) item;
+                    p = new Payslip(item.getBasicPay(), item.getNetPay(), item.getHours(), item.getExtrasHours(),
+                            item.getDate(), item.getTax(), item.getAdditionaTax(), item.getReferenceMonth(),
+                            item.getCountTimecard(), item.getLastPaidIsHoliday());
+                    clone.add(p);
+                }
+                selectedEmployee.setPayslipSheet(clone);
+            }
+        }
+
+
+
         for (Employee selectedEmployee : list_employee) {
             if (selectedEmployee instanceof Salaried) {
                 GeneratePayslipEmployee.genEmployee(selectedEmployee, scheduleString, monthSchedule, daySchedule,

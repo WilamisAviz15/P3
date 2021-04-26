@@ -11,9 +11,12 @@ public class Payslip {
     private Double commissionsValue = 0.00;
     private Double tax = 0.00;
     private Double additionaTax = 0.00;
-    private String referenceMonth;
-    private Boolean lastPaidIsHoliday;
-    private int countTimecard;
+    private String referenceMonth = "";
+    private Boolean lastPaidIsHoliday = false;
+    private int countTimecard = 0;
+
+    public Payslip() {
+    }
 
     public Payslip(Double basicPay, Double netPay, LocalDate date, Double tax, Double additionaTax,
             String referenceMonth) {
@@ -137,5 +140,10 @@ public class Payslip {
 
     public void setAdditionaTax(Double additionaTax) {
         this.additionaTax = additionaTax;
+    }
+
+    @Override
+    public String toString() {
+        return ">> " + getBasicPay() + " " + getNetPay();
     }
 }
