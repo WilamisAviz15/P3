@@ -131,7 +131,7 @@ public class GeneratePayslipCommissioned {
                         }
                     }
                 }
-                liquidValue += ((basicSalary) / 4) - tax - addTax;
+                liquidValue += basicSalary - tax - addTax;
                 Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth,
                         ttlComission, lastPaymentIsHoliday);
                 sEmployee.getPayslipSheet().add(newPayslip);
@@ -160,7 +160,7 @@ public class GeneratePayslipCommissioned {
                     ttlComission += calcComission;
                 }
             }
-            liquidValue += ((basicSalary) / 4) - tax - addTax;
+            liquidValue += basicSalary - tax - addTax;
             Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth, ttlComission,
                     lastPaymentIsHoliday);
             sEmployee.getPayslipSheet().add(newPayslip);
@@ -218,7 +218,7 @@ public class GeneratePayslipCommissioned {
                         }
                     }
                 }
-                liquidValue += (basicSalary / 2) - tax - addTax;
+                liquidValue += basicSalary - tax - addTax;
                 Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth,
                         ttlComission, lastPaymentIsHoliday);
                 sEmployee.getPayslipSheet().add(newPayslip);
@@ -247,7 +247,7 @@ public class GeneratePayslipCommissioned {
                     ttlComission += calcComission;
                 }
             }
-            liquidValue += (basicSalary / 2) - tax - addTax;
+            liquidValue += basicSalary - tax - addTax;
             Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth, ttlComission,
                     lastPaymentIsHoliday);
             sEmployee.getPayslipSheet().add(newPayslip);

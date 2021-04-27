@@ -88,9 +88,9 @@ public class GeneratePayslipEmployee {
                 if (sEmployee.getSyndicate().getActive() == true) {
                     tax = sEmployee.getSyndicate().getTax();
                     addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date, lastPayment);
-                    liquidValue = (basicSalary / 4) - tax - addTax;
+                    liquidValue = basicSalary - tax - addTax;
                 } else {
-                    liquidValue = (basicSalary / 4);
+                    liquidValue = basicSalary;
                 }
                 Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth);
                 sEmployee.getPayslipSheet().add(newPayslip);
@@ -109,9 +109,9 @@ public class GeneratePayslipEmployee {
             if (sEmployee.getSyndicate().getActive() == true) {
                 tax = sEmployee.getSyndicate().getTax();
                 addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date);
-                liquidValue = (basicSalary / 4) - tax - addTax;
+                liquidValue = basicSalary - tax - addTax;
             } else {
-                liquidValue = (basicSalary / 4);
+                liquidValue = basicSalary;
             }
             Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth);
             sEmployee.getPayslipSheet().add(newPayslip);
@@ -141,9 +141,9 @@ public class GeneratePayslipEmployee {
                 if (sEmployee.getSyndicate().getActive() == true) {
                     tax = sEmployee.getSyndicate().getTax();
                     addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date, lastPayment);
-                    liquidValue = (basicSalary / 2) - tax - addTax;
+                    liquidValue = basicSalary - tax - addTax;
                 } else {
-                    liquidValue = (basicSalary / 2);
+                    liquidValue = basicSalary;
                 }
                 Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth);
                 sEmployee.getPayslipSheet().add(newPayslip);
@@ -162,9 +162,9 @@ public class GeneratePayslipEmployee {
             if (sEmployee.getSyndicate().getActive() == true) {
                 tax = sEmployee.getSyndicate().getTax();
                 addTax = Utils.sumAddFee(sEmployee.getSyndicate().getAdditionalFee(), date);
-                liquidValue = (basicSalary / 2) - tax - addTax;
+                liquidValue = basicSalary - tax - addTax;
             } else {
-                liquidValue = (basicSalary / 2);
+                liquidValue = basicSalary;
             }
             Payslip newPayslip = new Payslip(basicSalary, liquidValue, date, tax, addTax, referenceMonth);
             sEmployee.getPayslipSheet().add(newPayslip);
